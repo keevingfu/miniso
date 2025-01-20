@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similar Products Analysis Heatmap</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #e4393c;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #heatmap {
+            width: 100%;
+            height: 700px;
+        }
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        select {
+            padding: 8px;
+            margin: 0 10px;
+            border: 1px solid #e4393c;
+            border-radius: 4px;
+        }
+        .description {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff9f9;
+            border-radius: 4px;
+            border-left: 4px solid #e4393c;
+        }
+        .video-insights {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .insight-title {
+            color: #e4393c;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffe4e4;
+        }
+
+        .insights-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .insight-content {
+            padding: 15px;
+            background: #fff9f9;
+            border-radius: 8px;
+        }
+
+        .insight-content h4 {
+            color: #e4393c;
+            margin-bottom: 10px;
+        }
+
+        .insight-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-content li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .insight-content li:before {
+            content: "•";
+            color: #e4393c;
+            position: absolute;
+            left: 0;
+        }
+
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .video-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ffe4e4;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .video-item:hover {
+            background: #fff9f9;
+            transform: translateX(5px);
+        }
+
+        .rank {
+            background: #e4393c;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .video-item a {
+            flex: 1;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .views {
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Market Analysis Heatmap for Similar Products</h1>
+        
+        <div class="controls">
+            <select id="viewMode" aria-label="View Mode Selection">
+                <option value="popularity">Product Popularity</option>
+                <option value="sales">Sales Performance</option>
+                <option value="satisfaction">Customer Satisfaction</option>
+            </select>
+        </div>
+
+        <div id="heatmap"></div>
+
+        <div class="video-insights">
+            <h3 class="insight-title">Data Insights & Top Videos</h3>
+            
+            <!-- Popularity Analysis -->
+            <div class="insight-panel" data-mode="popularity">
+                <div class="insight-content">
+                    <h4>Product Popularity Insights</h4>
+                    <ul>
+                        <li>Beauty tools have highest popularity among students</li>
+                        <li>Stationery items surge during back-to-school season</li>
+                        <li>Toys and figures most discussed on social platforms</li>
+                    </ul>
+                </div>
+                <div class="video-list">
+                    <div class="video-item">
+                        <span class="rank">1</span>
+                        <a href="https://www.tiktok.com/@miniso/video/1" target="_blank" rel="noopener">
+                            Beauty New Arrivals Unboxing #CreativeBeautyTools 
+                            <span class="views">2.1M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">2</span>
+                        <a href="https://www.tiktok.com/@miniso/video/2" target="_blank" rel="noopener">
+                            Back-to-School Stationery Showcase #StudyEssentials
+                            <span class="views">1.8M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">3</span>
+                        <a href="https://www.tiktok.com/@miniso/video/3" target="_blank" rel="noopener">
+                            Limited Edition Figure Series #AnimeMerchandise
+                            <span class="views">1.5M views</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Analysis -->
+            <div class="insight-panel" data-mode="sales" style="display: none;">
+                <div class="insight-content">
+                    <h4>Sales Performance Insights</h4>
+                    <ul>
+                        <li>Lifestyle products show fastest sales growth</li>
+                        <li>Digital accessories surge during holiday seasons</li>
+                        <li>Home decor sales peak during renovation season</li>
+                    </ul>
+                </div>
+                <div class="video-list">
+                    <div class="video-item">
+                        <span class="rank">1</span>
+                        <a href="https://www.tiktok.com/@miniso/video/4" target="_blank" rel="noopener">
+                            Lifestyle Must-Haves #HomeEssentials
+                            <span class="views">1.9M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">2</span>
+                        <a href="https://www.tiktok.com/@miniso/video/5" target="_blank" rel="noopener">
+                            Digital Accessories Sale #TechFinds
+                            <span class="views">1.6M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">3</span>
+                        <a href="https://www.tiktok.com/@miniso/video/6" target="_blank" rel="noopener">
+                            Home Decor Inspiration #HomeAesthetics
+                            <span class="views">1.4M views</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Satisfaction Analysis -->
+            <div class="insight-panel" data-mode="satisfaction" style="display: none;">
+                <div class="insight-content">
+                    <h4>Customer Satisfaction Insights</h4>
+                    <ul>
+                        <li>Personal care products receive highest ratings</li>
+                        <li>Bags and accessories recognized for value</li>
+                        <li>Creative design products popular among youth</li>
+                    </ul>
+                </div>
+                <div class="video-list">
+                    <div class="video-item">
+                        <span class="rank">1</span>
+                        <a href="https://www.tiktok.com/@miniso/video/7" target="_blank" rel="noopener">
+                            Personal Care Favorites #SelfCare
+                            <span class="views">1.7M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">2</span>
+                        <a href="https://www.tiktok.com/@miniso/video/8" target="_blank" rel="noopener">
+                            Fashion Accessories Review #StyleFinds
+                            <span class="views">1.5M views</span>
+                        </a>
+                    </div>
+                    <div class="video-item">
+                        <span class="rank">3</span>
+                        <a href="https://www.tiktok.com/@miniso/video/9" target="_blank" rel="noopener">
+                            Creative Design Collection #UniqueDesigns
+                            <span class="views">1.3M views</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="description">
+        <h3>Heatmap Description:</h3>
+        <p>- Darker colors indicate higher match</p>
+        <p>- X-axis represents product categories and features</p>
+        <p>- Y-axis represents target audience and application scenarios</p>
+        <p>- Hover over to view detailed data</p>
+    </div>
+
+    <script>
+        // 产品类别和卖点
+        const products = [
+            '美妆工具', '生活用品', '玩具手办', '数码配件', 
+            '文具用品', '家居饰品', '个护清洁', '箱包服饰',
+            '创意设计', '性价比高', '品质保证', '时尚潮流'
+        ];
+
+        // 人群和场景
+        const scenarios = [
+            '学生党', '上班族', '家庭主妇', '儿童',
+            '送礼场景', '居家生活', '旅行出差', '办公场所',
+            '休闲娱乐', '社交场合'
+        ];
+
+        // 初始化 ECharts
+        const chart = echarts.init(document.getElementById('heatmap'));
+
+        function generateData(mode) {
+            const data = [];
+            for (let i = 0; i < scenarios.length; i++) {
+                for (let j = 0; j < products.length; j++) {
+                    let value;
+                    if (mode === 'popularity') {
+                        value = 50 + Math.random() * 50;
+                    } else if (mode === 'sales') {
+                        value = Math.floor(500 + Math.random() * 500);
+                    } else {
+                        value = 70 + Math.random() * 30;
+                    }
+                    data.push([j, i, value.toFixed(1)]);
+                }
+            }
+            return data;
+        }
+
+        function updateHeatmap(mode) {
+            const option = {
+                tooltip: {
+                    position: 'top',
+                    formatter: function (params) {
+                        return `${scenarios[params.data[1]]} × ${products[params.data[0]]}<br>
+                                指数: ${params.data[2]}`;
+                    }
+                },
+                grid: {
+                    top: '60px',
+                    bottom: '60px',
+                    left: '120px',
+                    right: '60px'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: products,
+                    splitArea: {
+                        show: true
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: scenarios,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: mode === 'sales' ? 500 : 50,
+                    max: mode === 'sales' ? 1000 : 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '0',
+                    inRange: {
+                        color: ['#fff3f3', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#e4393c']
+                    }
+                },
+                series: [{
+                    name: mode === 'popularity' ? '产品热度' : 
+                          mode === 'sales' ? '销售表现' : '顾客满意度',
+                    type: 'heatmap',
+                    data: generateData(mode),
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(228, 57, 60, 0.5)'
+                        }
+                    }
+                }]
+            };
+
+            chart.setOption(option);
+
+            // 更新视频分析面板
+            document.querySelectorAll('.insight-panel').forEach(panel => {
+                panel.style.display = panel.dataset.mode === mode ? 'grid' : 'none';
+            });
+        }
+
+        // 初始化热力图
+        updateHeatmap('popularity');
+
+        // 监听视图模式切换
+        document.getElementById('viewMode').addEventListener('change', (e) => {
+            updateHeatmap(e.target.value);
+        });
+
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            chart.resize();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    padding: 20px;
+    color: #2d3436;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* 左侧面板样式 */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* 团队进度样式 */
+.team-schedule {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #636e72;
+    font-size: 14px;
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.task-name {
+    width: 120px;
+    font-size: 14px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 40px;
+    background: #f1f3f5;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    gap: 10px;
+    color: white;
+}
+
+.blue .progress { background: #4299e1; }
+.green .progress { background: #48bb78; }
+.red .progress { background: #f56565; }
+.purple .progress { background: #805ad5; }
+
+.percentage {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #2d3436;
+}
+
+/* 活动列表样式 */
+.campaigns {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.campaigns-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+}
+
+.tab {
+    font-size: 14px;
+    color: #636e72;
+    cursor: pointer;
+}
+
+.tab.active {
+    color: #2d3436;
+    font-weight: bold;
+}
+
+.create-btn {
+    background: #4299e1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.campaign-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+/* 右侧面板样式 */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.time-selector {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.time-selector button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.time-selector button.active {
+    background: #4299e1;
+    color: white;
+}
+
+.key-stats {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    display: block;
+}
+
+.stat-label {
+    color: #636e72;
+    font-size: 14px;
+}
+
+.stat-period {
+    color: #636e72;
+    font-size: 14px;
+}
+
+/* 渠道统计样式 */
+.channels {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.channel-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.channel-item img {
+    width: 30px;
+    height: 30px;
+}
+
+.channel-info {
+    flex-grow: 1;
+}
+
+.channel-name {
+    font-weight: bold;
+    display: block;
+}
+
+.channel-type {
+    color: #636e72;
+    font-size: 14px;
+}
+
+.channel-stat {
+    color: #4299e1;
+    font-weight: bold;
+}

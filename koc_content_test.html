@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Test Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <h1 class="mb-4">Content Test Analysis</h1>
+        
+        <!-- 1. Overview Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Overall Performance Overview</h5>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="metric-card p-3 border rounded">
+                                    <h6><i class="fas fa-eye"></i> Total Exposure</h6>
+                                    <h3>8.95M</h3>
+                                    <small class="text-success">↑ 15% vs last week</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-card p-3 border rounded">
+                                    <h6><i class="fas fa-thumbs-up"></i> Average Engagement Rate</h6>
+                                    <h3>1.92%</h3>
+                                    <small class="text-success">↑ 0.5% vs last week</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <div class="metric-card p-3 border rounded">
+                                    <h6><i class="fas fa-star"></i> Best Product Category</h6>
+                                    <h3>Plush Toys</h3>
+                                    <small class="text-success">Engagement Rate 5.1%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Platform Performance -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">MINISO KOC Performance Trends (2024.10-2025.01)</h5>
+                        <div id="platformPerformanceChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                // Initialize platform performance chart
+                function initPlatformPerformanceChart() {
+                    const chart = echarts.init(document.getElementById('platformPerformanceChart'));
+                    
+                    const data = [
+                        {date: '2024-10-08', totalViews: 35529, totalEngagements: 28266},
+                        {date: '2024-10-11', totalViews: 480380, totalEngagements: 38118},
+                        {date: '2024-10-12', totalViews: 801806, totalEngagements: 40630},
+                        {date: '2024-10-14', totalViews: 1193193, totalEngagements: 102344},
+                        {date: '2024-10-15', totalViews: 354326, totalEngagements: 22568},
+                        {date: '2024-10-16', totalViews: 1202479, totalEngagements: 21647},
+                        {date: '2024-10-19', totalViews: 1586949, totalEngagements: 135738},
+                        {date: '2024-10-20', totalViews: 217055, totalEngagements: 11597},
+                        {date: '2024-10-21', totalViews: 368349, totalEngagements: 75887},
+                        {date: '2024-10-22', totalViews: 183012, totalEngagements: 18796},
+                        {date: '2024-10-23', totalViews: 560984, totalEngagements: 63817},
+                        {date: '2024-10-24', totalViews: 76520, totalEngagements: 15916},
+                        {date: '2024-10-25', totalViews: 531625, totalEngagements: 67283},
+                        {date: '2024-10-26', totalViews: 32609, totalEngagements: 10618},
+                        {date: '2024-10-27', totalViews: 204070, totalEngagements: 40161},
+                        {date: '2024-11-05', totalViews: 56690, totalEngagements: 45375},
+                        {date: '2024-11-12', totalViews: 111626, totalEngagements: 59009},
+                        {date: '2024-11-14', totalViews: 58409, totalEngagements: 19641},
+                        {date: '2024-11-26', totalViews: 86100, totalEngagements: 29843},
+                        {date: '2024-12-03', totalViews: 454422, totalEngagements: 47554},
+                        {date: '2024-12-09', totalViews: 164800, totalEngagements: 71851},
+                        {date: '2024-12-11', totalViews: 160969, totalEngagements: 23107},
+                        {date: '2024-12-14', totalViews: 140351, totalEngagements: 19824},
+                        {date: '2024-12-18', totalViews: 107648, totalEngagements: 91340},
+                        {date: '2024-12-23', totalViews: 69686, totalEngagements: 21242},
+                        {date: '2024-12-25', totalViews: 135034, totalEngagements: 14383},
+                        {date: '2024-12-29', totalViews: 70831, totalEngagements: 10598},
+                        {date: '2025-01-01', totalViews: 227663, totalEngagements: 18863}
+                    ];
+
+                    const option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            formatter: function(params) {
+                                let result = params[0].axisValue + '<br/>';
+                                params.forEach(param => {
+                                    let value = param.value;
+                                    if (value >= 1000000) {
+                                        value = (value / 1000000).toFixed(2) + 'M';
+                                    } else if (value >= 1000) {
+                                        value = (value / 1000).toFixed(1) + 'K';
+                                    }
+                                    result += param.marker + param.seriesName + ': ' + value + '<br/>';
+                                });
+                                return result;
+                            }
+                        },
+                        legend: {
+                            data: ['Total Views', 'Total Engagements'],
+                            bottom: 0
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '10%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {},
+                                dataZoom: {
+                                    yAxisIndex: 'none'
+                                },
+                                restore: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: data.map(item => item.date),
+                            axisLabel: {
+                                rotate: 45
+                            }
+                        },
+                        yAxis: {
+                                type: 'value',
+                                axisLabel: {
+                                formatter: function(value) {
+                                    if (value >= 1000000) {
+                                        return (value / 1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return value;
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: 'Total Views',
+                                type: 'line',
+                                data: data.map(item => item.totalViews),
+                                smooth: true,
+                                symbol: 'circle',
+                                symbolSize: 6,
+                                lineStyle: {
+                                    width: 3
+                                }
+                            },
+                            {
+                                name: 'Total Engagements',
+                                type: 'line',
+                                data: data.map(item => item.totalEngagements),
+                                smooth: true,
+                                symbol: 'circle',
+                                symbolSize: 6,
+                                lineStyle: {
+                                    width: 3
+                                }
+                            }
+                        ]
+                    };
+
+                    chart.setOption(option);
+                    
+                    window.addEventListener('resize', function() {
+                        chart.resize();
+                    });
+                }
+
+                // Initialize charts after DOM is loaded
+                document.addEventListener('DOMContentLoaded', function() {
+                    initPlatformPerformanceChart();
+                });
+            </script>
+            
+            <script>
+                // Initialize platform distribution chart
+                function initPlatformDistributionChart() {
+                    const chart = echarts.init(document.getElementById('platformDistributionChart'));
+                    const option = {
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{b}: {c} ({d}%)'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left'
+                        },
+                        series: [{
+                            type: 'pie',
+                            radius: '70%',
+                            data: [
+                                { value: 45, name: 'TikTok' },
+                                { value: 25, name: 'Instagram' },
+                                { value: 20, name: 'Facebook' },
+                                { value: 10, name: 'Others' }
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+
+                // Initialize creative combination effect heatmap
+                function initCombinationHeatmap() {
+                    const chart = echarts.init(document.getElementById('combinationHeatmap'));
+                    const hours = ['Video Length', 'Post Time', 'Content Format', 'Product Display', 'Music Style'];
+                    const days = ['Engagement Rate', 'Completion Rate', 'Conversion Rate', 'Share Rate', 'Comment Rate'];
+                    const data = [[0,0,5],[0,1,7],[0,2,3],[0,3,5],[0,4,2],
+                                [1,0,6],[1,1,8],[1,2,4],[1,3,3],[1,4,4],
+                                [2,0,8],[2,1,6],[2,2,7],[2,3,4],[2,4,5],
+                                [3,0,7],[3,1,4],[3,2,6],[3,3,8],[3,4,3],
+                                [4,0,5],[4,1,3],[4,2,5],[4,3,6],[4,4,7]];
+                    
+                    const option = {
+                        tooltip: {
+                            position: 'top'
+                        },
+                        grid: {
+                            top: '15%',
+                            bottom: '10%'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: days,
+                            splitArea: {
+                                show: true
+                            }
+                        },
+                        yAxis: {
+                            type: 'category',
+                            data: hours,
+                            splitArea: {
+                                show: true
+                            }
+                        },
+                        visualMap: {
+                            min: 0,
+                            max: 10,
+                            calculable: true,
+                            orient: 'horizontal',
+                            left: 'center',
+                            top: '0%'
+                        },
+                        series: [{
+                            name: 'Effect Score',
+                            type: 'heatmap',
+                            data: data,
+                            label: {
+                                show: true
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+
+                // Initialize product category performance chart
+                function initProductCategoryChart() {
+                    const chart = echarts.init(document.getElementById('productCategoryChart'));
+                    const option = {
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ['Playback', 'Engagement']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'value'
+                        },
+                        yAxis: {
+                            type: 'category',
+                            data: ['Plush Toys', 'Mystery Box', 'Bag', 'Stationery', 'Home Decor']
+                        },
+                        series: [
+                            {
+                                name: 'Playback',
+                                type: 'bar',
+                                data: [4.8, 5.2, 3.9, 4.1, 3.8]
+                            },
+                            {
+                                name: 'Engagement',
+                                type: 'bar',
+                                data: [2.3, 2.8, 1.9, 2.0, 1.7]
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+
+                // Initialize best combination radar chart
+                function initBestCombinationRadarChart() {
+                    const chart = echarts.init(document.getElementById('bestCombinationRadarChart'));
+                    const option = {
+                        tooltip: {},
+                        legend: {
+                            data: ['Best Combination', 'Average Level']
+                        },
+                        radar: {
+                            indicator: [
+                                { name: 'Engagement Rate', max: 100 },
+                                { name: 'Completion Rate', max: 100 },
+                                { name: 'Conversion Rate', max: 100 },
+                                { name: 'Share Rate', max: 100 },
+                                { name: 'Comment Rate', max: 100 }
+                            ]
+                        },
+                        series: [{
+                            name: 'Best Combination vs Average Level',
+                            type: 'radar',
+                            data: [
+                                {
+                                    value: [85, 90, 80, 75, 85],
+                                    name: 'Best Combination'
+                                },
+                                {
+                                    value: [60, 65, 55, 50, 60],
+                                    name: 'Average Level'
+                                }
+                            ]
+                        }]
+                    };
+                    chart.setOption(option);
+                    window.addEventListener('resize', () => chart.resize());
+                }
+
+                // Initialize all charts after DOM is loaded
+                document.addEventListener('DOMContentLoaded', function() {
+                    initPlatformPerformanceChart();
+                    initPlatformDistributionChart();
+                    initCombinationHeatmap();
+                    initProductCategoryChart();
+                    initBestCombinationRadarChart();
+                });
+            </script>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Platform Distribution</h5>
+                        <div id="platformDistributionChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Deep Dive Analysis -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Creative Combination Effect Heatmap</h5>
+                        <div id="combinationHeatmap" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product Category Performance</h5>
+                        <div id="productCategoryChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Best Combination Analysis -->
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Best Combination Ranking</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Combination Description</th>
+                                        <th>Product Category</th>
+                                        <th>Video Format</th>
+                                        <th>Engagement Rate</th>
+                                        <th>Completion Rate</th>
+                                        <th>Conversion Rate</th>
+                                        <th>Overall Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="table-warning">
+                                        <td><i class="fas fa-trophy text-warning"></i> 1</td>
+                                        <td>Mystery Box + Funny Situation Short Drama + Copy A + BGM1</td>
+                                        <td>Mystery Box</td>
+                                        <td>Situation Short Drama</td>
+                                        <td>7.2%</td>
+                                        <td>65%</td>
+                                        <td>4.5%</td>
+                                        <td>92</td>
+                                    </tr>
+                                    <tr class="table-secondary">
+                                        <td><i class="fas fa-trophy text-secondary"></i> 2</td>
+                                        <td>Plush Toys + Unboxing + Copy B + BGM2</td>
+                                        <td>Plush Toys</td>
+                                        <td>Unboxing</td>
+                                        <td>6.8%</td>
+                                        <td>58%</td>
+                                        <td>3.8%</td>
+                                        <td>85</td>
+                                    </tr>
+                                    <tr class="table-bronze">
+                                        <td><i class="fas fa-trophy text-bronze"></i> 3</td>
+                                        <td>Bag + Daily Sharing + Copy C + BGM3</td>
+                                        <td>Bag</td>
+                                        <td>Daily Sharing</td>
+                                        <td>5.9%</td>
+                                        <td>52%</td>
+                                        <td>3.2%</td>
+                                        <td>78</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Best Combination Radar Chart</h5>
+                        <div id="bestCombinationRadarChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Recommendations -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Optimization Recommendations</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="recommendation-card p-3 border rounded">
+                                    <h6><i class="fas fa-lightbulb text-warning"></i> Content Strategy</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Mystery Box products are best when presented in funny situation short drama format, suggest continuing to strengthen</li>
+                                        <li>• BGM1 (Happy Rhythm) pairs well with situation short drama</li>
+                                        <li>• Suggest expanding the application of Copy A to other product categories</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="recommendation-card p-3 border rounded">
+                                    <h6><i class="fas fa-chart-line text-success"></i> Ad Spend Optimization</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• TikTok platform performs best, suggest increasing ad spend</li>
+                                        <li>• 19-22 PM is the best posting time</li>
+                                        <li>• Suggest increasing cross-platform content synergy</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="recommendation-card p-3 border rounded">
+                                    <h6><i class="fas fa-flask text-info"></i> Next Test Plan</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Test the creative effect of new IP collaboration series</li>
+                                        <li>• Try more local topic tag combinations</li>
+                                        <li>• Explore new video structure modes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize all charts
+        function initCharts() {
+            initPlatformComparison();
+            initPlatformDistribution();
+            initCombinationHeatmap();
+            initProductCategory();
+            initCombinationRadar();
+        }
+
+        // Platform performance comparison chart
+        function initPlatformComparison() {
+            const chart = echarts.init(document.getElementById('platformComparisonChart'));
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Exposure', 'Engagement', 'Conversion']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['TikTok', 'Instagram', 'YouTube']
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Exposure',
+                        min: 0,
+                        max: 1000000,
+                        axisLabel: {
+                            formatter: '{value}'
+                        }
+                    },
+                    {
+                        type: 'value',
+                        name: 'Ratio',
+                        min: 0,
+                        max: 10,
+                        axisLabel: {
+                            formatter: '{value}%'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Exposure',
+                        type: 'bar',
+                        data: [850000, 620000, 480000]
+                    },
+                    {
+                        name: 'Engagement',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [5.2, 4.8, 3.9]
+                    },
+                    {
+                        name: 'Conversion',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [2.8, 2.3, 1.9]
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // Platform distribution pie chart
+        function initPlatformDistribution() {
+            const chart = echarts.init(document.getElementById('platformDistributionChart'));
+            const option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: 850000, name: 'TikTok' },
+                            { value: 620000, name: 'Instagram' },
+                            { value: 480000, name: 'YouTube' }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // Creative combination heatmap
+        function initCombinationHeatmap() {
+            const chart = echarts.init(document.getElementById('combinationHeatmap'));
+            const hours = ['Copy A', 'Copy B', 'Copy C', 'Copy D'];
+            const days = ['BGM1', 'BGM2', 'BGM3', 'BGM4'];
+            
+            const data = [
+                [0, 0, 7.2], [1, 0, 5.8], [2, 0, 4.9], [3, 0, 4.2],
+                [0, 1, 6.5], [1, 1, 5.2], [2, 1, 4.5], [3, 1, 3.8],
+                [0, 2, 5.9], [1, 2, 4.8], [2, 2, 4.1], [3, 2, 3.5],
+                [0, 3, 5.2], [1, 3, 4.5], [2, 3, 3.8], [3, 3, 3.2]
+            ];
+
+            const option = {
+                tooltip: {
+                    position: 'top',
+                    formatter: function (params) {
+                        return `${days[params.value[1]]} + ${hours[params.value[0]]}<br>Engagement Rate: ${params.value[2]}%`;
+                    }
+                },
+                grid: {
+                    height: '50%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: hours,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: days,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 3,
+                    max: 8,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '15%'
+                },
+                series: [{
+                    name: 'Engagement Rate',
+                    type: 'heatmap',
+                    data: data,
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.value[2] + '%';
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // Product category performance
+        function initProductCategory() {
+            const chart = echarts.init(document.getElementById('productCategoryChart'));
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Engagement', 'Completion', 'Conversion']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Plush Toys', 'Mystery Box', 'Bag']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Engagement',
+                        type: 'bar',
+                        data: [6.8, 7.2, 5.9]
+                    },
+                    {
+                        name: 'Completion',
+                        type: 'bar',
+                        data: [58, 65, 52]
+                    },
+                    {
+                        name: 'Conversion',
+                        type: 'bar',
+                        data: [3.8, 4.5, 3.2]
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // Best combination radar chart
+        function initCombinationRadar() {
+            const chart = echarts.init(document.getElementById('combinationRadarChart'));
+            const option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    data: ['Top1 Combination', 'Top2 Combination', 'Top3 Combination']
+                },
+                radar: {
+                    indicator: [
+                        { name: 'Engagement', max: 10 },
+                        { name: 'Completion', max: 100 },
+                        { name: 'Conversion', max: 5 },
+                        { name: 'Share', max: 5 },
+                        { name: 'Comment', max: 5 }
+                    ]
+                },
+                series: [{
+                    type: 'radar',
+                    data: [
+                        {
+                            value: [7.2, 65, 4.5, 3.8, 4.2],
+                            name: 'Top1 Combination',
+                            itemStyle: {
+                                color: '#ffd700'
+                            }
+                        },
+                        {
+                            value: [6.8, 58, 3.8, 3.2, 3.9],
+                            name: 'Top2 Combination',
+                            itemStyle: {
+                                color: '#c0c0c0'
+                            }
+                        },
+                        {
+                            value: [5.9, 52, 3.2, 2.8, 3.5],
+                            name: 'Top3 Combination',
+                            itemStyle: {
+                                color: '#cd7f32'
+                            }
+                        }
+                    ]
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // Initialize charts after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+
+            // Redraw charts on window resize
+            window.addEventListener('resize', function() {
+                const charts = document.querySelectorAll('[id$="Chart"]');
+                charts.forEach(container => {
+                    const chart = echarts.getInstanceByDom(container);
+                    if (chart) {
+                        chart.resize();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-title {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: white;
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .metric-card h3 {
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        .recommendation-card {
+            background: white;
+            height: 100%;
+        }
+        .recommendation-card h6 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .recommendation-card li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .table th {
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+        .table-warning {
+            background-color: rgba(255, 215, 0, 0.1) !important;
+        }
+        .table-secondary {
+            background-color: rgba(192, 192, 192, 0.1) !important;
+        }
+        .table-bronze {
+            background-color: rgba(205, 127, 50, 0.1) !important;
+        }
+        .text-bronze {
+            color: #cd7f32;
+        }
+    </style>
+</body>
+</html> 

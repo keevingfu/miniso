@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion Tag Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            height: 500px;
+            margin: 20px 0;
+        }
+        .insights-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .insights-box h4 {
+            color: #0d6efd;
+            margin-bottom: 15px;
+        }
+        .tag-list {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .quadrant-info {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .tag-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: white;
+        }
+        .high-high {
+            background-color: #28a745;
+        }
+        .high-low {
+            background-color: #ffc107;
+        }
+        .low-high {
+            background-color: #17a2b8;
+        }
+        .low-low {
+            background-color: #dc3545;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Conversion Tag Quadrant</h1>
+        
+        <!-- Add filters -->
+        <div class="filters">
+            <select id="timeRange" aria-label="Select time range">
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+                <option value="90d">Last 90 Days</option>
+            </select>
+            <select id="platform" aria-label="Select platform">
+                <option value="amazon">Amazon SBV</option>
+                <option value="meta">META</option>
+                <option value="tiktok">TikTok</option>
+                <option value="youtube">YouTube</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <!-- Conversion Tag Quadrant -->
+            <div class="col-12">
+                <div class="chart-container">
+                    <h3> </h3>
+                    <div id="conversionQuadrant" style="height: 100%;"></div>
+                </div>
+                <div class="quadrant-info">
+                    <h5>Quadrant Description</h5>
+                    <div><span class="tag-badge high-high">Upper Right</span> High Conversion Rate & High Order Value</div>
+                    <div><span class="tag-badge high-low">Lower Right</span> High Conversion Rate & Low Order Value</div>
+                    <div><span class="tag-badge low-high">Upper Left</span> Low Conversion Rate & High Order Value</div>
+                    <div><span class="tag-badge low-low">Lower Left</span> Low Conversion Rate & Low Order Value</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Insights -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="insights-box">
+                    <h4>Purchase (Conversion) Analysis Insights</h4>
+                    <div class="mb-4">
+                        <h5>Conversion Performance Analysis</h5>
+                        <ul>
+                            <li>Tags with high discount sensitivity show better conversion rates</li>
+                            <li>Quality lifestyle tags have lower conversion rates but higher order values</li>
+                            <li>Pragmatic tags maintain balance between conversion rates and order values</li>
+                        </ul>
+                    </div>
+                    <div class="mb-4">
+                        <h5>Optimization Suggestions</h5>
+                        <ul>
+                            <li>Increase promotional efforts for high-conversion tags</li>
+                            <li>Optimize conversion paths for high-order-value tags</li>
+                            <li>Balance distribution strategy to improve overall ROI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tag List -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="tag-list">
+                    <h4>Popular Conversion Tags</h4>
+                    <div>
+                        <span class="tag-badge high-high">Coupons</span>
+                        <span class="tag-badge high-high">Flash Sale</span>
+                        <span class="tag-badge high-low">New Release</span>
+                        <span class="tag-badge high-low">Discount</span>
+                        <span class="tag-badge low-high">Quality Life</span>
+                        <span class="tag-badge low-high">Luxury</span>
+                        <span class="tag-badge low-low">Daily Essentials</span>
+                        <span class="tag-badge low-low">Pragmatic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize chart
+        const conversionChart = echarts.init(document.getElementById('conversionQuadrant'));
+
+        // Define data for different platforms and time ranges
+        const tagData = {
+            amazon: {
+                '7d': {
+                    awareness: ['Amazon Store', 'MINISO Brand', 'Quality Life', 'Global Retail', 'Trendy Products'],
+                    emotional: ['Customer Joy', 'Shopping Fun', 'Lifestyle', 'Satisfaction', 'Happy Purchase'],
+                    lifestyle: ['Home Decor', 'Beauty Tools', 'Digital Gadgets', 'Stationery', 'Travel Items'],
+                    interactive: ['Reviews', 'Ratings', 'Q&A', 'Customer Photos', 'Feedback']
+                },
+                '30d': {
+                    // Similar structure with different data
+                    awareness: ['MINISO Value', 'Prime Delivery', 'Store Choice', 'Brand Quality', 'Selection'],
+                    emotional: ['Shopping Experience', 'Customer Care', 'Product Joy', 'Satisfaction', 'Trust'],
+                    lifestyle: ['Home Style', 'Personal Care', 'Office Supplies', 'Travel Gear', 'Accessories'],
+                    interactive: ['Customer Images', 'Star Ratings', 'Questions', 'Reviews', 'Discussion']
+                },
+                '90d': {
+                    // Similar structure with different data
+                    awareness: ['Brand Value', 'Global Retail', 'Store Quality', 'Selection Range', 'Pricing'],
+                    emotional: ['Shopping Joy', 'Customer Trust', 'Product Love', 'Brand Faith', 'Happiness'],
+                    lifestyle: ['Living Style', 'Beauty Care', 'Work Life', 'Travel Ready', 'Daily Use'],
+                    interactive: ['Review Stats', 'Rating Trends', 'Q&A Data', 'Photo Shares', 'Comments']
+                }
+            },
+            meta: {
+                '7d': {
+                    awareness: ['Social Shopping', 'Brand Story', 'Visual Appeal', 'Lifestyle', 'Trends'],
+                    emotional: ['Visual Joy', 'Style Share', 'Community', 'Inspiration', 'Discovery'],
+                    lifestyle: ['Fashion Finds', 'Home Style', 'Daily Life', 'Gift Ideas', 'Collections'],
+                    interactive: ['Comments', 'Shares', 'Saves', 'Likes', 'Messages']
+                },
+                '30d': {
+                    awareness: ['Brand Growth', 'Social Reach', 'Visual Impact', 'Market Share', 'Engagement'],
+                    emotional: ['Community Love', 'Brand Trust', 'Style Goals', 'Happy Finds', 'Inspiration'],
+                    lifestyle: ['Trendy Life', 'Home Goals', 'Daily Style', 'Gift Guide', 'Collection Goals'],
+                    interactive: ['Social Proof', 'Share Rate', 'Save Stats', 'Like Growth', 'Messages']
+                },
+                '90d': {
+                    awareness: ['Brand Power', 'Social Impact', 'Visual Trends', 'Market Lead', 'Engagement Rate'],
+                    emotional: ['Community Bond', 'Brand Loyalty', 'Style Icon', 'Joy Share', 'Inspire More'],
+                    lifestyle: ['Trend Leader', 'Home Expert', 'Life Goals', 'Gift Master', 'Collection Pro'],
+                    interactive: ['Viral Stats', 'Share Trend', 'Save Rate', 'Like Trend', 'Response Rate']
+                }
+            },
+            tiktok: {
+                '7d': {
+                    awareness: ['Viral Products', 'TikTok Made', 'Trending Now', 'Must-Have', 'Popular'],
+                    emotional: ['Fun Finds', 'Joy Share', 'Excitement', 'Surprise', 'Delight'],
+                    lifestyle: ['Creator Style', 'Daily Must', 'Trend Life', 'Easy Pick', 'Quick Buy'],
+                    interactive: ['Comments', 'Shares', 'Likes', 'Saves', 'Duets']
+                },
+                '30d': {
+                    awareness: ['Viral Growth', 'Platform Hit', 'Trend Lead', 'Must-Own', 'Top Choice'],
+                    emotional: ['Creator Joy', 'Share Love', 'Happy Vibes', 'Wow Effect', 'Pure Fun'],
+                    lifestyle: ['Style Guide', 'Daily Tips', 'Trend Set', 'Easy Life', 'Smart Buy'],
+                    interactive: ['Comment Rate', 'Share Stats', 'Like Count', 'Save Data', 'Duet Trend']
+                },
+                '90d': {
+                    awareness: ['Viral King', 'Platform Star', 'Trend Master', 'Must-Follow', 'Top Brand'],
+                    emotional: ['Creator Love', 'Share Goals', 'Happy Life', 'Wow Factor', 'Fun Lead'],
+                    lifestyle: ['Style Pro', 'Daily Pro', 'Trend Pro', 'Life Hack', 'Buy Smart'],
+                    interactive: ['Comment Trend', 'Share Growth', 'Like Trend', 'Save Trend', 'Duet Stats']
+                }
+            },
+            youtube: {
+                '7d': {
+                    awareness: ['Video Review', 'Product Demo', 'Unboxing', 'Compare', 'Features'],
+                    emotional: ['Creator Joy', 'Review Love', 'Happy Use', 'Satisfied', 'Recommend'],
+                    lifestyle: ['Daily Use', 'How To', 'Life Hack', 'Style Tips', 'Best Use'],
+                    interactive: ['Comments', 'Likes', 'Shares', 'Subscribe', 'Save']
+                },
+                '30d': {
+                    awareness: ['Review Trend', 'Demo Stats', 'Box Open', 'Compare Pro', 'Feature Lead'],
+                    emotional: ['Creator Bond', 'Review Trust', 'Use Joy', 'Happy Buy', 'Top Pick'],
+                    lifestyle: ['Use Guide', 'Pro Tips', 'Hack Master', 'Style Pro', 'Best Choice'],
+                    interactive: ['Comment Rate', 'Like Stats', 'Share Count', 'Sub Growth', 'Save Rate']
+                },
+                '90d': {
+                    awareness: ['Review King', 'Demo Pro', 'Open Master', 'Compare Star', 'Feature Pro'],
+                    emotional: ['Creator Trust', 'Review Pro', 'Joy Lead', 'Happy Trend', 'Pick Master'],
+                    lifestyle: ['Guide Pro', 'Tips Master', 'Hack Pro', 'Style Star', 'Choice Lead'],
+                    interactive: ['Comment Trend', 'Like Growth', 'Share Trend', 'Sub Trend', 'Save Stats']
+                }
+            }
+        };
+
+        function updateQuadrantData() {
+            const platform = document.getElementById('platform').value;
+            const timeRange = document.getElementById('timeRange').value;
+            const data = tagData[platform][timeRange];
+            
+            // Update chart data
+            const option = {
+                tooltip: {
+                    formatter: function(param) {
+                        return param.data.name + '<br/>Conversion Rate: ' + param.data.value[0].toFixed(2) + 
+                               '<br/>Order Value: ' + param.data.value[1].toFixed(2);
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: 'Conversion Rate',
+                    nameLocation: 'center',
+                    nameGap: 30,
+                    min: 0,
+                    max: 5,
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Order Value',
+                    nameLocation: 'center',
+                    nameGap: 30,
+                    min: 0,
+                    max: 5,
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'scatter',
+                    data: Object.entries(data).flatMap(([category, tags]) =>
+                        tags.map(tag => ({
+                            name: tag,
+                            value: [
+                                2 + Math.random() * 3,  // Conversion Rate: 2-5
+                                2 + Math.random() * 3,  // Order Value: 2-5
+                                category
+                            ],
+                            symbolSize: 30 + Math.random() * 40  // Bubble size: 30-70
+                        }))
+                    ),
+                    label: {
+                        show: true,
+                        formatter: function(param) {
+                            return param.data.name;
+                        },
+                        position: 'top',
+                        fontSize: 12,
+                        color: '#666'
+                    },
+                    itemStyle: {
+                        color: function(param) {
+                            const x = param.data.value[0];
+                            const y = param.data.value[1];
+                            if (x >= 3.5 && y >= 3.5) return '#28a745';  // High conversion & High order value
+                            if (x >= 3.5 && y < 3.5) return '#ffc107';   // High conversion & Low order value
+                            if (x < 3.5 && y >= 3.5) return '#17a2b8';   // Low conversion & High order value
+                            return '#dc3545';                            // Low conversion & Low order value
+                        },
+                        opacity: 0.7,
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }
+                }]
+            };
+            
+            conversionChart.setOption(option);
+            
+            // Update insights based on selection
+            updateInsights(platform, timeRange);
+        }
+
+        function updateInsights(platform, timeRange) {
+            const insights = {
+                amazon: {
+                    '7d': 'Amazon shoppers show high engagement with product reviews and ratings, particularly for new releases and flash sales.',
+                    '30d': 'Monthly trends indicate strong correlation between customer photos and sales conversion, with Prime delivery being a key factor.',
+                    '90d': 'Long-term data shows consistent performance in customer satisfaction metrics and growing brand trust.'
+                },
+                meta: {
+                    '7d': 'Strong visual content engagement on Meta platforms, with high save rates for lifestyle and collection posts.',
+                    '30d': 'Community engagement shows steady growth, particularly in sharing and saving product collections.',
+                    '90d': 'Brand awareness and community building show positive long-term trends with increasing social proof.'
+                },
+                tiktok: {
+                    '7d': 'Viral product showcases driving high engagement, with strong performance in short-form video content.',
+                    '30d': 'Consistent growth in creator collaborations and trend-based content performance.',
+                    '90d': 'Platform presence solidified with established trend-setting position and strong community engagement.'
+                },
+                youtube: {
+                    '7d': 'Detailed product reviews and demonstrations showing high viewer retention and engagement.',
+                    '30d': 'Growing subscriber base through consistent quality content and product education.',
+                    '90d': 'Strong performance in long-form content with high conversion rates from detailed reviews.'
+                }
+            };
+            
+            // Update insights text
+            document.querySelector('.insights-box').innerHTML = insights[platform][timeRange] || '';
+        }
+
+        // Add event listeners
+        document.getElementById('platform').addEventListener('change', updateQuadrantData);
+        document.getElementById('timeRange').addEventListener('change', updateQuadrantData);
+
+        // Initial chart update
+        updateQuadrantData();
+
+        // Handle responsive resizing
+        window.addEventListener('resize', function() {
+            conversionChart.resize();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINISO Overview Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="miniso-theme.css">
+    <script src="miniso-charts.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .dashboard-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 16px;
+            transition: transform 0.2s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .metric-title {
+            color: #4A4A4A;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            color: #E4002B;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .metric-trend {
+            color: #00C853;
+            font-size: 12px;
+        }
+        .chart-container {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #E4002B;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .insights-container {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .insights-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .insights-content {
+            color: #666;
+        }
+        .platform-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .youtube {
+            background: #ff0000;
+        }
+        .instagram {
+            background: #e1306c;
+        }
+        .tiktok {
+            background: #000000;
+        }
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px;
+        }
+        .card-title {
+            color: #E4002B;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .card-body {
+            padding: 16px;
+        }
+        .insight-item h6,
+        .recommendation-item h6 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .insight-item ul li,
+        .recommendation-item ul li {
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 8px;
+        }
+        
+        .insight-item i,
+        .recommendation-item i {
+            margin-right: 8px;
+        }
+        
+        .text-primary { color: #E4002B !important; }
+        .text-success { color: #00C853 !important; }
+        .text-info { color: #2196F3 !important; }
+        .text-warning { color: #FFB300 !important; }
+        .text-danger { color: #E4002B !important; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Overall Metrics -->
+        <div class="dashboard-container">
+            <h4 class="mb-4">Overview</h4>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-title">Total Views</div>
+                    <div class="metric-value">8.95M</div>
+                    <div class="metric-trend">↑ 15.2%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Total Engagements</div>
+                    <div class="metric-value">172K</div>
+                    <div class="metric-trend">↑ 8.7%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Average Engagement Rate</div>
+                    <div class="metric-value">1.92%</div>
+                    <div class="metric-trend">↑ 12.4%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Developed Region Traffic</div>
+                    <div class="metric-value">2.63M</div>
+                    <div class="metric-trend">↑ 13.5%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Three Charts Row -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Account Engagement Rate Ranking</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="engagement-rate-chart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Top 5 Accounts by Total Views</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="total-views-chart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Top 5 Accounts by Total Likes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="total-likes-chart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KOC Analysis Overview -->
+        <div class="dashboard-container">
+            <h5 class="section-title">KOC Matrix Analysis</h5>
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">MINISO KOC Performance Trends (2024.10-2025.01)</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="koc-performance-trends" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">KOC Performance Matrix</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="koc-performance-matrix" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Platform Performance Comparison</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="platform-performance-comparison" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights and Recommendations -->
+        <div class="dashboard-container">
+            <h5 class="section-title">Insights & Recommendations</h5>
+            <div class="row">
+                <!-- Performance Insights -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Key Performance Insights</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="insights-list">
+                                <div class="insight-item mb-3">
+                                    <h6><i class="fas fa-chart-line text-primary"></i> Growth Trends</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Peak engagement observed on Oct 19 with 135.7K engagements</li>
+                                        <li>• Highest views reached 1.58M on Oct 19, showing strong content performance</li>
+                                        <li>• Consistent engagement rate maintained above industry average</li>
+                                    </ul>
+                                </div>
+                                <div class="insight-item mb-3">
+                                    <h6><i class="fas fa-bullseye text-success"></i> Platform Performance</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• TikTok leads with 420K views, showing highest platform effectiveness</li>
+                                        <li>• Instagram shows strong engagement despite lower view counts</li>
+                                        <li>• YouTube provides stable long-term content performance</li>
+                                    </ul>
+                                </div>
+                                <div class="insight-item">
+                                    <h6><i class="fas fa-users text-info"></i> KOC Impact</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Beauty category KOCs show highest engagement rates at 35%</li>
+                                        <li>• Toy category content generates most consistent views</li>
+                                        <li>• Lifestyle content shows growing trend in engagement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic Recommendations -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Strategic Recommendations</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="recommendations-list">
+                                <div class="recommendation-item mb-3">
+                                    <h6><i class="fas fa-lightbulb text-warning"></i> Content Strategy</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Increase beauty category content production based on high engagement</li>
+                                        <li>• Develop more cross-category collaboration content</li>
+                                        <li>• Focus on peak engagement time windows for content publishing</li>
+                                    </ul>
+                                </div>
+                                <div class="recommendation-item mb-3">
+                                    <h6><i class="fas fa-bullhorn text-danger"></i> Platform Focus</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Prioritize TikTok for short-form content distribution</li>
+                                        <li>• Optimize Instagram content for higher engagement rates</li>
+                                        <li>• Develop platform-specific content strategies</li>
+                                    </ul>
+                                </div>
+                                <div class="recommendation-item">
+                                    <h6><i class="fas fa-rocket text-primary"></i> Growth Opportunities</h6>
+                                    <ul class="list-unstyled">
+                                        <li>• Expand KOC network in high-performing categories</li>
+                                        <li>• Test new content formats during peak engagement periods</li>
+                                        <li>• Implement A/B testing for content optimization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define MINISO Brand Colors
+            const MINISO_COLORS = {
+                primary: '#E4002B',    // MINISO Red
+                secondary: '#000000',  // Black
+                accent: '#FF6B6B',     // Light Red
+                neutral: '#4A4A4A',    // Dark Gray
+                light: '#F5F5F5',      // Light Gray
+                success: '#00C853',    // Green
+                warning: '#FFB300',    // Orange
+                info: '#2196F3'        // Blue
+            };
+
+            // Update Common Chart Styles
+            const MINISO_CHART_CONFIG = {
+                textStyle: {
+                    fontFamily: 'Arial, sans-serif',
+                    color: MINISO_COLORS.neutral
+                },
+                title: {
+                    textStyle: {
+                        color: MINISO_COLORS.primary,
+                        fontWeight: 'bold'
+                    }
+                },
+                legend: {
+                    textStyle: {
+                        color: MINISO_COLORS.neutral
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: MINISO_COLORS.light,
+                    textStyle: {
+                        color: MINISO_COLORS.neutral
+                    }
+                }
+            };
+
+            // Add Format Number Function
+            function formatNumber(num) {
+                if (num >= 1000000) return `${(num/1000000).toFixed(1)}M`;
+                if (num >= 1000) return `${(num/1000).toFixed(1)}K`;
+                return num.toString();
+            }
+
+            // Initialize KOC Performance Trends Chart
+            function initKocPerformanceTrends() {
+                const chart = echarts.init(document.getElementById('koc-performance-trends'));
+                
+                const data = [
+                    {date: '2024-10-08', totalViews: 35529, totalEngagements: 28266},
+                    {date: '2024-10-11', totalViews: 480380, totalEngagements: 38118},
+                    {date: '2024-10-12', totalViews: 801806, totalEngagements: 40630},
+                    {date: '2024-10-14', totalViews: 1193193, totalEngagements: 102344},
+                    {date: '2024-10-15', totalViews: 354326, totalEngagements: 22568},
+                    {date: '2024-10-16', totalViews: 1202479, totalEngagements: 21647},
+                    {date: '2024-10-19', totalViews: 1586949, totalEngagements: 135738},
+                    {date: '2024-10-20', totalViews: 217055, totalEngagements: 11597},
+                    {date: '2024-10-21', totalViews: 368349, totalEngagements: 75887},
+                    {date: '2024-10-22', totalViews: 183012, totalEngagements: 18796},
+                    {date: '2024-10-23', totalViews: 560984, totalEngagements: 63817},
+                    {date: '2024-10-24', totalViews: 76520, totalEngagements: 15916},
+                    {date: '2024-10-25', totalViews: 531625, totalEngagements: 67283},
+                    {date: '2024-10-26', totalViews: 32609, totalEngagements: 10618},
+                    {date: '2024-10-27', totalViews: 204070, totalEngagements: 40161},
+                    {date: '2024-11-05', totalViews: 56690, totalEngagements: 45375},
+                    {date: '2024-11-12', totalViews: 111626, totalEngagements: 59009},
+                    {date: '2024-11-14', totalViews: 58409, totalEngagements: 19641},
+                    {date: '2024-11-26', totalViews: 86100, totalEngagements: 29843},
+                    {date: '2024-12-03', totalViews: 454422, totalEngagements: 47554},
+                    {date: '2024-12-09', totalViews: 164800, totalEngagements: 71851},
+                    {date: '2024-12-11', totalViews: 160969, totalEngagements: 23107},
+                    {date: '2024-12-14', totalViews: 140351, totalEngagements: 19824},
+                    {date: '2024-12-18', totalViews: 107648, totalEngagements: 91340},
+                    {date: '2024-12-23', totalViews: 69686, totalEngagements: 21242},
+                    {date: '2024-12-25', totalViews: 135034, totalEngagements: 14383},
+                    {date: '2024-12-29', totalViews: 70831, totalEngagements: 10598},
+                    {date: '2025-01-01', totalViews: 227663, totalEngagements: 18863}
+                ];
+
+                const option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            let result = params[0].axisValue + '<br/>';
+                            params.forEach(param => {
+                                let value = param.value;
+                                if (value >= 1000000) {
+                                    value = (value / 1000000).toFixed(2) + 'M';
+                                } else if (value >= 1000) {
+                                    value = (value / 1000).toFixed(1) + 'K';
+                                }
+                                result += param.marker + param.seriesName + ': ' + value + '<br/>';
+                            });
+                            return result;
+                        }
+                    },
+                    legend: {
+                        data: ['Total Views', 'Total Engagements'],
+                        bottom: 0
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '10%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {},
+                            dataZoom: {
+                                yAxisIndex: 'none'
+                            },
+                            restore: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.map(item => item.date),
+                        axisLabel: {
+                            rotate: 45
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: function(value) {
+                                if (value >= 1000000) {
+                                    return (value / 1000000).toFixed(1) + 'M';
+                                } else if (value >= 1000) {
+                                    return (value / 1000).toFixed(0) + 'K';
+                                }
+                                return value;
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Total Views',
+                            type: 'line',
+                            data: data.map(item => item.totalViews),
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            lineStyle: {
+                                width: 3
+                            }
+                        },
+                        {
+                            name: 'Total Engagements',
+                            type: 'line',
+                            data: data.map(item => item.totalEngagements),
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            lineStyle: {
+                                width: 3
+                            }
+                        }
+                    ]
+                };
+
+                chart.setOption(option);
+                
+                window.addEventListener('resize', function() {
+                    chart.resize();
+                });
+            }
+
+            // KOC Performance Matrix Chart
+            const kocMatrixChart = echarts.init(document.getElementById('koc-performance-matrix'));
+            kocMatrixChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['Beauty', 'Toys', 'Lifestyle', 'Stationery']
+                },
+                series: [
+                    {
+                        name: 'Content Distribution',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: true,
+                            position: 'inside',
+                            formatter: '{d}%'
+                        },
+                        data: [
+                            {value: 35, name: 'Beauty'},
+                            {value: 30, name: 'Toys'},
+                            {value: 20, name: 'Lifestyle'},
+                            {value: 15, name: 'Stationery'}
+                        ]
+                    }
+                ]
+            });
+
+            // Platform Performance Comparison Chart
+            const platformComparisonChart = echarts.init(document.getElementById('platform-performance-comparison'));
+            platformComparisonChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Views', 'Engagements'],
+                    bottom: 10
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['YouTube', 'Instagram', 'TikTok']
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: value => formatNumber(value)
+                    }
+                },
+                series: [
+                    {
+                        name: 'Views',
+                        type: 'bar',
+                        data: [320000, 280000, 420000],
+                        itemStyle: {
+                            color: function(params) {
+                                const colors = {
+                                    'YouTube': '#FF0000',
+                                    'Instagram': '#833AB4',
+                                    'TikTok': '#000000'
+                                };
+                                return colors[params.name] || '#999';
+                            }
+                        }
+                    },
+                    {
+                        name: 'Engagements',
+                        type: 'bar',
+                        data: [28000, 24000, 35000],
+                        itemStyle: {
+                            color: function(params) {
+                                const colors = {
+                                    'YouTube': '#FF6666',
+                                    'Instagram': '#B366CC',
+                                    'TikTok': '#666666'
+                                };
+                                return colors[params.name] || '#999';
+                            }
+                        }
+                    }
+                ]
+            });
+
+            // Account Engagement Rate Ranking Chart
+            const engagementRateChart = echarts.init(document.getElementById('engagement-rate-chart'));
+            engagementRateChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '8%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['@account1', '@account2', '@account3', '@account4', '@account5'],
+                    axisLabel: {
+                        interval: 0
+                    }
+                },
+                series: [{
+                    name: 'Engagement Rate',
+                    type: 'bar',
+                    data: [4.8, 4.2, 3.9, 3.5, 3.2],
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}%'
+                    },
+                    itemStyle: {
+                        color: '#4299e1'
+                    }
+                }]
+            });
+
+            // Top 5 Accounts by Total Views Chart
+            const totalViewsChart = echarts.init(document.getElementById('total-views-chart'));
+            totalViewsChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'horizontal',
+                    bottom: 0,
+                    data: ['@account1', '@account2', '@account3', '@account4', '@account5']
+                },
+                series: [{
+                    name: 'Total Views',
+                    type: 'pie',
+                    radius: '65%',
+                    center: ['50%', '45%'],
+                    data: [
+                        {value: 1200000, name: '@account1'},
+                        {value: 980000, name: '@account2'},
+                        {value: 850000, name: '@account3'},
+                        {value: 720000, name: '@account4'},
+                        {value: 650000, name: '@account5'}
+                    ],
+                    label: {
+                        formatter: function(params) {
+                            return `${params.name}\n${formatNumber(params.value)}`;
+                        }
+                    }
+                }]
+            });
+
+            // Top 5 Accounts by Total Likes Chart
+            const totalLikesChart = echarts.init(document.getElementById('total-likes-chart'));
+            totalLikesChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['@account1', '@account2', '@account3', '@account4', '@account5'],
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 45
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: value => formatNumber(value)
+                    }
+                },
+                series: [{
+                    name: 'Total Likes',
+                        type: 'bar',
+                    data: [85000, 72000, 68000, 55000, 48000],
+                    itemStyle: {
+                        color: '#48bb78'
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: value => formatNumber(value)
+                    }
+                }]
+            });
+
+            // Add Responsive Adjustments for These New Charts
+            window.addEventListener('resize', function() {
+                engagementRateChart.resize();
+                totalViewsChart.resize();
+                totalLikesChart.resize();
+            });
+
+            // Respond to Window Size Changes
+            window.addEventListener('resize', function() {
+                kocMatrixChart.resize();
+                platformComparisonChart.resize();
+            });
+
+            // Add initKocPerformanceTrends to your initialization code
+            initKocPerformanceTrends();
+        });
+    </script>
+</body>
+</html>
