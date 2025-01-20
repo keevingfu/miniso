@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINISO Landing Page Content Performance Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="miniso-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="miniso-charts.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3">Landing Page Content Performance Analysis</h1>
+                <select id="regionSelect" class="form-select" style="width: 180px;" aria-label="Select Region">
+                    <option value="global">Global</option>
+                    <option value="southeast-asia">Southeast Asia</option>
+                    <option value="europe-america">Europe & America</option>
+                    <option value="middle-east">Middle East</option>
+                </select>
+            </div>
+
+            <!-- Category Content Analysis Section -->
+            <div class="content-section mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Category Content Performance</h5>
+                    </div>
+                    <div class="card-content">
+                        <div id="categoryChart" style="height: 400px;"></div>
+                        <div class="row mt-4 px-3">
+                            <div class="col-md-6 col-lg-3 mb-3" v-for="item in categoryContentData">
+                                <div class="metric-card">
+                                    <h6 class="metric-title">Toys Series</h6>
+                                    <div class="metric-content">
+                                        <p class="mb-2"><strong>Content Type:</strong> Interactive Fun + IP Collaboration</p>
+                                        <p class="mb-1"><strong>Conversion:</strong> 12.5%</p>
+                                        <p class="mb-1"><strong>Avg Price:</strong> $29.9</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="category-content-insights"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regional Content Analysis Section -->
+            <div class="content-section mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Regional Content Performance</h5>
+                    </div>
+                    <div class="card-content">
+                        <div id="regionalChart" style="height: 500px;"></div>
+                        <div class="row mt-4 px-3">
+                            <div class="col-md-4 mb-3">
+                                <div class="metric-card">
+                                    <h6 class="metric-title">Southeast Asia</h6>
+                                    <div class="metric-content">
+                                        <p class="mb-2"><strong>Top Content:</strong> Value for Money + Daily Practicality</p>
+                                        <p class="mb-1"><strong>Popular Categories:</strong> Beauty & Personal Care, Home & Living</p>
+                                        <p class="mb-1"><strong>Conversion Rate:</strong> 11.2%</p>
+                                        <p class="mb-1"><strong>Engagement Rate:</strong> 85%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="metric-card">
+                                    <h6 class="metric-title">Europe & America</h6>
+                                    <div class="metric-content">
+                                        <p class="mb-2"><strong>Top Content:</strong> Design + Innovation</p>
+                                        <p class="mb-1"><strong>Popular Categories:</strong> Toys Series, Digital Accessories</p>
+                                        <p class="mb-1"><strong>Conversion Rate:</strong> 9.5%</p>
+                                        <p class="mb-1"><strong>Engagement Rate:</strong> 75%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="metric-card">
+                                    <h6 class="metric-title">Middle East</h6>
+                                    <div class="metric-content">
+                                        <p class="mb-2"><strong>Top Content:</strong> Quality + Luxury Experience</p>
+                                        <p class="mb-1"><strong>Popular Categories:</strong> Beauty & Personal Care, Digital Accessories</p>
+                                        <p class="mb-1"><strong>Conversion Rate:</strong> 10.5%</p>
+                                        <p class="mb-1"><strong>Engagement Rate:</strong> 82%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="regional-content-insights"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Theme Analysis Section -->
+            <div class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Marketing Theme Performance</h5>
+                    </div>
+                    <div class="card-content">
+                        <div id="marketingChart" style="height: 400px;"></div>
+                        <div class="row mt-4 px-3">
+                            <div class="col-md-4 mb-3" v-for="theme in marketingThemeData">
+                                <div class="metric-card">
+                                    <h6 class="metric-title">IP Collaboration Series</h6>
+                                    <div class="metric-content">
+                                        <p class="mb-2"><strong>Content Strategy:</strong> Collaboration Products + Fan Interaction</p>
+                                        <p class="mb-1"><strong>Target Audience:</strong> Young Generation</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="marketing-theme-insights"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 数据定义
+        const categoryContentData = [
+            {
+                category: 'Toys Series',
+                contentType: 'Interactive Fun + IP Collaboration',
+                conversion: 12.5,
+                engagement: 88,
+                addToCart: 15.3,
+                avgPrice: 29.9
+            },
+            {
+                category: 'Beauty & Personal Care',
+                contentType: 'Daily Care + Ingredient Education',
+                conversion: 10.8,
+                engagement: 82,
+                addToCart: 13.2,
+                avgPrice: 19.9
+            },
+            {
+                category: 'Home & Living',
+                contentType: 'Scene Application + Storage Tips',
+                conversion: 9.5,
+                engagement: 75,
+                addToCart: 11.8,
+                avgPrice: 39.9
+            },
+            {
+                category: 'Digital Accessories',
+                contentType: 'Feature Display + Value Comparison',
+                conversion: 8.8,
+                engagement: 72,
+                addToCart: 10.5,
+                avgPrice: 49.9
+            }
+        ];
+
+        const regionalPerformanceData = [
+            {
+                region: 'Southeast Asia',
+                topContent: 'Value for Money + Daily Practicality',
+                conversion: 11.2,
+                engagement: 85,
+                popularCategories: ['Beauty & Personal Care', 'Home & Living'],
+                coordinates: [106.8, 1.3]
+            },
+            {
+                region: 'United States',
+                topContent: 'Design + Innovation',
+                conversion: 9.5,
+                engagement: 75,
+                popularCategories: ['Toys Series', 'Digital Accessories'],
+                coordinates: [-95.7, 37.1]
+            },
+            {
+                region: 'United Kingdom',
+                topContent: 'Eco-friendly + Design',
+                conversion: 9.8,
+                engagement: 78,
+                popularCategories: ['Home & Living', 'Beauty & Personal Care'],
+                coordinates: [-0.1, 51.5]
+            },
+            {
+                region: 'Middle East',
+                topContent: 'Quality + Luxury Experience',
+                conversion: 10.5,
+                engagement: 82,
+                popularCategories: ['Beauty & Personal Care', 'Digital Accessories'],
+                coordinates: [45.0, 25.0]
+            },
+            {
+                region: 'China',
+                topContent: 'Trendy + Value for Money',
+                conversion: 12.5,
+                engagement: 88,
+                popularCategories: ['Beauty & Personal Care', 'Digital Accessories'],
+                coordinates: [116.4, 39.9]
+            }
+        ];
+
+        const marketingThemeData = [
+            {
+                theme: 'IP Collaboration Series',
+                content: 'Collaboration Products + Fan Interaction',
+                conversion: 13.5,
+                engagement: 90,
+                targetAudience: 'Young Generation'
+            },
+            {
+                theme: 'Lifestyle Series',
+                content: 'Scene Display + Practicality',
+                conversion: 11.2,
+                engagement: 85,
+                targetAudience: 'Family Users'
+            },
+            {
+                theme: 'Holiday Special Series',
+                content: 'Festival Atmosphere + Limited Edition',
+                conversion: 12.8,
+                engagement: 88,
+                targetAudience: 'Gift Buyers'
+            }
+        ];
+
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            initCategoryChart();
+            initRegionalChart();
+            initMarketingChart();
+            addInsightsSections();
+
+            // 响应式处理
+            window.addEventListener('resize', function() {
+                const charts = [
+                    echarts.getInstanceByDom(document.getElementById('categoryChart')),
+                    echarts.getInstanceByDom(document.getElementById('regionalChart')),
+                    echarts.getInstanceByDom(document.getElementById('marketingChart'))
+                ];
+                charts.forEach(chart => chart && chart.resize());
+            });
+        });
+
+        // 初始化分类内容图表
+        function initCategoryChart() {
+            const chart = echarts.init(document.getElementById('categoryChart'), 'miniso');
+            chart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Conversion Rate(%)', 'Add to Cart Rate(%)', 'Engagement Rate(%)']
+                },
+                xAxis: {
+                    type: 'category',
+                    data: categoryContentData.map(item => item.category)
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Rate(%)',
+                        min: 0,
+                        max: 100
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Conversion Rate(%)',
+                        type: 'bar',
+                        data: categoryContentData.map(item => item.conversion)
+                    },
+                    {
+                        name: 'Add to Cart Rate(%)',
+                        type: 'bar',
+                        data: categoryContentData.map(item => item.addToCart)
+                    },
+                    {
+                        name: 'Engagement Rate(%)',
+                        type: 'bar',
+                        data: categoryContentData.map(item => item.engagement)
+                    }
+                ]
+            });
+
+            // 响应式处理
+            window.addEventListener('resize', function() {
+                chart.resize();
+            });
+        }
+
+        // 初始化区域表现图表
+        function initRegionalChart() {
+            const chart = echarts.init(document.getElementById('regionalChart'), 'miniso');
+            
+            // 设置地图配置项
+            const option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        const data = regionalPerformanceData.find(item => item.region === params.name);
+                        if (data) {
+                            return `
+                                <strong>${params.name}</strong><br/>
+                                Conversion Rate: ${data.conversion}%<br/>
+                                Engagement Rate: ${data.engagement}%<br/>
+                                Top Content: ${data.topContent}<br/>
+                                Popular Categories: ${data.popularCategories.join(', ')}
+                            `;
+                        }
+                        return params.name;
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    text: ['High', 'Low'],
+                    realtime: false,
+                    calculable: true,
+                    inRange: {
+                        color: ['#FFE4E8', '#E4002B']
+                    }
+                },
+                series: [
+                    {
+                        name: 'Regional Performance',
+                        type: 'map',
+                        map: 'world',
+                        roam: true,
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        },
+                        data: [
+                            {name: 'Southeast Asia', value: 85},
+                            {name: 'United States', value: 75},
+                            {name: 'United Kingdom', value: 78},
+                            {name: 'France', value: 72},
+                            {name: 'Germany', value: 70},
+                            {name: 'Middle East', value: 82},
+                            {name: 'China', value: 88},
+                            {name: 'Japan', value: 80},
+                            {name: 'South Korea', value: 83},
+                            {name: 'Australia', value: 76}
+                        ]
+                    }
+                ]
+            };
+
+            // 注册世界地图数据
+            fetch('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/world.json')
+                .then(response => response.json())
+                .then(worldJson => {
+                    echarts.registerMap('world', worldJson);
+                    chart.setOption(option);
+                });
+
+            // 响应式处理
+            window.addEventListener('resize', function() {
+                chart.resize();
+            });
+        }
+
+        // 初始化营销主题图表
+        function initMarketingChart() {
+            const chart = echarts.init(document.getElementById('marketingChart'), 'miniso');
+            chart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Conversion Rate', 'Engagement Rate']
+                },
+                xAxis: {
+                    type: 'category',
+                    data: marketingThemeData.map(item => item.theme)
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Rate(%)',
+                    min: 0,
+                    max: 100
+                },
+                series: [
+                    {
+                        name: 'Conversion Rate',
+                        type: 'bar',
+                        data: marketingThemeData.map(item => item.conversion)
+                    },
+                    {
+                        name: 'Engagement Rate',
+                        type: 'bar',
+                        data: marketingThemeData.map(item => item.engagement)
+                    }
+                ]
+            });
+
+            window.addEventListener('resize', function() {
+                chart.resize();
+            });
+        }
+
+        function addInsightsSections() {
+            const sections = [
+                {
+                    id: 'category-content-insights',
+                    title: 'Category Content Performance Insights',
+                    insights: [
+                        'Beauty & Personal Care content achieves highest engagement rate (92%)',
+                        'Home Decor videos show strong conversion performance (85%)',
+                        'Seasonal collections generate consistent viewer interest',
+                        'Lifestyle content maintains high retention rates'
+                    ],
+                    recommendations: [
+                        'Increase beauty & personal care content production frequency',
+                        'Replicate successful home decor video formats',
+                        'Plan content calendar around seasonal peaks',
+                        'Develop more lifestyle-focused content series'
+                    ]
+                },
+                {
+                    id: 'regional-content-insights',
+                    title: 'Regional Content Performance Insights',
+                    insights: [
+                        'Southeast Asia shows highest content engagement (88%)',
+                        'European market demonstrates strong growth in views',
+                        'North American audience prefers product showcase content',
+                        'Local cultural elements boost performance metrics'
+                    ],
+                    recommendations: [
+                        'Customize content strategy for Southeast Asian market',
+                        'Develop region-specific content themes',
+                        'Adapt product showcases for North American audience',
+                        'Incorporate more local cultural elements in content'
+                    ]
+                },
+                {
+                    id: 'marketing-theme-insights',
+                    title: 'Marketing Theme Performance Insights',
+                    insights: [
+                        'Holiday themed campaigns drive highest engagement',
+                        'Sustainability content shows increasing viewer interest',
+                        'Collaboration themes generate strong social sharing',
+                        'DIY/How-to content maintains consistent performance'
+                    ],
+                    recommendations: [
+                        'Expand holiday-themed content portfolio',
+                        'Increase focus on sustainability storytelling',
+                        'Pursue more strategic brand collaborations',
+                        'Develop comprehensive how-to content series'
+                    ]
+                }
+            ];
+
+            sections.forEach(section => {
+                const insightsHtml = `
+                    <div class="insights-section mt-4">
+                        <h5 class="insights-title">${section.title}</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Key Insights</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="insights-list">
+                                            ${section.insights.map(insight => `<li>${insight}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Recommendations</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="recommendations-list">
+                                            ${section.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const targetSection = document.getElementById(section.id);
+                if (targetSection) {
+                    targetSection.innerHTML = insightsHtml;
+                }
+            });
+        }
+
+        // 添加相关的 CSS 样式
+        const styles = `
+            <style>
+                .insights-section {
+                    margin-top: 2rem;
+                    padding-top: 1rem;
+                    border-top: 1px solid #e9ecef;
+                }
+
+                .insights-title {
+                    color: #E4002B;
+                    margin-bottom: 1.5rem;
+                    font-weight: 600;
+                }
+
+                .insights-list, .recommendations-list {
+                    padding-left: 1.25rem;
+                    margin-bottom: 0;
+                }
+
+                .insights-list li, .recommendations-list li {
+                    margin-bottom: 0.75rem;
+                    color: #4A4A4A;
+                    line-height: 1.5;
+                }
+
+                .card-header {
+                    background-color: #f8f9fa;
+                    border-bottom: 1px solid #e9ecef;
+                }
+
+                .card-header h6 {
+                    color: #2c3e50;
+                    font-weight: 600;
+                }
+
+                .card {
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    border: 1px solid #e9ecef;
+                }
+
+                .card-body {
+                    padding: 1.25rem;
+                }
+
+                /* 地图相关样式 */
+                .map-tooltip {
+                    background: rgba(255, 255, 255, 0.9);
+                    padding: 10px;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+
+                .metric-card {
+                    background: #fff;
+                    border-radius: 8px;
+                    padding: 15px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                    height: 100%;
+                }
+
+                .metric-title {
+                    color: #E4002B;
+                    margin-bottom: 12px;
+                    font-weight: 600;
+                }
+
+                .metric-content p {
+                    font-size: 14px;
+                    line-height: 1.5;
+                }
+            </style>
+        `;
+
+        // 在相应的 HTML 部分添加容器
+    </script>
+</body>
+</html>

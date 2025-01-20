@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Performance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .dashboard-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .metric-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1890ff;
+        }
+        .metric-trend {
+            font-size: 12px;
+            color: #52c41a;
+        }
+        .chart-container {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section select {
+            margin-right: 10px;
+        }
+        .keyword-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .brand { background: #e6f7ff; color: #1890ff; }
+        .product { background: #f6ffed; color: #52c41a; }
+        .longtail { background: #fff7e6; color: #fa8c16; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h2 class="mb-4">Search Performance</h2>
+        
+        <!-- Filters -->
+        <div class="dashboard-container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="filter-section">
+                        <h6>Time Range</h6>
+                        <select class="form-select" aria-label="Select time range">
+                            <option>Last 7 Days</option>
+                            <option>Last 30 Days</option>
+                            <option>Last 90 Days</option>
+                            <option>Custom Range</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="filter-section">
+                        <h6>Platform</h6>
+                        <select class="form-select" aria-label="Select platform">
+                            <option>All Platforms</option>
+                            <option>Google</option>
+                            <option>YouTube</option>
+                            <option>Instagram</option>
+                            <option>TikTok</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="filter-section">
+                        <h6>Keyword Type</h6>
+                        <select class="form-select" aria-label="Select keyword type">
+                            <option>All Types</option>
+                            <option>Brand Keywords</option>
+                            <option>Product Keywords</option>
+                            <option>Long-tail Keywords</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="filter-section">
+                        <h6>Region</h6>
+                        <select class="form-select" aria-label="Select region">
+                            <option>Global</option>
+                            <option>North America</option>
+                            <option>Europe</option>
+                            <option>Asia Pacific</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Metrics -->
+        <div class="dashboard-container">
+            <h4 class="mb-4">Search Overview</h4>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-title">Total Search Volume</div>
+                    <div class="metric-value">2.8M</div>
+                    <div class="metric-trend">↑ 12.5%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Average CTR</div>
+                    <div class="metric-value">4.2%</div>
+                    <div class="metric-trend">↑ 0.8%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Keyword Coverage</div>
+                    <div class="metric-value">85%</div>
+                    <div class="metric-trend">↑ 5.3%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-title">Conversion Rate</div>
+                    <div class="metric-value">2.8%</div>
+                    <div class="metric-trend">↑ 0.4%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyword Coverage Analysis -->
+        <div class="dashboard-container">
+            <h5>Keyword Coverage Analysis</h5>
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="keywordRankingChart" class="chart-container"></div>
+                </div>
+                <div class="col-md-4">
+                    <div id="keywordCloud" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">📊 Key Insights</h6>
+                            <ul class="mb-3">
+                                <li>Brand keyword "MINISO" has the highest impressions (95K), consistently ranking #1</li>
+                                <li>"Plush Toys" and "Beauty Tools" category keywords perform strongly, ranking second and third respectively</li>
+                                <li>Long-tail keyword coverage has room for improvement, currently at a low percentage</li>
+                            </ul>
+                            <h6 class="card-title">💡 Optimization Suggestions</h6>
+                            <ul class="mb-0">
+                                <li>Strengthen SEO optimization for "Home Decor" and "Stationery" categories to improve keyword rankings</li>
+                                <li>Expand long-tail keyword coverage, develop content targeting specific product features and user needs</li>
+                                <li>Continue monitoring brand keyword rankings to maintain search result advantages</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Click & Conversion Analysis -->
+        <div class="dashboard-container">
+            <h5>Click & Conversion Analysis</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="clickRateChart" class="chart-container"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="conversionFunnel" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">📊 Conversion Insights</h6>
+                            <ul class="mb-3">
+                                <li>Brand keyword click-through rate (7%) is significantly higher than product keywords (5%) and long-tail keywords (4%)</li>
+                                <li>Overall conversion rate from search to purchase is 2.8%, above industry average</li>
+                                <li>Shopping cart abandonment rate is high, with only 35% conversion from add-to-cart to purchase</li>
+                            </ul>
+                            <h6 class="card-title">💡 Optimization Suggestions</h6>
+                            <ul class="mb-0">
+                                <li>Optimize product detail pages to improve click-through rates for product and long-tail keywords</li>
+                                <li>Implement cart recovery strategies, such as reminder emails and discount coupons</li>
+                                <li>Enhance product display page user experience to reduce bounce rates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Traffic Sources & Competition -->
+        <div class="dashboard-container">
+            <h5>Traffic Sources & Competition</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="trafficSourcesChart" class="chart-container"></div>
+                </div>
+                <div class="col-md-6">
+                    <div id="competitionBubble" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">📊 Traffic Insights</h6>
+                            <ul class="mb-3">
+                                <li>Google Search contributes 45% of traffic, being the primary traffic source</li>
+                                <li>Social media (YouTube, Instagram, TikTok) collectively contributes 55% of traffic</li>
+                                <li>Brand keyword competition cost (CPC) is high but provides the best conversion results</li>
+                            </ul>
+                            <h6 class="card-title">💡 Optimization Suggestions</h6>
+                            <ul class="mb-0">
+                                <li>Increase content distribution on TikTok platform to improve coverage of younger user groups</li>
+                                <li>Optimize long-tail keyword strategy to reduce customer acquisition costs</li>
+                                <li>Strengthen YouTube content marketing to enhance brand awareness and organic traffic</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyword Performance Heatmap -->
+        <div class="dashboard-container">
+            <h5>Keyword Performance Heatmap</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="keywordHeatmap" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">📊 Time Distribution Insights</h6>
+                            <ul class="mb-3">
+                                <li>Workdays 12:00-14:00 and 20:00-22:00 are search peak hours</li>
+                                <li>Weekend search volume is relatively average throughout the day, but higher than workdays</li>
+                                <li>Search volume is lowest between 3:00-5:00 AM</li>
+                            </ul>
+                            <h6 class="card-title">💡 Optimization Suggestions</h6>
+                            <ul class="mb-0">
+                                <li>Increase ad spend during search peak hours</li>
+                                <li>Target different content based on user segments during different times of day</li>
+                                <li>Use off-peak hours for system maintenance and content updates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyword Comparison Analysis -->
+        <div class="dashboard-container">
+            <h5>Keyword Comparison Analysis</h5>
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <select class="form-select" multiple id="keywordSelector" aria-label="Select keywords for comparison">
+                            <option value="MINISO">MINISO</option>
+                            <option value="Plush Toys">Plush Toys</option>
+                            <option value="Beauty Tools">Beauty Tools</option>
+                            <option value="Stationery">Stationery</option>
+                            <option value="Home Decor">Home Decor</option>
+                        </select>
+                        <button class="btn btn-primary" id="compareKeywords">Compare Analysis</button>
+                    </div>
+                    <small class="text-muted">Hold Ctrl key to select multiple keywords for comparison</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="comparisonChart" class="chart-container" style="height: 400px;"></div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">📊 Comparison Insights</h6>
+                            <ul class="mb-3">
+                                <li>Brand keyword "MINISO" has significant advantages in search volume and ranking</li>
+                                <li>Product category keywords perform relatively evenly in click-through rate and conversion rate</li>
+                                <li>Long-tail keywords have room for improvement despite low competition</li>
+                            </ul>
+                            <h6 class="card-title">💡 Optimization Suggestions</h6>
+                            <ul class="mb-0">
+                                <li>Optimize content and ranking strategy for underperforming keywords</li>
+                                <li>Focus on high-ROI keywords with high competition</li>
+                                <li>Balance keyword portfolio to cover different search intent types</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentData = {
+            timeRange: 'last30days',
+            platform: 'all',
+            keywordType: 'all',
+            region: 'global',
+            sortBy: 'impressions',
+            sortOrder: 'desc',
+            selectedKeywords: []
+        };
+
+        // 初始化所有图表和交互功能
+        function initDashboard() {
+            initFilters();
+            initCharts();
+            initSortingControls();
+            initComparisonTools();
+        }
+
+        // 初始化筛选器事件监听
+        function initFilters() {
+            // 时间范围选择
+            document.querySelector('select[aria-label="Select time range"]').addEventListener('change', function(e) {
+                currentData.timeRange = e.target.value;
+                updateAllCharts();
+            });
+
+            // 平台选择
+            document.querySelector('select[aria-label="Select platform"]').addEventListener('change', function(e) {
+                currentData.platform = e.target.value;
+                updateAllCharts();
+            });
+
+            // 关键词类型选择
+            document.querySelector('select[aria-label="Select keyword type"]').addEventListener('change', function(e) {
+                currentData.keywordType = e.target.value;
+                updateAllCharts();
+            });
+
+            // 地区选择
+            document.querySelector('select[aria-label="Select region"]').addEventListener('change', function(e) {
+                currentData.region = e.target.value;
+                updateAllCharts();
+            });
+        }
+
+        // 添加排序控件
+        function initSortingControls() {
+            const keywordSection = document.querySelector('#keywordRankingChart').parentNode;
+            const sortingControls = document.createElement('div');
+            sortingControls.className = 'sorting-controls mb-3';
+            sortingControls.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <label class="me-2">Sort by:</label>
+                    <select class="form-select form-select-sm me-2" style="width: 150px;" id="sortMetric">
+                        <option value="impressions">Search Volume</option>
+                        <option value="ctr">Click-Through Rate</option>
+                        <option value="conversion">Conversion Rate</option>
+                        <option value="ranking">Ranking</option>
+                    </select>
+                    <button class="btn btn-sm btn-outline-secondary" id="toggleSort">
+                        <i class="fas fa-sort"></i>
+                    </button>
+                </div>
+            `;
+            keywordSection.insertBefore(sortingControls, keywordSection.firstChild);
+
+            // 排序事件监听
+            document.getElementById('sortMetric').addEventListener('change', function(e) {
+                currentData.sortBy = e.target.value;
+                updateKeywordRanking();
+            });
+
+            document.getElementById('toggleSort').addEventListener('click', function() {
+                currentData.sortOrder = currentData.sortOrder === 'desc' ? 'asc' : 'desc';
+                updateKeywordRanking();
+            });
+        }
+
+        // 添加对比分析工具
+        function initComparisonTools() {
+            const comparisonSection = document.createElement('div');
+            comparisonSection.className = 'dashboard-container';
+            comparisonSection.innerHTML = `
+                           `;
+            document.querySelector('.container-fluid').appendChild(comparisonSection);
+
+            // 对比分析事件监听
+            document.getElementById('compareKeywords').addEventListener('click', function() {
+                const selector = document.getElementById('keywordSelector');
+                const selectedKeywords = Array.from(selector.selectedOptions).map(option => option.value);
+                currentData.selectedKeywords = selectedKeywords;
+                updateComparisonChart();
+            });
+        }
+
+        // 更新所有图表
+        function updateAllCharts() {
+            const filteredData = getFilteredData();
+            
+            // 更新关键词排名图表
+            const rankingChart = echarts.getInstanceByDom(document.getElementById('keywordRankingChart'));
+            if (rankingChart) {
+                rankingChart.setOption({
+                    xAxis: {
+                        data: filteredData.keywords
+                    },
+                    series: [
+                        {
+                            name: 'Impressions',
+                            data: filteredData.impressions
+                        },
+                        {
+                            name: 'Ranking',
+                            data: filteredData.ranking
+                        }
+                    ]
+                });
+            }
+
+            // 更新词云图
+            const wordCloudChart = echarts.getInstanceByDom(document.getElementById('keywordCloud'));
+            if (wordCloudChart) {
+                const wordCloudData = filteredData.keywords.map((keyword, index) => ({
+                    name: keyword,
+                    value: filteredData.impressions[index]
+                }));
+                wordCloudChart.setOption({
+                    series: [{
+                        data: wordCloudData
+                    }]
+                });
+            }
+
+            // 更新点击率趋势图
+            const clickRateChart = echarts.getInstanceByDom(document.getElementById('clickRateChart'));
+            if (clickRateChart) {
+                const dates = generateDates(30);
+                const brandData = generateTrendData(30, filteredData.ctr[0] - 1, filteredData.ctr[0] + 1);
+                const productData = generateTrendData(30, filteredData.ctr[1] - 1, filteredData.ctr[1] + 1);
+                const longtailData = generateTrendData(30, filteredData.ctr[2] - 1, filteredData.ctr[2] + 1);
+                
+                clickRateChart.setOption({
+                    series: [
+                        {
+                            name: 'Brand',
+                            data: brandData
+                        },
+                        {
+                            name: 'Product',
+                            data: productData
+                        },
+                        {
+                            name: 'Long-tail',
+                            data: longtailData
+                        }
+                    ]
+                });
+            }
+
+            // 更新转化漏斗图
+            const funnelChart = echarts.getInstanceByDom(document.getElementById('conversionFunnel'));
+            if (funnelChart) {
+                const totalImpressions = filteredData.impressions[0];
+                const avgConversion = filteredData.conversion[0];
+                
+                funnelChart.setOption({
+                    series: [{
+                        data: [
+                            { value: totalImpressions, name: 'Impressions' },
+                            { value: Math.round(totalImpressions * 0.4), name: 'Clicks' },
+                            { value: Math.round(totalImpressions * 0.2), name: 'Product Views' },
+                            { value: Math.round(totalImpressions * 0.08), name: 'Add to Cart' },
+                            { value: Math.round(totalImpressions * avgConversion / 100), name: 'Purchase' }
+                        ]
+                    }]
+                });
+            }
+
+            // 更新流量来源分布图
+            const trafficChart = echarts.getInstanceByDom(document.getElementById('trafficSourcesChart'));
+            if (trafficChart) {
+                const platformData = {
+                    'all': [45, 25, 20, 10],
+                    'google': [80, 10, 7, 3],
+                    'youtube': [15, 70, 10, 5],
+                    'instagram': [20, 15, 55, 10],
+                    'tiktok': [25, 15, 20, 40]
+                };
+                
+                trafficChart.setOption({
+                    series: [{
+                        data: [
+                            { value: platformData[currentData.platform][0], name: 'Google Search' },
+                            { value: platformData[currentData.platform][1], name: 'YouTube' },
+                            { value: platformData[currentData.platform][2], name: 'Instagram' },
+                            { value: platformData[currentData.platform][3], name: 'TikTok' }
+                        ]
+                    }]
+                });
+            }
+
+            // 更新竞争气泡图
+            const competitionChart = echarts.getInstanceByDom(document.getElementById('competitionBubble'));
+            if (competitionChart) {
+                const competitionData = filteredData.keywords.map((keyword, index) => ({
+                    name: keyword,
+                    value: [
+                        +(Math.random() * 2 + 1).toFixed(1), // CPC
+                        Math.round(Math.random() * 50 + 35), // Competition Score
+                        filteredData.impressions[index] // Search Volume
+                    ],
+                    itemStyle: { color: ['#1890ff', '#52c41a', '#fa8c16', '#f5222d', '#722ed1'][index] }
+                }));
+                
+                competitionChart.setOption({
+                    series: [{
+                        data: competitionData
+                    }]
+                });
+            }
+
+            // 更新热力图
+            const heatmapChart = echarts.getInstanceByDom(document.getElementById('keywordHeatmap'));
+            if (heatmapChart) {
+                const data = [];
+                const baseValue = currentData.timeRange === 'last7days' ? 30 :
+                                currentData.timeRange === 'last30days' ? 50 :
+                                currentData.timeRange === 'last90days' ? 70 : 90;
+                
+                for (let i = 0; i < 7; i++) {
+                    for (let j = 0; j < 24; j++) {
+                        data.push([j, i, Math.round(Math.random() * baseValue)]);
+                    }
+                }
+                
+                heatmapChart.setOption({
+                    series: [{
+                        data: data
+                    }]
+                });
+            }
+
+            // 如果有选中的关键词，更新对比分析图表
+            if (currentData.selectedKeywords.length > 0) {
+                updateComparisonChart();
+            }
+        }
+
+        // 获取筛选后的数据
+        function getFilteredData() {
+            // 根据筛选条件生成数据
+            let data = {
+                keywords: ['MINISO', 'Plush Toys', 'Beauty Tools', 'Stationery', 'Home Decor'],
+                impressions: [95000, 78000, 65000, 55000, 48000],
+                ranking: [1, 3, 4, 2, 5],
+                ctr: [7.2, 5.8, 4.9, 4.2, 3.8],
+                conversion: [2.8, 2.3, 2.1, 1.9, 1.7]
+            };
+
+            // 根据关键词类型筛选
+            if (currentData.keywordType !== 'all') {
+                const typeMultipliers = {
+                    'brand': { imp: 1.2, ctr: 1.3, conv: 1.2 },
+                    'product': { imp: 0.8, ctr: 0.9, conv: 0.8 },
+                    'longtail': { imp: 0.6, ctr: 0.7, conv: 0.6 }
+                };
+                const multiplier = typeMultipliers[currentData.keywordType];
+                
+                data.impressions = data.impressions.map(v => Math.round(v * multiplier.imp));
+                data.ctr = data.ctr.map(v => +(v * multiplier.ctr).toFixed(1));
+                data.conversion = data.conversion.map(v => +(v * multiplier.conv).toFixed(1));
+            }
+
+            // 根据平台筛选
+            if (currentData.platform !== 'all') {
+                const platformMultipliers = {
+                    'google': { imp: 1.0, ctr: 1.0, conv: 1.0 },
+                    'youtube': { imp: 0.7, ctr: 0.8, conv: 0.7 },
+                    'instagram': { imp: 0.6, ctr: 0.9, conv: 0.8 },
+                    'tiktok': { imp: 0.5, ctr: 1.1, conv: 0.9 }
+                };
+                const multiplier = platformMultipliers[currentData.platform];
+                
+                data.impressions = data.impressions.map(v => Math.round(v * multiplier.imp));
+                data.ctr = data.ctr.map(v => +(v * multiplier.ctr).toFixed(1));
+                data.conversion = data.conversion.map(v => +(v * multiplier.conv).toFixed(1));
+            }
+
+            // 根据时间范围筛选
+            const timeRangeMultipliers = {
+                'last7days': 0.3,
+                'last30days': 1.0,
+                'last90days': 2.5,
+                'last180days': 4.0
+            };
+            const timeMultiplier = timeRangeMultipliers[currentData.timeRange];
+            data.impressions = data.impressions.map(v => Math.round(v * timeMultiplier));
+
+            return data;
+        }
+
+        // 数据排序函数
+        function sortKeywordData(data) {
+            const indices = Array.from(data.keywords.keys());
+            const sortMetric = data[currentData.sortBy];
+            
+            indices.sort((a, b) => {
+                const diff = sortMetric[a] - sortMetric[b];
+                return currentData.sortOrder === 'desc' ? -diff : diff;
+            });
+
+            return {
+                keywords: indices.map(i => data.keywords[i]),
+                impressions: indices.map(i => data.impressions[i]),
+                ranking: indices.map(i => data.ranking[i]),
+                ctr: indices.map(i => data.ctr[i]),
+                conversion: indices.map(i => data.conversion[i])
+            };
+        }
+
+        // 添加初始化图表函数
+        function initCharts() {
+            initKeywordRanking();
+            initKeywordCloud();
+            initClickRateChart();
+            initConversionFunnel();
+            initTrafficSources();
+            initCompetitionBubble();
+            initKeywordHeatmap();
+            initComparisonChart();
+        }
+
+        // 关键词排名图表
+        function initKeywordRanking() {
+            const chart = echarts.init(document.getElementById('keywordRankingChart'));
+            const option = {
+                title: {
+                    text: 'Top Keywords Ranking & Impressions',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Impressions', 'Ranking'],
+                    bottom: 10
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['MINISO', 'Plush Toys', 'Beauty Tools', 'Stationery', 'Home Decor'],
+                    axisLabel: {
+                        rotate: 45
+                    }
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: 'Impressions',
+                        min: 0,
+                        max: 100000
+                    },
+                    {
+                        type: 'value',
+                        name: 'Ranking',
+                        min: 1,
+                        max: 10,
+                        inverse: true
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Impressions',
+                        type: 'bar',
+                        data: [95000, 78000, 65000, 55000, 48000]
+                    },
+                    {
+                        name: 'Ranking',
+                        type: 'line',
+                        yAxisIndex: 1,
+                        data: [1, 3, 4, 2, 5]
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // 关键词词云
+        function initKeywordCloud() {
+            const chart = echarts.init(document.getElementById('keywordCloud'));
+            const option = {
+                title: {
+                    text: 'Keyword Cloud',
+                    left: 'center'
+                },
+                tooltip: {},
+                series: [{
+                    type: 'wordCloud',
+                    shape: 'circle',
+                    left: 'center',
+                    top: 'center',
+                    width: '90%',
+                    height: '90%',
+                    right: null,
+                    bottom: null,
+                    sizeRange: [12, 60],
+                    rotationRange: [-90, 90],
+                    rotationStep: 45,
+                    gridSize: 8,
+                    drawOutOfBound: false,
+                    textStyle: {
+                        fontFamily: 'sans-serif',
+                        fontWeight: 'bold',
+                        color: function () {
+                            return 'rgb(' + [
+                                Math.round(Math.random() * 160),
+                                Math.round(Math.random() * 160),
+                                Math.round(Math.random() * 160)
+                            ].join(',') + ')';
+                        }
+                    },
+                    emphasis: {
+                        focus: 'self',
+                        textStyle: {
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    data: [
+                        { name: 'MINISO', value: 10000 },
+                        { name: 'Plush Toys', value: 8500 },
+                        { name: 'Beauty Tools', value: 7800 },
+                        { name: 'Stationery', value: 7200 },
+                        { name: 'Home Decor', value: 6500 },
+                        { name: 'Accessories', value: 6000 },
+                        { name: 'Makeup', value: 5500 },
+                        { name: 'Storage', value: 5000 },
+                        { name: 'Gifts', value: 4800 },
+                        { name: 'Electronics', value: 4500 }
+                    ]
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // 点击率趋势图
+        function initClickRateChart() {
+            const chart = echarts.init(document.getElementById('clickRateChart'));
+            const dates = generateDates(30);
+            const option = {
+                title: {
+                    text: 'Click-Through Rate by Keyword Type',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['Brand', 'Product', 'Long-tail'],
+                    bottom: 10
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates,
+                    axisLabel: {
+                        rotate: 45
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Brand',
+                        type: 'line',
+                        data: generateTrendData(30, 4, 7)
+                    },
+                    {
+                        name: 'Product',
+                        type: 'line',
+                        data: generateTrendData(30, 3, 5)
+                    },
+                    {
+                        name: 'Long-tail',
+                        type: 'line',
+                        data: generateTrendData(30, 2, 4)
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // 转化漏斗图
+        function initConversionFunnel() {
+            const chart = echarts.init(document.getElementById('conversionFunnel'));
+            const option = {
+                title: {
+                    text: 'Search to Conversion Funnel',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c}'
+                },
+                series: [
+                    {
+                        name: 'Funnel',
+                        type: 'funnel',
+                        left: '10%',
+                        top: 60,
+                        bottom: 60,
+                        width: '80%',
+                        min: 0,
+                        max: 100000,
+                        minSize: '0%',
+                        maxSize: '100%',
+                        sort: 'descending',
+                        gap: 2,
+                        label: {
+                            show: true,
+                            position: 'inside'
+                        },
+                        labelLine: {
+                            length: 10,
+                            lineStyle: {
+                                width: 1,
+                                type: 'solid'
+                            }
+                        },
+                        itemStyle: {
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        },
+                        emphasis: {
+                            label: {
+                                fontSize: 20
+                            }
+                        },
+                        data: [
+                            { value: 100000, name: 'Impressions' },
+                            { value: 40000, name: 'Clicks' },
+                            { value: 20000, name: 'Product Views' },
+                            { value: 8000, name: 'Add to Cart' },
+                            { value: 2800, name: 'Purchase' }
+                        ]
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // 流量来源分布
+        function initTrafficSources() {
+            const chart = echarts.init(document.getElementById('trafficSourcesChart'));
+            const option = {
+                title: {
+                    text: 'Search Traffic Sources',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: 'Traffic Source',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        itemStyle: {
+                            borderRadius: 10,
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '20',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 45, name: 'Google Search' },
+                            { value: 25, name: 'YouTube' },
+                            { value: 20, name: 'Instagram' },
+                            { value: 10, name: 'TikTok' }
+                        ]
+                    }
+                ]
+            };
+            chart.setOption(option);
+        }
+
+        // 竞争情况气泡图
+        function initCompetitionBubble() {
+            const chart = echarts.init(document.getElementById('competitionBubble'));
+            const option = {
+                title: {
+                    text: 'Keyword Competition Analysis',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        return `${params.data.name}<br/>
+                                Search Volume: ${params.data.value[2]}<br/>
+                                Competition: ${params.data.value[1]}<br/>
+                                CPC: $${params.data.value[0]}`;
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: 'CPC ($)',
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Competition Score',
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [{
+                    type: 'scatter',
+                    symbolSize: function (data) {
+                        return Math.sqrt(data[2]) / 5;
+                    },
+                    data: [
+                        {
+                            name: 'MINISO',
+                            value: [2.5, 85, 10000],
+                            itemStyle: { color: '#1890ff' }
+                        },
+                        {
+                            name: 'Plush Toys',
+                            value: [1.8, 65, 8500],
+                            itemStyle: { color: '#52c41a' }
+                        },
+                        {
+                            name: 'Beauty Tools',
+                            value: [1.5, 55, 7800],
+                            itemStyle: { color: '#fa8c16' }
+                        },
+                        {
+                            name: 'Stationery',
+                            value: [1.2, 45, 7200],
+                            itemStyle: { color: '#f5222d' }
+                        },
+                        {
+                            name: 'Home Decor',
+                            value: [1.0, 35, 6500],
+                            itemStyle: { color: '#722ed1' }
+                        }
+                    ]
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // 关键词表现热力图
+        function initKeywordHeatmap() {
+            const chart = echarts.init(document.getElementById('keywordHeatmap'));
+            const hours = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',
+                          '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'];
+            const days = ['Sunday', 'Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday'];
+            
+            const data = [];
+            for (let i = 0; i < 7; i++) {
+                for (let j = 0; j < 24; j++) {
+                    data.push([j, i, Math.round(Math.random() * 100)]);
+                }
+            }
+
+            const option = {
+                title: {
+                    text: 'Search Volume Heatmap',
+                    left: 'center'
+                },
+                tooltip: {
+                    position: 'top'
+                },
+                grid: {
+                    height: '50%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: hours,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: days,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '15%'
+                },
+                series: [{
+                    name: 'Search Volume',
+                    type: 'heatmap',
+                    data: data,
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // 初始化对比分析图表
+        function initComparisonChart() {
+            const chart = echarts.init(document.getElementById('comparisonChart'));
+            const option = {
+                title: {
+                    text: 'Keyword Performance Comparison',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    type: 'scroll',
+                    bottom: 10,
+                    data: []
+                },
+                radar: {
+                    indicator: [
+                        { name: 'Search Volume', max: 100000 },
+                        { name: 'Click-Through Rate', max: 10 },
+                        { name: 'Conversion Rate', max: 5 },
+                        { name: 'Ranking', max: 10 },
+                        { name: 'Competition', max: 100 }
+                    ],
+                    center: ['50%', '50%'],
+                    radius: '65%'
+                },
+                series: [{
+                    type: 'radar',
+                    data: []
+                }]
+            };
+            chart.setOption(option);
+        }
+
+        // 更新对比分析图表
+        function updateComparisonChart() {
+            const chart = echarts.getInstanceByDom(document.getElementById('comparisonChart'));
+            if (!chart || currentData.selectedKeywords.length === 0) return;
+
+            const filteredData = getFilteredData();
+            const comparisonData = currentData.selectedKeywords.map(keyword => {
+                const index = filteredData.keywords.indexOf(keyword);
+                if (index === -1) return null;
+
+                return {
+                    name: keyword,
+                    value: [
+                        // 将各指标标准化到0-100的范围
+                        (filteredData.impressions[index] / 100000) * 100,
+                        filteredData.ctr[index],
+                        filteredData.conversion[index],
+                        11 - filteredData.ranking[index], // 转换排名为得分（10-排名）
+                        Math.round(Math.random() * 40 + 60) // 模拟竞争度数据
+                    ]
+                };
+            }).filter(item => item !== null);
+
+            chart.setOption({
+                legend: {
+                    data: currentData.selectedKeywords
+                },
+                series: [{
+                    data: comparisonData
+                }]
+            });
+        }
+
+        // 生成日期数组
+        function generateDates(days) {
+            const dates = [];
+            const today = new Date();
+            for (let i = days - 1; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                dates.push(date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                }));
+            }
+            return dates;
+        }
+
+        // 生成趋势数据
+        function generateTrendData(days, min, max) {
+            const data = [];
+            for (let i = 0; i < days; i++) {
+                data.push(+(Math.random() * (max - min) + min).toFixed(1));
+            }
+            return data;
+        }
+
+        // 页面加载完成后初始化仪表板
+        document.addEventListener('DOMContentLoaded', function() {
+            initDashboard();
+            updateAllCharts(); // 初始化时更新所有图表
+
+            // 窗口大小变化时重绘图表
+            window.addEventListener('resize', function() {
+                const charts = document.querySelectorAll('.chart-container');
+                charts.forEach(container => {
+                    const chart = echarts.getInstanceByDom(container);
+                    if (chart) {
+                        chart.resize();
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- 添加Font Awesome图标库 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</body>
+</html> 

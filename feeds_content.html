@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Features & Selling Points Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            height: 600px;
+            margin: 20px 0;
+        }
+        .metric-selector {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .insights-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .insights-box h4 {
+            color: #0d6efd;
+            margin-bottom: 15px;
+        }
+        .top-combinations {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metric-card {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Product Features & Selling Points Analysis</h1>
+        
+        <!-- Metric Selector -->
+        <div class="metric-selector">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    <label class="form-label">Select Analysis Metric:</label>
+                </div>
+                <div class="col-md-10">
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" name="metric" id="ctr" value="ctr" checked>
+                        <label class="btn btn-outline-primary" for="ctr">Click-Through Rate (CTR)</label>
+
+                        <input type="radio" class="btn-check" name="metric" id="cvr" value="cvr">
+                        <label class="btn btn-outline-primary" for="cvr">Conversion Rate (CVR)</label>
+
+                        <input type="radio" class="btn-check" name="metric" id="roas" value="roas">
+                        <label class="btn btn-outline-primary" for="roas">Return on Ad Spend (ROAS)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Overview Cards -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <h5>Best Feature-Selling Point Combination</h5>
+                    <div class="metric-value" id="bestCombo">Smart Features + Cost-Effectiveness</div>
+                    <small class="text-muted">Best Performing Combination</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <h5>Average Performance</h5>
+                    <div class="metric-value" id="avgPerformance">3.2%</div>
+                    <small class="text-muted">Average Performance of All Combinations</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <h5>Room for Improvement</h5>
+                    <div class="metric-value" id="improvement">+45%</div>
+                    <small class="text-muted">Gap from Best Combination</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div class="chart-container" id="heatmap"></div>
+
+        <!-- Analysis Insights -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="insights-box">
+                    <h4>Insights & Recommendations</h4>
+                    <div class="mb-4">
+                        <h5>High-Performance Combination Analysis</h5>
+                        <ul>
+                            <li>Smart Features + Cost-Effectiveness combination performs best in CTR, recommend highlighting these aspects in ad creatives</li>
+                            <li>Convenience + Ease of Use combination shows significant results in conversion rate, can be strengthened specifically</li>
+                            <li>Energy Saving + Brand Impact combination leads in ROAS, suitable for high-investment advertising campaigns</li>
+                        </ul>
+                    </div>
+                    <div class="mb-4">
+                        <h5>Optimization Suggestions</h5>
+                        <ul>
+                            <li>Recommend increasing the combination of smart features and cost-effectiveness to improve ad performance</li>
+                            <li>Try combining convenience features with brand impact to create new effective combinations</li>
+                            <li>For underperforming combinations, consider redesigning ad creatives or adjusting target audience</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="top-combinations">
+                    <h4>Top 5 Best Combinations</h4>
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Smart Features + Cost-Effectiveness</h6>
+                                <small class="text-success">5.2%</small>
+                            </div>
+                            <small class="text-muted">Best CTR Performance</small>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Convenience + Ease of Use</h6>
+                                <small class="text-success">4.8%</small>
+                            </div>
+                            <small class="text-muted">Best CVR Performance</small>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Energy Saving + Brand Impact</h6>
+                                <small class="text-success">4.5%</small>
+                            </div>
+                            <small class="text-muted">Best ROAS Performance</small>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Smart Features + Ease of Use</h6>
+                                <small class="text-success">4.2%</small>
+                            </div>
+                            <small class="text-muted">Excellent Overall Performance</small>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Convenience + Cost-Effectiveness</h6>
+                                <small class="text-success">4.0%</small>
+                            </div>
+                            <small class="text-muted">Potential Combination</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize heatmap
+        const heatmapChart = echarts.init(document.getElementById('heatmap'));
+        
+        // Define data
+        const features = ['Smart Features', 'Energy Saving', 'Convenience', 'Efficiency', 'Eco-Friendly'];
+        const sellingPoints = ['Cost-Effectiveness', 'Brand Impact', 'Ease of Use', 'Innovation', 'Reliability'];
+        
+        // Generate heatmap data
+        function generateHeatmapData(metric) {
+            const data = [];
+            const baseValues = {
+                'ctr': [
+                    [5.2, 4.1, 4.8, 3.9, 3.5],
+                    [3.8, 4.5, 3.7, 4.2, 3.9],
+                    [4.6, 3.8, 4.9, 3.5, 4.1],
+                    [3.9, 4.2, 3.6, 4.7, 3.8],
+                    [4.3, 3.9, 4.2, 3.7, 4.4]
+                ],
+                'cvr': [
+                    [4.8, 3.9, 5.1, 3.7, 3.8],
+                    [3.5, 4.8, 3.9, 4.5, 3.7],
+                    [4.9, 3.7, 4.7, 3.8, 4.3],
+                    [3.7, 4.5, 3.8, 4.9, 3.6],
+                    [4.1, 3.8, 4.5, 3.9, 4.6]
+                ],
+                'roas': [
+                    [4.5, 4.2, 4.7, 3.8, 3.9],
+                    [3.9, 4.7, 3.8, 4.3, 3.6],
+                    [4.8, 3.9, 4.5, 3.7, 4.2],
+                    [3.8, 4.3, 3.7, 4.8, 3.9],
+                    [4.2, 3.7, 4.4, 3.8, 4.5]
+                ]
+            };
+
+            const values = baseValues[metric];
+            for (let i = 0; i < features.length; i++) {
+                for (let j = 0; j < sellingPoints.length; j++) {
+                    data.push([i, j, values[i][j]]);
+                }
+            }
+            return data;
+        }
+
+        // Configure heatmap options
+        function updateHeatmap(metric) {
+            const option = {
+                title: {
+                    text: 'Product Features & Selling Points Combination Analysis',
+                    left: 'center',
+                    top: 0
+                },
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        return `Feature: ${features[params.data[0]]}<br>` +
+                               `Selling Point: ${sellingPoints[params.data[1]]}<br>` +
+                               `${metric.toUpperCase()}: ${params.data[2]}%`;
+                    }
+                },
+                grid: {
+                    top: '60px',
+                    bottom: '10%',
+                    left: '10%',
+                    right: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: sellingPoints,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: features,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 6,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '0%',
+                    text: ['High', 'Low'],
+                    inRange: {
+                        color: ['#fff', '#67c23a']
+                    }
+                },
+                series: [{
+                    name: metric.toUpperCase(),
+                    type: 'heatmap',
+                    data: generateHeatmapData(metric),
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data[2] + '%';
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+
+            heatmapChart.setOption(option);
+        }
+
+        // Initialize display with CTR data
+        updateHeatmap('ctr');
+
+        // Listen for metric changes
+        document.querySelectorAll('input[name="metric"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateHeatmap(this.value);
+                updateMetrics(this.value);
+            });
+        });
+
+        // Update metric cards
+        function updateMetrics(metric) {
+            const metrics = {
+                'ctr': {
+                    bestCombo: 'Smart Features + Cost-Effectiveness',
+                    avgPerformance: '3.2%',
+                    improvement: '+45%'
+                },
+                'cvr': {
+                    bestCombo: 'Convenience + Ease of Use',
+                    avgPerformance: '2.8%',
+                    improvement: '+42%'
+                },
+                'roas': {
+                    bestCombo: 'Energy Saving + Brand Impact',
+                    avgPerformance: '3.5x',
+                    improvement: '+38%'
+                }
+            };
+
+            document.getElementById('bestCombo').textContent = metrics[metric].bestCombo;
+            document.getElementById('avgPerformance').textContent = metrics[metric].avgPerformance;
+            document.getElementById('improvement').textContent = metrics[metric].improvement;
+        }
+
+        // Handle responsive resizing
+        window.addEventListener('resize', function() {
+            heatmapChart.resize();
+        });
+    </script>
+</body>
+</html> 

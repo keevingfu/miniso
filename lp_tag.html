@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINISO Landing Page Tag Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="miniso-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="miniso-charts.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="dashboard-container">
+            <h1 class="h3 mb-4">Landing Page Tag Analysis</h1>
+
+            <!-- Time Range Selector -->
+            <div class="d-flex justify-content-end mb-4">
+                <select id="timeRangeSelect" class="form-select" style="width: 180px;" aria-label="Select time range">
+                    <option value="last7days">Last 7 Days</option>
+                    <option value="last30days" selected>Last 30 Days</option>
+                    <option value="last90days">Last 90 Days</option>
+                </select>
+            </div>
+
+            <!-- Audience Profile Section -->
+            <div class="section mb-5">
+                <h2 class="h4 mb-3">Audience Profile & Conversion Analysis</h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Audience Profile Performance</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="audienceHeatmap" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Conversion Trend</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="conversionTrend" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="audience-insights"></div>
+            </div>
+
+            <!-- Product Performance Section -->
+            <div class="section mb-5">
+                <h2 class="h4 mb-3">Product Performance Analysis</h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Product Attributes Performance</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="productHeatmap" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Performance Comparison</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="productComparison" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-insights"></div>
+            </div>
+
+            <!-- Category Performance Section -->
+            <div class="section mb-5">
+                <h2 class="h4 mb-3">Category Performance Analysis</h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Category Performance Heatmap</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="categoryHeatmap" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Category Metrics</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="categoryMetrics" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="category-insights"></div>
+            </div>
+
+            <!-- Marketing Theme Section -->
+            <div class="section mb-5">
+                <h2 class="h4 mb-3">Marketing Theme Analysis</h2>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Theme Performance Heatmap</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="themeHeatmap" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Theme Impact Analysis</h5>
+                            </div>
+                            <div class="card-content">
+                                <div id="themeImpact" style="height: 400px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="theme-insights"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Audience Profile Data
+        const audienceData = {
+            dimensions: ['18-24', '25-34', '35-44', '45+'],
+            metrics: ['Conversion Rate', 'Average Order', 'Video Engagement'],
+            data: [
+                [0, 0, 8.5], [0, 1, 75], [0, 2, 65],
+                [1, 0, 12.3], [1, 1, 95], [1, 2, 78],
+                [2, 0, 9.8], [2, 1, 82], [2, 2, 71],
+                [3, 0, 7.2], [3, 1, 68], [3, 2, 58]
+            ]
+        };
+
+        const conversionTrendData = {
+            dates: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            values: [
+                [5.2, 5.8, 6.5, 7.2, 8.1, 8.5],
+                [4.8, 5.2, 5.9, 6.8, 7.5, 7.9],
+                [6.1, 6.5, 7.2, 7.8, 8.5, 9.1]
+            ]
+        };
+
+        // Product Performance Data
+        const productData = {
+            attributes: ['Price', 'Design', 'Quality', 'Packaging'],
+            metrics: ['Engagement', 'Conversion', 'ROI'],
+            data: [
+                [0, 0, 85], [0, 1, 72], [0, 2, 78],
+                [1, 0, 92], [1, 1, 68], [1, 2, 82],
+                [2, 0, 78], [2, 1, 75], [2, 2, 85],
+                [3, 0, 88], [3, 1, 70], [3, 2, 80]
+            ]
+        };
+
+        // Category Performance Data
+        const categoryData = {
+            categories: ['Toys', 'Home', 'Beauty', 'Fashion'],
+            metrics: ['Views', 'Engagement', 'Sales'],
+            data: [
+                [0, 0, 90], [0, 1, 85], [0, 2, 82],
+                [1, 0, 85], [1, 1, 78], [1, 2, 75],
+                [2, 0, 92], [2, 1, 88], [2, 2, 85],
+                [3, 0, 88], [3, 1, 82], [3, 2, 78]
+            ]
+        };
+
+        // Marketing Theme Data
+        const themeData = {
+            themes: ['Seasonal', 'Holiday', 'Lifestyle', 'Launch'],
+            metrics: ['Engagement', 'Conversion', 'Impact'],
+            data: [
+                [0, 0, 88], [0, 1, 82], [0, 2, 85],
+                [1, 0, 92], [1, 1, 85], [1, 2, 88],
+                [2, 0, 85], [2, 1, 78], [2, 2, 82],
+                [3, 0, 90], [3, 1, 85], [3, 2, 87]
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Audience Profile Heatmap
+            const audienceHeatmap = echarts.init(document.getElementById('audienceHeatmap'));
+            audienceHeatmap.setOption({
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        return `${audienceData.dimensions[params.data[0]]}<br/>
+                                ${audienceData.metrics[params.data[1]]}: ${params.data[2]}%`;
+                    }
+                },
+                grid: {
+                    height: '70%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: audienceData.dimensions,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: audienceData.metrics,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '5%',
+                    color: ['#E4002B', '#FFE4E8']
+                },
+                series: [{
+                    type: 'heatmap',
+                    data: audienceData.data,
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data[2].toFixed(1) + '%';
+                        }
+                    }
+                }]
+            });
+
+            // Initialize Conversion Trend Chart
+            const conversionTrend = echarts.init(document.getElementById('conversionTrend'));
+            conversionTrend.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['18-24', '25-34', '35-44'],
+                    bottom: '5%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: conversionTrendData.dates
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Conversion Rate (%)'
+                },
+                series: [{
+                    name: '18-24',
+                    type: 'line',
+                    data: conversionTrendData.values[0]
+                }, {
+                    name: '25-34',
+                    type: 'line',
+                    data: conversionTrendData.values[1]
+                }, {
+                    name: '35-44',
+                    type: 'line',
+                    data: conversionTrendData.values[2]
+                }]
+            });
+
+            // Initialize Product Performance Heatmap
+            const productHeatmap = echarts.init(document.getElementById('productHeatmap'));
+            productHeatmap.setOption({
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        return `${productData.attributes[params.data[0]]}<br/>
+                                ${productData.metrics[params.data[1]]}: ${params.data[2]}%`;
+                    }
+                },
+                grid: {
+                    height: '70%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: productData.attributes,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: productData.metrics,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '5%',
+                    color: ['#FF9800', '#FFF3E0']
+                },
+                series: [{
+                    type: 'heatmap',
+                    data: productData.data,
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data[2].toFixed(1) + '%';
+                        }
+                    }
+                }]
+            });
+
+            // Initialize Product Performance Comparison Chart
+            const productComparison = echarts.init(document.getElementById('productComparison'));
+            productComparison.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: productData.metrics,
+                    bottom: '5%'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: productData.attributes,
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 30
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Performance Score (%)'
+                },
+                series: productData.metrics.map((metric, index) => ({
+                    name: metric,
+                    type: 'bar',
+                    data: productData.attributes.map((_, i) => productData.data[i * 3 + index][2])
+                }))
+            });
+
+            // Initialize Category Performance Heatmap
+            const categoryHeatmap = echarts.init(document.getElementById('categoryHeatmap'));
+            categoryHeatmap.setOption({
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        return `${categoryData.categories[params.data[0]]}<br/>
+                                ${categoryData.metrics[params.data[1]]}: ${params.data[2]}%`;
+                    }
+                },
+                grid: {
+                    height: '70%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: categoryData.categories,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: categoryData.metrics,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '5%',
+                    color: ['#4CAF50', '#E8F5E9']
+                },
+                series: [{
+                    type: 'heatmap',
+                    data: categoryData.data,
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data[2].toFixed(1) + '%';
+                        }
+                    }
+                }]
+            });
+
+            // Initialize Category Metrics Chart
+            const categoryMetrics = echarts.init(document.getElementById('categoryMetrics'));
+            categoryMetrics.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: categoryData.metrics,
+                    bottom: '5%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: categoryData.categories,
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 30
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Performance Score'
+                },
+                series: categoryData.metrics.map((metric, index) => ({
+                    name: metric,
+                    type: 'bar',
+                    data: categoryData.categories.map((_, i) => categoryData.data[i * 3 + index][2])
+                }))
+            });
+
+            // Initialize Theme Performance Heatmap
+            const themeHeatmap = echarts.init(document.getElementById('themeHeatmap'));
+            themeHeatmap.setOption({
+                tooltip: {
+                    position: 'top',
+                    formatter: function(params) {
+                        return `${themeData.themes[params.data[0]]}<br/>
+                                ${themeData.metrics[params.data[1]]}: ${params.data[2]}%`;
+                    }
+                },
+                grid: {
+                    height: '70%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: themeData.themes,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: themeData.metrics,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 100,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '5%',
+                    color: ['#9C27B0', '#F3E5F5']
+                },
+                series: [{
+                    type: 'heatmap',
+                    data: themeData.data,
+                    label: {
+                        show: true,
+                        formatter: function(params) {
+                            return params.data[2].toFixed(1) + '%';
+                        }
+                    }
+                }]
+            });
+
+            // Initialize Theme Impact Chart
+            const themeImpact = echarts.init(document.getElementById('themeImpact'));
+            themeImpact.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: themeData.metrics,
+                    bottom: '5%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: themeData.themes,
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 30
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Impact Score'
+                },
+                series: themeData.metrics.map((metric, index) => ({
+                    name: metric,
+                    type: 'bar',
+                    data: themeData.themes.map((_, i) => themeData.data[i * 3 + index][2])
+                }))
+            });
+
+            // Add insights sections under each analysis
+            addInsightsSections();
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                audienceHeatmap.resize();
+                conversionTrend.resize();
+                productHeatmap.resize();
+                productComparison.resize();
+                categoryHeatmap.resize();
+                categoryMetrics.resize();
+                themeHeatmap.resize();
+                themeImpact.resize();
+                // Add resize handlers for other charts
+            });
+        });
+
+        function addInsightsSections() {
+            // Add insights HTML after each chart section
+            const sections = [
+                {
+                    id: 'audience-insights',
+                    title: 'Audience Profile Insights',
+                    insights: [
+                        'Age group 25-34 shows highest conversion rate (12.3%) and engagement',
+                        'Average order value peaks in the 25-34 age segment ($95)',
+                        'Video engagement is consistently strong across all age groups'
+                    ],
+                    recommendations: [
+                        'Focus marketing efforts on the 25-34 age group',
+                        'Develop targeted content for high-converting segments',
+                        'Optimize video content for all age groups'
+                    ]
+                },
+                {
+                    id: 'product-insights',
+                    title: 'Product Performance Insights',
+                    insights: [
+                        'Design attributes show highest engagement (92%)',
+                        'Quality metrics demonstrate strong ROI (85%)',
+                        'Price point performance varies by category'
+                    ],
+                    recommendations: [
+                        'Emphasize design elements in product marketing',
+                        'Maintain focus on quality messaging',
+                        'Optimize pricing strategy based on category performance'
+                    ]
+                },
+                {
+                    id: 'category-insights',
+                    title: 'Category Performance Insights',
+                    insights: [
+                        'Beauty category leads in views and engagement',
+                        'Toys show strong sales conversion rates',
+                        'Home category demonstrates consistent performance'
+                    ],
+                    recommendations: [
+                        'Expand beauty category content production',
+                        'Replicate successful toy category strategies',
+                        'Enhance home category engagement tactics'
+                    ]
+                },
+                {
+                    id: 'theme-insights',
+                    title: 'Marketing Theme Insights',
+                    insights: [
+                        'Holiday campaigns show highest engagement (92%)',
+                        'Seasonal themes maintain consistent performance',
+                        'Product launches demonstrate strong impact'
+                    ],
+                    recommendations: [
+                        'Increase investment in holiday marketing campaigns',
+                        'Plan seasonal content well in advance',
+                        'Optimize launch strategies based on performance data'
+                    ]
+                }
+            ];
+
+            sections.forEach(section => {
+                const insightsHtml = `
+                    <div class="insights-section mt-4">
+                        <h5 class="insights-title">${section.title}</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Key Insights:</h6>
+                                <ul class="insights-list">
+                                    ${section.insights.map(insight => `<li>${insight}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Recommendations:</h6>
+                                <ul class="recommendations-list">
+                                    ${section.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const targetSection = document.getElementById(section.id);
+                if (targetSection) {
+                    targetSection.insertAdjacentHTML('beforeend', insightsHtml);
+                }
+            });
+        }
+    </script>
+
+    <style>
+        .insights-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .insights-title {
+            color: #E4002B;
+            margin-bottom: 15px;
+        }
+
+        .insights-list, .recommendations-list {
+            padding-left: 20px;
+        }
+
+        .insights-list li, .recommendations-list li {
+            margin-bottom: 8px;
+            color: #4A4A4A;
+        }
+    </style>
+</body>
+</html>
