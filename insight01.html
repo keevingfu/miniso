@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MINISO Market Research</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5em;
+            color: #e47272; /* MINISO brand color */
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #777;
+            font-size: 1.1em;
+        }
+
+        .dashboard-section {
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            color: #e47272;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #f8bbbb;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .chart-container {
+            height: 450px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-text {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .notes-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px #eee;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .notes-section h3 {
+            margin-top: 0;
+            color: #e47272;
+        }
+
+        .notes-section ul {
+            padding-left: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+                margin: 10px auto;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2em;
+            }
+
+            .dashboard-section {
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>MINISO Market Research</h1>
+            <p>Comprehensive Analysis of Brand, Competition, and Social Media Marketing</p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Brand Overview</h2>
+            <div>
+                <p class="analysis-text">MINISO, established in 2013, is a global retail brand originating from China. It offers a wide range of products including home goods, beauty, stationery, and electronics, positioned as "high-quality, low-price". Inspired by Japanese design philosophies, MINISO operates under the concept of "global selection, design innovation".</p>
+                <ul class="analysis-text">
+                    <li><strong>Founded:</strong> 2013</li>
+                    <li><strong>Founders:</strong> Ye Guofu, совместно с Miyake Junya (Japanese designer)</li>
+                    <li><strong>Headquarters:</strong> Guangzhou, China</li>
+                    <li><strong>Positioning:</strong> Lifestyle consumer brand with minimalist style</li>
+                    <li><strong>Product Features:</strong> High cost-performance, diverse categories, simple and fashionable design</li>
+                    <li><strong>Global Expansion:</strong> Thousands of stores worldwide, presence in Japan, USA, India, Brazil, and more.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Brand Culture & Marketing Strategies</h2>
+            <div>
+                <p class="analysis-text">MINISO's brand culture emphasizes globalization and localization, leveraging a light-asset supply chain for rapid expansion and market share capture. It combines fashion with practicality, collaborating with designers to create products relevant to daily consumer needs. Key strategies include:</p>
+                <ul class="analysis-text">
+                    <li><strong>Globalization & Localization:</strong> Adapting to global markets while maintaining brand consistency.</li>
+                    <li><strong>Fashion & Practicality:</strong> Products designed for daily use with trendy aesthetics.</li>
+                    <li><strong>Affordable Pricing:</strong> Low prices through mass production and streamlined supply chain.</li>
+                    <li><strong>Social Media & KOL Marketing:</strong> Engaging young consumers through social platforms and collaborations with Key Opinion Leaders.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Competitive Landscape</h2>
+            <div>
+                <p class="analysis-text">MINISO faces competition in both China and global markets, especially in the value retail and fast fashion sectors. Key competitors include:</p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Competitor</th>
+                            <th>Background</th>
+                            <th>Competitive Advantages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Daiso (大创)</strong></td>
+                            <td>Japanese brand, est. 1977</td>
+                            <td>Low price, wide variety, long-term brand loyalty.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MUJI (无印良品)</strong></td>
+                            <td>Japanese brand, est. 1980</td>
+                            <td>High product quality, minimalist design, strong brand image.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Walmart (沃尔玛)</strong></td>
+                            <td>American retail giant</td>
+                            <td>Extensive retail network, price advantage, strong in daily goods.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IKEA (宜家)</strong></td>
+                            <td>Swedish brand, primarily furniture</td>
+                            <td>Practical, well-designed, cost-effective furniture and home goods.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Target (塔吉特)</strong></td>
+                            <td>American retailer</td>
+                            <td>Fashionable, home goods, broad store coverage, strong US brand recognition.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Product Category Comparison with Competitors</h2>
+            <div>
+                <p class="analysis-text">Comparing MINISO products (Figurines & Dolls, Blind Boxes, Bags) with key competitors across several dimensions:</p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Dimension</th>
+                            <th>MINISO</th>
+                            <th>Daiso</th>
+                            <th>MUJI</th>
+                            <th>IKEA</th>
+                            <th>Smiggle</th>
+                            <th>Unibio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th rowspan="5">General</th>
+                            <td>Price</td>
+                            <td>Low to Medium</td>
+                            <td>Very Low</td>
+                            <td>Medium to High</td>
+                            <td>Medium</td>
+                            <td>High</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Product Range</td>
+                            <td>Diverse</td>
+                            <td>Small Items</td>
+                            <td>Focused (Home, Stationery, Apparel)</td>
+                            <td>Home & Furniture</td>
+                            <td>Stationery & Fun Items</td>
+                            <td>Children's Market</td>
+                        </tr>
+                        <tr>
+                            <td>Design Style</td>
+                            <td>Modern, Simple, Fashionable, Cute</td>
+                            <td>Basic, Functional</td>
+                            <td>Minimalist, Natural</td>
+                            <td>Modern, Functional, Scandinavian</td>
+                            <td>Creative, Colorful</td>
+                            <td>Cute, Emotional</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Moderate to Good</td>
+                            <td>Basic</td>
+                            <td>High</td>
+                            <td>Good to High</td>
+                            <td>Good</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Brand Positioning</td>
+                            <td>Value Fashion Lifestyle</td>
+                            <td>Value Daily Goods</td>
+                            <td>Minimalist Lifestyle</td>
+                            <td>Home & Living</td>
+                            <td>Fun & Creative Kids</td>
+                            <td>Children's Market</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="5">Figurines & Dolls</th>
+                            <td>Design Style</td>
+                            <td>Cute, Cartoonish</td>
+                            <td>Simple, Basic</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Creative, Unique</td>
+                            <td>Cute, Emotional</td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>Low to Medium</td>
+                            <td>Very Low</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>High</td>
+                            <td>Medium</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Moderate</td>
+                            <td>Basic</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Good</td>
+                            <td>Medium</td>
+                        </tr>
+                         <tr>
+                            <td>Target Audience</td>
+                            <td>Young Consumers, Children</td>
+                            <td>Mass Market</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Children, Teens</td>
+                            <td>Children</td>
+                        </tr>
+                         <tr>
+                            <td>KOL Marketing Style</td>
+                            <td>Unboxing, Reviews, Lifestyle</td>
+                            <td>Limited</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Creative, Playful</td>
+                            <td>Emotional, Storytelling</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="5">Blind Boxes</th>
+                            <td>Design Style</td>
+                            <td>Trendy, Cartoon, Collaboration</td>
+                            <td>Simple, Practical</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>Low to Medium</td>
+                            <td>Very Low</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>High (Pop Mart, Molly)</td>
+                            <td>Medium (Molly & Friends)</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Moderate</td>
+                            <td>Basic</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>High (Pop Mart, Molly)</td>
+                            <td>Good (Molly & Friends)</td>
+                        </tr>
+                         <tr>
+                            <td>Target Audience</td>
+                            <td>Young Adults, Collectors</td>
+                            <td>Mass Market</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Art Toy Collectors</td>
+                            <td>Art Toy Enthusiasts</td>
+                        </tr>
+                         <tr>
+                            <td>KOL Marketing Style</td>
+                            <td>Unboxing, Challenges, Surprise</td>
+                            <td>Limited</td>
+                            <td>N/A</td>
+                            <td>N/A</td>
+                            <td>Art & Design Focused</td>
+                            <td>Art & Design Focused</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="5">Bags</th>
+                            <td>Design Style</td>
+                            <td>Simple, Cute, Fashionable</td>
+                            <td>Basic, Functional</td>
+                            <td>Minimalist, Practical</td>
+                            <td>Modern, Practical</td>
+                            <td>Colorful, Creative</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td>Low to Medium</td>
+                            <td>Very Low</td>
+                            <td>Medium to High</td>
+                            <td>Medium</td>
+                            <td>High</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>Quality</td>
+                            <td>Moderate to Good</td>
+                            <td>Basic</td>
+                            <td>Good</td>
+                            <td>Good</td>
+                            <td>Good</td>
+                            <td>N/A</td>
+                        </tr>
+                         <tr>
+                            <td>Target Audience</td>
+                            <td>Young Consumers, Students</td>
+                            <td>Mass Market</td>
+                            <td>Quality-focused Consumers</td>
+                            <td>Home Users</td>
+                            <td>Young Girls, Children</td>
+                            <td>N/A</td>
+                        </tr>
+                         <tr>
+                            <td>KOL Marketing Style</td>
+                            <td>Fashion, Hauls, Styling</td>
+                            <td>Limited</td>
+                            <td>Practical, Minimalist</td>
+                            <td>Home & Lifestyle</td>
+                            <td>Fashion, Creative</td>
+                            <td>N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="dashboard-section">
+            <h2 class="section-title">KOL Marketing Strategies on Social Media</h2>
+            <div>
+                <p class="analysis-text">MINISO actively employs KOL marketing on YouTube, Instagram, and TikTok to promote product categories like Figurines & Dolls, Blind Boxes, and Bags. Strategies vary per platform and product type:</p>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Figurines & Dolls KOL Marketing</h3>
+                <p class="analysis-text"><strong>Platforms:</strong> YouTube, Instagram, TikTok.</p>
+                <ul class="analysis-text">
+                    <li><strong>YouTube:</strong> Unboxing and review videos by lifestyle, shopping, and anime bloggers, focusing on cuteness and emotional appeal.</li>
+                    <li><strong>Instagram:</strong> Promotion by fashion, home decor, and parenting bloggers, showcasing integration into daily life and home settings.</li>
+                    <li><strong>TikTok:</strong> Short, engaging videos by micro-influencers, highlighting unique styles and launching "challenge activities" to attract young audiences.</li>
+                    <li><strong>Content Examples:</strong> Unboxing videos, collection showcases, integration with home decor, and cute styling.</li>
+                </ul>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Blind Box KOL Marketing</h3>
+                <p class="analysis-text"><strong>Platforms:</strong> YouTube, Instagram, TikTok.</p>
+                <ul class="analysis-text">
+                    <li><strong>YouTube:</strong> Collaboration with toy and collection bloggers for unboxing and blind box challenges, emphasizing surprise and variety.</li>
+                    <li><strong>Instagram:</strong> Visual content showcasing different blind box series, using discounts and shopping links, focusing on mystery and collectibility.</li>
+                    <li><strong>TikTok:</strong> Partnership with creative bloggers to highlight the randomness and surprise of blind boxes through creative short videos and "lucky draw" formats.</li>
+                    <li><strong>Content Examples:</strong> Blind box openings, collection reveals, lucky draws, and challenge videos.</li>
+                </ul>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Bags KOL Marketing</h3>
+                <p class="analysis-text"><strong>Platforms:</strong> YouTube, Instagram, TikTok.</p>
+                <ul class="analysis-text">
+                    <li><strong>YouTube:</strong> Fashion and lifestyle bloggers creating "shopping haul" videos, detailing design, usage scenarios, and value.</li>
+                    <li><strong>Instagram:</strong> Fashion and lifestyle influencers demonstrating bag styling, usage in daily outfits, and showcasing versatility.</li>
+                    <li><strong>TikTok:</strong> Short, creative videos by fashion bloggers demonstrating bag usage scenarios and style challenges to engage young users quickly.</li>
+                    <li><strong>Content Examples:</strong> Shopping hauls, outfit pairings, detailed bag reviews, and style challenges.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Brand Awareness by Region</h2>
+            <div id="brand-awareness-chart" class="chart-container"></div>
+            <p class="analysis-text"><strong>Analysis:</strong> Brand awareness is highest in China, reflecting MINISO's origin and strong domestic presence. Southeast Asia also shows strong awareness, followed by North America and Europe, indicating growing international recognition. Other regions have lower awareness, presenting opportunities for expansion. <strong>(Example Chart - Hypothetical Data)</strong></p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Product Category Performance (Social Media Engagement)</h2>
+            <div id="category-performance-chart" class="chart-container"></div>
+            <p class="analysis-text"><strong>Analysis:</strong>  "Dolls" category videos show the highest social media engagement, indicated by combined views and likes, suggesting strong consumer interest. "Blind Boxes" and "Figurines" also perform well, while "Bags" currently have lower engagement on social media platforms based on the analyzed data. <strong>(Example Chart - Hypothetical Data based on previous analysis)</strong></p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Social Media Engagement Trend (YouTube - Example)</h2>
+            <div id="social-engagement-chart" class="chart-container"></div>
+            <p class="analysis-text"><strong>Analysis:</strong> This chart illustrates a hypothetical trend of social media engagement on YouTube.  It indicates a general upward trend in views, likes, and comments over the months, with peaks and valleys potentially corresponding to marketing campaigns or seasonal trends.  Further detailed analysis would require real-world data over a longer period. <strong>(Example Chart - Hypothetical Data)</strong></p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Customer Sentiment Analysis</h2>
+            <div id="customer-sentiment-chart" class="chart-container"></div>
+            <p class="analysis-text"><strong>Analysis:</strong> The radar chart provides a snapshot of customer sentiment across key aspects. "Brand Image" and "Store Experience" score highest, suggesting positive brand perception and enjoyable shopping environments. "Product Quality" and "Price" are also strong, while "Customer Service" shows a slightly lower score, indicating a potential area for improvement. <strong>(Example Chart - Hypothetical Data)</strong></p>
+        </div>
+
+
+        <div class="dashboard-section notes-section">
+            <h3>Dashboard Notes and Considerations</h3>
+            <ul>
+                <li><strong>Data Source:</strong> This dashboard is based on the provided text analysis of MINISO and its market strategies.</li>
+                <li><strong>Qualitative Analysis:</strong>  The dashboard primarily presents qualitative comparisons and strategic overviews derived from the text.</li>
+                <li><strong>Example Charts:</strong>  Charts are included for illustrative purposes using hypothetical data to demonstrate potential visualizations for brand awareness, product performance, social media trends, and customer sentiment.</li>
+                <li><strong>Customization:</strong> For a more data-driven dashboard, integrate quantitative market data, social media analytics, and sales figures. Replace the example chart data with real datasets for accurate representation.</li>
+                <li><strong>Interactive Enhancements:</strong> Consider adding interactive elements, such as filters for product categories or competitors, and dynamic content updates for real-time data in a live dashboard scenario.</li>
+                <li><strong>Further Research:</strong> To enhance this analysis, further research could include detailed competitive analysis reports, consumer sentiment analysis, and social media performance metrics.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Chart 1: Brand Awareness by Region
+        var brandAwarenessChart = echarts.init(document.getElementById('brand-awareness-chart'));
+        var brandAwarenessOptions = {
+            title: {
+                text: 'Brand Awareness (%)'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['Awareness'],
+                orient: 'horizontal',
+                bottom: '0'
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '10%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['China', 'Southeast Asia', 'North America', 'Europe', 'Other Regions'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} %'
+                }
+            },
+            series: [{
+                name: 'Awareness',
+                type: 'bar',
+                barWidth: '60%',
+                data: [85, 70, 55, 40, 30],
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#83bff6'},
+                            {offset: 0.5, color: '#188df0'},
+                            {offset: 1, color: '#188df0'}
+                        ]
+                    )
+                },
+            }]
+        };
+        brandAwarenessChart.setOption(brandAwarenessOptions);
+
+        // Chart 2: Product Category Performance (Social Media Engagement)
+        var categoryPerformanceChart = echarts.init(document.getElementById('category-performance-chart'));
+        var categoryPerformanceOptions = {
+            title: {
+                text: 'Product Category Social Media Engagement (Based on Top YouTube Videos - Views & Likes)',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                orient: 'horizontal',
+                bottom: '0' ,
+            },
+            series: [
+                {
+                    name: 'Category Engagement',
+                    type: 'pie',
+                    radius: '60%',
+                    center: ['50%', '50%'],
+                    data: [
+                        {value: 3500000, name: 'Dolls'},
+                        {value: 1500000, name: 'Blind Boxes'},
+                        {value: 1200000, name: 'Figurines'},
+                        {value: 300000,  name: 'Bags'},
+                        {value: 500000,  name: 'Others'}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        categoryPerformanceChart.setOption(categoryPerformanceOptions);
+
+        // Chart 3: Social Media Engagement Trend (YouTube - Example)
+        var socialEngagementChart = echarts.init(document.getElementById('social-engagement-chart'));
+        var socialEngagementOptions = {
+            title: {
+                text: 'Social Media Engagement (Monthly - YouTube Example)'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['Views', 'Likes', 'Comments'],
+                orient: 'horizontal',
+                bottom: '0'
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '10%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: 'Views',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    data: [15000, 18000, 22000, 25000, 23000, 35000, 40000, 45000, 42000, 50000, 55000, 60000]
+                },
+                {
+                    name: 'Likes',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    data: [2000, 2500, 3000, 3500, 3200, 5000, 6000, 7000, 6500, 8000, 9000, 10000]
+                },
+                {
+                    name: 'Comments',
+                    type: 'line',
+                    stack: 'Total',
+                    smooth: true,
+                    data: [500, 600, 700, 800, 750, 1200, 1500, 1800, 1700, 2000, 2200, 2500]
+                }
+            ]
+        };
+        socialEngagementChart.setOption(socialEngagementOptions);
+
+        // Chart 4: Customer Sentiment Analysis
+        var customerSentimentChart = echarts.init(document.getElementById('customer-sentiment-chart'));
+        var customerSentimentOptions = {
+            title: {
+                text: 'Customer Sentiment Radar Chart'
+            },
+            radar: {
+                indicator: [
+                    { name: 'Product Quality', max: 100},
+                    { name: 'Price', max: 100},
+                    { name: 'Store Experience', max: 100},
+                    { name: 'Brand Image', max: 100},
+                    { name: 'Customer Service', max: 100}
+                ]
+            },
+             legend: {
+                orient: 'horizontal',
+                bottom: '0'
+            },
+            series: [{
+                type: 'radar',
+                areaStyle: {color: '#b3e0ff'},
+                data: [{
+                    value: [80, 75, 85, 90, 70],
+                    name: 'Sentiment Score'
+                }]
+            }]
+        };
+        customerSentimentChart.setOption(customerSentimentOptions);
+    </script>
+</body>
+</html>

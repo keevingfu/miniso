@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MINISO Competitor Analysis</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5em;
+            color: #e47272; /* MINISO brand color */
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #777;
+            font-size: 1.1em;
+        }
+
+        .dashboard-section {
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            color: #e47272;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #f8bbbb;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .chart-container {
+            height: 450px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-text {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .notes-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px #eee;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .notes-section h3 {
+            margin-top: 0;
+            color: #e47272;
+        }
+
+        .notes-section ul {
+            padding-left: 25px;
+        }
+
+        .kol-performance-list {
+            padding-left: 25px;
+            font-size: 1em;
+            color: #555;
+        }
+
+        .kol-performance-list li {
+            margin-bottom: 10px;
+        }
+
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+                margin: 10px auto;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2em;
+            }
+
+            .dashboard-section {
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>MINISO Competitor Analysis</h1>
+            <p>Social Media KOL Performance and Competitor Insights for Figurines, Plush Toys, Blind Boxes, and Bags</p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Competitor Overview</h2>
+            <div>
+                <p class="analysis-text">This section provides an overview of MINISO's key competitors in the social media space, focusing on product categories like Public Figurines, Plush Toys, Blind Boxes, and Bags. These competitors leverage KOL marketing to engage with consumers and are significant players in the affordable and collectible market.</p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Competitor</th>
+                            <th>Main Products</th>
+                            <th>Key Social Media Focus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Daiso</strong></td>
+                            <td>Basic plush toys, small collectible figurines, affordable home goods</td>
+                            <td>YouTube, Instagram (Budget & Functional Value Reviews)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pop Mart</strong></td>
+                            <td>High-end blind boxes, collectible designer toys, exclusive figures, limited edition releases</td>
+                            <td>Instagram, TikTok (Artistic Collaboration & Surprise Elements)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Smiggle</strong></td>
+                            <td>Colorful, fun, and creative plush toys, stationery, and accessories for children</td>
+                            <td>Instagram, YouTube (Playful Design & Educational Value)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MUJI</strong></td>
+                            <td>Minimalist plush toys, lifestyle products, simple bags, and accessories</td>
+                            <td>Instagram, YouTube (Minimalist Design & Functionality)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IKEA</strong></td>
+                            <td>Home décor and lifestyle products, including affordable plush toys for children</td>
+                            <td>Instagram, YouTube (Family-Oriented Home Décor & Toys)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Top 10 KOL Social Performance - YouTube</h2>
+            <div>
+                <p class="analysis-text">YouTube is a critical platform for showcasing product reviews and unboxings, particularly for toys and collectibles where the element of surprise and detailed views are important. Below are Top 10 KOLs and their focus:</p>
+                <ul class="kol-performance-list">
+                    <li><strong>Unbox Therapy (Subscribers: 18M+):</strong> Focus on unboxings, tech and toy reviews. Known for reviewing diverse product categories.</li>
+                    <li><strong>The Toy Box (Subscribers: 500K+):</strong> Focus on toy unboxing, reviews, and family-friendly content. Features MINISO products.</li>
+                    <li><strong>Sophie’s Toy Reviews (Subscribers: 3M+):</strong> Kid-centric toy reviews, focusing on plush toys and blind boxes.</li>
+                    <li><strong>Family Fun Pack (Subscribers: 10M+):</strong> Family vlogs, toy unboxings. Highlights affordability of MINISO plush toys.</li>
+                    <li><strong>Ryan’s World (Subscribers: 30M+):</strong> Kid’s toy unboxing and reviews, huge following among young children.</li>
+                    <li><strong>Justine Leconte (Fashion Blogger) (Subscribers: 1M+):</strong> Fashion and lifestyle, occasionally reviews bags and accessories.</li>
+                    <li><strong>ToyCaboodle (Subscribers: 400K+):</strong> Toy unboxing and reviews, frequently reviews MINISO blind boxes.</li>
+                    <li><strong>Mister Playtime (Subscribers: 1M+):</strong> Playtime unboxing and reviews, focuses on high-quality toys including MINISO.</li>
+                    <li><strong>Toys Unlimited (Subscribers: 1.5M+):</strong> Toy reviews and challenges, regularly features toy collectibles.</li>
+                    <li><strong>FamilyToyReview (Subscribers: 2M+):</strong> Family vlogs and toy reviews, unboxes MINISO blind boxes and plush toys.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Top 10 KOL Social Performance - Instagram</h2>
+            <div>
+                <p class="analysis-text">Instagram's visual nature is ideal for showcasing the aesthetic appeal of MINISO's products like plush toys, bags, and blind boxes. Top KOLs on Instagram include:</p>
+                <ul class="kol-performance-list">
+                    <li><strong>Chiara Ferragni (Followers: 28M+):</strong> High-fashion and lifestyle, occasionally features MINISO bags.</li>
+                    <li><strong>Camila Coelho (Followers: 9M+):</strong> Fashion, beauty, and lifestyle, promotes MINISO bags and accessories in daily outfits.</li>
+                    <li><strong>Nina Urgell (Followers: 300K+):</strong> Affordable fashion and lifestyle, showcases MINISO bags and home décor.</li>
+                    <li><strong>Smiggle Official (Brand Account) (Followers: 1M+):</strong> Toy and accessory brand, promotes new releases including plush toys.</li>
+                    <li><strong>Vicky Pattison (Reality Star) (Followers: 5M+):</strong> Fashion, beauty, and lifestyle, features affordable lifestyle bags similar to MINISO.</li>
+                    <li><strong>The Mini Mag (Followers: 150K+):</strong> Kid’s fashion and toys, features MINISO plush toys and kids’ accessories.</li>
+                    <li><strong>Carolina Receveur (Followers: 3.5M+):</strong> Fashion and travel, posts about MINISO bags and accessories.</li>
+                    <li><strong>Zara McDermott (Reality Star) (Followers: 1.5M+):</strong> Lifestyle and beauty, showcases affordable accessories including MINISO bags.</li>
+                    <li><strong>Mark Thomas (Fashion Blogger) (Followers: 200K+):</strong> Fashion and accessories, features MINISO bags and plush toys.</li>
+                    <li><strong>Jessica Wang (Followers: 1M+):</strong> Fashion and luxury lifestyle, occasionally features affordable fashion items like MINISO bags.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Top 10 KOL Social Performance - TikTok</h2>
+            <div>
+                <p class="analysis-text">TikTok's short-form video format and viral trend capabilities make it perfect for promoting MINISO's fun and trendy products. Key TikTok KOLs are:</p>
+                <ul class="kol-performance-list">
+                    <li><strong>Addison Rae (Followers: 88M+):</strong> Dance, fashion, and lifestyle, occasionally promotes brands like MINISO.</li>
+                    <li><strong>Charli D’Amelio (Followers: 150M+):</strong> Dance and lifestyle, promotes fashion items similar to MINISO’s bags.</li>
+                    <li><strong>Brittany Xavier (Followers: 1M+):</strong> Fashion and lifestyle, showcases MINISO’s bags and plush toys in daily outfit videos.</li>
+                    <li><strong>The Pookie Pals (Followers: 2M+):</strong> Toy reviews and unboxing challenges, features blind box unboxings of MINISO figures.</li>
+                    <li><strong>Kaitlyn Maher (Followers: 400K+):</strong> Toy and product reviews, engages with blind box challenges and toy unboxing.</li>
+                    <li><strong>Max and Harvey (Followers: 1.5M+):</strong> Lifestyle, music, and fun challenges, posts about MINISO plush toys and accessories.</li>
+                    <li><strong>Fiona Claire (Followers: 300K+):</strong> Fashion and lifestyle, regularly features affordable fashion bags and MINISO’s accessories.</li>
+                    <li><strong>Gabbie Hanna (Followers: 2M+):</strong> Music, comedy, and lifestyle, occasionally features lifestyle accessories and toys from MINISO.</li>
+                    <li><strong>Maddie Ziegler (Followers: 14M+):</strong> Dance and lifestyle, occasionally showcases affordable fashion accessories similar to MINISO bags.</li>
+                    <li><strong>Spencer X (Followers: 2M+):</strong> Music and lifestyle, engages with creative, humorous unboxings of MINISO products.</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Social Media Platform Focus by Competitor</h2>
+            <div id="platform-focus-chart" class="chart-container"></div>
+            <p class="analysis-text"><strong>Analysis:</strong> This chart visualizes the primary social media platform focus for each competitor based on the text analysis. It highlights where each brand concentrates its KOL marketing efforts. <strong>(Example Chart - Hypothetical Data based on text analysis emphasis)</strong></p>
+        </div>
+
+
+        <div class="dashboard-section notes-section">
+            <h3>Dashboard Notes and Considerations</h3>
+            <ul>
+                <li><strong>Data Source:</strong> This dashboard is based on the provided text analysis of MINISO's social media competitors and KOL performance.</li>
+                <li><strong>Qualitative Analysis:</strong>  The dashboard primarily presents qualitative data and strategic overviews derived from the text. KOL follower counts are approximate and for illustrative context.</li>
+                <li><strong>Platform Focus Chart:</strong> The social media platform focus chart is an example visualization based on the emphasis in the text. Real-world data would require quantitative analysis of KOL activities and engagement metrics on each platform.</li>
+                <li><strong>Customization:</strong> For a more data-driven dashboard, integrate quantitative social media analytics, actual KOL engagement data, and competitor performance metrics.</li>
+                <li><strong>Interactive Enhancements:</strong> Consider adding interactive elements to filter KOLs by platform, competitor, or product category. Dynamic updates with real-time social media data would further enhance the dashboard's utility.</li>
+                <li><strong>Further Research:</strong> To enhance this analysis, further research should include detailed social listening reports, competitor social media strategy analysis, and performance benchmarking against industry standards.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Chart 1: Social Media Platform Focus by Competitor
+        var platformFocusChart = echarts.init(document.getElementById('platform-focus-chart'));
+        var platformFocusOptions = {
+            title: {
+                text: 'Social Media Platform Focus by Competitor'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                orient: 'horizontal',
+                bottom: '0'
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '10%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['Daiso', 'Pop Mart', 'Smiggle', 'MUJI', 'IKEA'],
+                axisTick: {
+                    alignWithLabel: true
+                }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} Platforms'
+                }
+            },
+            series: [{
+                name: 'Primary Platform Focus',
+                type: 'bar',
+                barWidth: '60%',
+                data: [
+                    ['Daiso', 2], // YouTube, Instagram
+                    ['Pop Mart', 2], // Instagram, TikTok
+                    ['Smiggle', 2], // Instagram, YouTube
+                    ['MUJI', 2], // Instagram, YouTube
+                    ['IKEA', 2]  // Instagram, YouTube
+                ].map(item => ({
+                    name: item[0],
+                    value: item[1],
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#9999ff'},
+                                {offset: 0.7, color: '#6666ff'},
+                                {offset: 1, color: '#3333ff'}
+                            ]
+                        )
+                    }
+                })),
+            }]
+        };
+        platformFocusChart.setOption(platformFocusOptions);
+
+
+    </script>
+</body>
+</html>
