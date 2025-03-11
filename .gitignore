@@ -1,0 +1,45 @@
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器和IDE文件
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# 依赖目录
+node_modules/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# 构建输出
+dist/
+build/
+*.egg-info/
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 大型二进制文件
+Miniconda3-latest-MacOSX-arm64.sh
+
+# 嵌入的Git仓库
+miniso-growth-system/
+temp-deploy/
+
+# 私钥文件
+minisoai
+minisoai.pub 
