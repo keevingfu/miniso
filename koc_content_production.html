@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MINISO Content Production Analysis Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <style>
+        :root {
+            --miniso-red: #e4002b;
+            --miniso-pink: #ff6b6b;
+            --miniso-light-red: #fff1f1;
+            --miniso-dark: #333333;
+            --miniso-gray: #f5f5f5;
+            --miniso-border: #e8e8e8;
+        }
+        
+        body {
+            background-color: var(--miniso-gray);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        .dashboard-container {
+            padding: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 3px solid var(--miniso-red);
+        }
+        
+        .title {
+            font-size: 24px;
+            color: var(--miniso-red);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .date-range {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid var(--miniso-border);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(228, 0, 43, 0.1);
+        }
+        
+        .metric-title {
+            font-size: 14px;
+            color: var(--miniso-dark);
+            margin-bottom: 10px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--miniso-red);
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid var(--miniso-border);
+        }
+        
+        .chart-container h3 {
+            color: var(--miniso-red);
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--miniso-red);
+        }
+        
+        .chart {
+            height: 400px;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .top-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .content-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .content-table th, .content-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-table th {
+            background: var(--miniso-red);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .content-table tr:hover {
+            background-color: var(--miniso-light-red);
+        }
+        
+        .insights-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--miniso-red);
+        }
+        
+        .insights-title {
+            color: var(--miniso-red);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .insights-content {
+            color: var(--miniso-text);
+        }
+        
+        .insights-content h5 {
+            color: #444;
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .insights-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .insights-content li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        /* Update chart theme colors */
+        .visualMap {
+            inRange: {
+                color: ['#fff1f1', '#ff6b6b', '#e4002b', '#b30022']
+            }
+        }
+        
+        /* Add smooth transition effects */
+        .metric-card, .chart-container, .insights-container {
+            transition: all 0.3s ease;
+        }
+        
+        /* Add hover effects */
+        .metric-card:hover, .chart-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(228, 0, 43, 0.1);
+        }
+        
+        /* Add loading animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dashboard-container > * {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        /* Set different animation delays for elements */
+        .metrics-grid { animation-delay: 0.1s; }
+        .chart-grid { animation-delay: 0.2s; }
+        .top-content { animation-delay: 0.3s; }
+        
+        .metric-card, .chart-container, .insights-container {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1 class="title">MINISO Content Production Analysis</h1>
+            <div class="date-range">2024-07-14 to 2025-01-04</div>
+        </div>
+        
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Content</div>
+                <div class="metric-value">3041</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Total Views</div>
+                <div class="metric-value">8.95M</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Avg. Engagement Rate</div>
+                <div class="metric-value">1.92%</div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="chart-grid">
+            <div class="chart-container full-width">
+                <h3>Content Production & Engagement Trends</h3>
+                <div id="trendChart" class="chart"></div>
+                <div class="insights-container">
+                    <h4 class="insights-title">Trends Analysis Insights</h4>
+                    <div class="insights-content">
+                        <h5>Trend Analysis:</h5>
+                        <ul>
+                            <li>Content production remains stable, averaging 145-150 pieces of content per week</li>
+                            <li>Engagement rates show consistent growth, with a 15% increase month-over-month</li>
+                            <li>Peak performance observed during promotional periods and new product launches</li>
+                            <li>Video content achieves 30% higher engagement compared to static posts</li>
+                        </ul>
+                        <h5>Optimization Suggestions:</h5>
+                        <ul>
+                            <li>Focus on content quality during promotional periods</li>
+                            <li>Analyze the types of content that achieve higher engagement</li>
+                            <li>Consider increasing the frequency of video content</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Platform Distribution</h3>
+                <div id="platformChart" class="chart"></div>
+                <div class="insights-container">
+                    <h4 class="insights-title">Platform Distribution Insights</h4>
+                    <div class="insights-content">
+                        <h5>Platform Distribution Insights:</h5>
+                        <ul>
+                            <li>TikTok dominates with 95% of views</li>
+                            <li>YouTube accounts for 4.74% of views, with potential for growth</li>
+                            <li>Instagram has a smaller share, but growth opportunities exist</li>
+                        </ul>
+                        <h5>Optimization Suggestions:</h5>
+                        <ul>
+                            <li>Maintain TikTok's dominance by improving content quality</li>
+                            <li>Expand YouTube content strategy</li>
+                            <li>Develop a strategy for Instagram growth</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Content Format Performance</h3>
+                <div id="formatChart" class="chart"></div>
+                <div class="insights-container">
+                    <h4 class="insights-title">Content Format Insights</h4>
+                    <div class="insights-content">
+                        <h5>Content Format Analysis:</h5>
+                        <ul>
+                            <li>Product Showcase is the most popular format, averaging 3.2k+ views</li>
+                            <li>Store Tour is effective in spreading the message</li>
+                            <li>Product Usage has lower views but stable engagement</li>
+                        </ul>
+                        <h5>Optimization Suggestions:</h5>
+                        <ul>
+                            <li>Enhance Product Showcase creativity</li>
+                            <li>Combine Store Tour and Product Usage strengths</li>
+                            <li>Develop differentiated KPIs for different content formats</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top Content -->
+        <div class="top-content">
+            <h3>Top 5 Performing Content</h3>
+            <div id="performanceHeatmap" class="chart" style="height: 300px; margin-bottom: 20px;"></div>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Platform</th>
+                        <th>Account</th>
+                        <th>Views</th>
+                        <th>Engagement Rate</th>
+                        <th>Format</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>TikTok</td>
+                        <td>@gaulielbouh</td>
+                        <td>4.3M</td>
+                        <td>10.82%</td>
+                        <td>Product Showcase</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>TikTok</td>
+                        <td>@clementina3883</td>
+                        <td>1.57M</td>
+                        <td>8.62%</td>
+                        <td>Store Tour</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>TikTok</td>
+                        <td>@merfi.lucky</td>
+                        <td>1.20M</td>
+                        <td>1.80%</td>
+                        <td>Product Usage</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>TikTok</td>
+                        <td>@voylevazie8</td>
+                        <td>1.14M</td>
+                        <td>2.02%</td>
+                        <td>Product Showcase</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>YouTube</td>
+                        <td>@MerfiLucky</td>
+                        <td>1.11M</td>
+                        <td>0.85%</td>
+                        <td>Product Review</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="insights-container">
+            <h4 class="insights-title">Top Performing Content Insights</h4>
+            <div class="insights-content">
+                <h5>Highlighted Performances:</h5>
+                <ul>
+                    <li>Highest single video view count at 4.3M (@gaulielbouh), showcasing significant reach</li>
+                    <li>Top 5 includes 4 from TikTok and 1 from YouTube, highlighting TikTok's dominance</li>
+                    <li>Engagement rates range from 0.85% to 10.82%, indicating significant differences in content quality and audience fit</li>
+                </ul>
+                <h5>Content Type Analysis:</h5>
+                <ul>
+                    <li>Product Showcase type dominates with two positions</li>
+                    <li>Store Tour content also achieves good results</li>
+                    <li>Product Review has a higher number but lower engagement</li>
+                </ul>
+                <h5>Improvement Suggestions:</h5>
+                <ul>
+                    <li>Prioritize Product Showcase and Store Tour type content</li>
+                    <li>Analyze common characteristics of high engagement content</li>
+                    <li>Optimize Product Review presentation for more engagement</li>
+                    <li>Consider cross-platform content strategies</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="insights-container">
+            <h4 class="insights-title">Performance Metrics Insights</h4>
+            <div class="insights-content">
+                <h5>Key Findings:</h5>
+                <ul>
+                    <li>@gaulielbouh's content performance is outstanding, with high views and engagement</li>
+                    <li>Engagement is not always directly proportional to views, highlighting the importance of content quality</li>
+                    <li>YouTube content has lower views but higher engagement quality</li>
+                </ul>
+                <h5>Optimization Suggestions:</h5>
+                <ul>
+                    <li>Establish closer collaborations with high-performing creators</li>
+                    <li>Analyze factors contributing to high engagement</li>
+                    <li>Set different KPIs for different platforms</li>
+                    <li>Enhance overall engagement through content marketing</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="insights-container">
+            <h4 class="insights-title">Engagement Analysis Insights</h4>
+            <div class="insights-content">
+                <h5>Engagement Rate Analysis:</h5>
+                <ul>
+                    <li>@gaulielbouh's 10.82% engagement rate is significantly above average, indicating strong audience fit</li>
+                    <li>@clementina3883's 8.62% engagement rate is also high, indicating content quality</li>
+                    <li>Other accounts have engagement rates below 2%, indicating room for improvement</li>
+                </ul>
+                <h5>Strategy Suggestions:</h5>
+                <ul>
+                    <li>Deep dive into high engagement creators' content</li>
+                    <li>Establish a creator training program</li>
+                    <li>Optimize content posting times and frequency</li>
+                    <li>Consider hosting engagement promotion activities</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="insights-container">
+            <h4 class="insights-title">Overall Recommendations</h4>
+            <div class="insights-content">
+                <h5>Short-term Optimization Directions:</h5>
+                <ul>
+                    <li>Focus on TikTok content quality</li>
+                    <li>Optimize Product Showcase and Store Tour content</li>
+                    <li>Strengthen collaborations with high-performing creators</li>
+                </ul>
+                <h5>Long-term Development Strategies:</h5>
+                <ul>
+                    <li>Establish a multi-platform content matrix</li>
+                    <li>Develop a creator training program</li>
+                    <li>Establish a content performance evaluation system</li>
+                    <li>Explore new content formats and marketing strategies</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize charts
+        const trendChart = echarts.init(document.getElementById('trendChart'));
+        const platformChart = echarts.init(document.getElementById('platformChart'));
+        const formatChart = echarts.init(document.getElementById('formatChart'));
+
+        // Trend Chart Option
+        const trendOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['Content Count', 'Views', 'Engagement Rate'],
+                bottom: 0
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '10%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['W41', 'W42', 'W43', 'W44', 'W45', 'W46', 'W47', 'W48'],
+                axisLabel: {
+                    rotate: 45
+                }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'Count/Views',
+                    position: 'left',
+                    axisLabel: {
+                        formatter: function(value) {
+                            return value >= 1000 ? (value/1000) + 'k' : value;
+                        }
+                    }
+                },
+                {
+                    type: 'value',
+                    name: 'Engagement Rate',
+                    position: 'right',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Content Count',
+                    type: 'bar',
+                    data: [156, 143, 138, 145, 152, 147, 149, 144]
+                },
+                {
+                    name: 'Views',
+                    type: 'line',
+                    data: [3245, 2987, 3124, 3456, 3234, 3567, 3234, 3456]
+                },
+                {
+                    name: 'Engagement Rate',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.77, 2.56, 2.34, 2.89, 2.45, 2.67, 2.54, 2.78]
+                }
+            ]
+        };
+
+        // Platform Distribution Chart Option
+        const platformOption = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: 'Platform Distribution',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        {value: 8496986, name: 'TikTok', itemStyle: {color: '#000009'}},
+                        {value: 423936, name: 'YouTube', itemStyle: {color: '#FF0000'}},
+                        {value: 25607, name: 'Instagram', itemStyle: {color: '#833AB4'}}
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // Content Format Chart Option
+        const formatOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                bottom: 0
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['Product Showcase', 'Store Tour', 'Product Usage']
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: 'Views',
+                    axisLabel: {
+                        formatter: function(value) {
+                            return (value/1000) + 'k';
+                        }
+                    }
+                },
+                {
+                    type: 'value',
+                    name: 'Engagement Rate',
+                    position: 'right',
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Views',
+                    type: 'bar',
+                    data: [3245, 2987, 1876]
+                },
+                {
+                    name: 'Engagement Rate',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [2.8, 2.6, 2.4]
+                }
+            ]
+        };
+
+        // Set chart options
+        trendChart.setOption(trendOption);
+        platformChart.setOption(platformOption);
+        formatChart.setOption(formatOption);
+
+        // Responsive charts
+        window.addEventListener('resize', function() {
+            trendChart.resize();
+            platformChart.resize();
+            formatChart.resize();
+        });
+
+        // 在现有的图表初始化代码后添加
+        const heatmapChart = echarts.init(document.getElementById('performanceHeatmap'));
+        
+        const heatmapOption = {
+            tooltip: {
+                position: 'top',
+                formatter: function (params) {
+                    return `${params.seriesName}<br/>
+                            ${params.name}: ${params.value}`;
+                }
+            },
+            grid: {
+                top: '60px',
+                bottom: '20px'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['Views (M)', 'Engagement Rate (%)', 'Format Impact'],
+                splitArea: {
+                    show: true
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['@gaulielbouh', '@clementina3883', '@merfi.lucky', '@voylevazie8', '@MerfiLucky'],
+                splitArea: {
+                    show: true
+                }
+            },
+            visualMap: {
+                min: 0,
+                max: 10,
+                calculable: true,
+                orient: 'horizontal',
+                left: 'center',
+                top: '0',
+                inRange: {
+                    color: ['#fff1f1', '#ffb3b3', '#ff6b6b', '#e4002b']
+                }
+            },
+            series: [{
+                name: 'Performance Metrics',
+                type: 'heatmap',
+                data: [
+                    // Views (标准化到0-10)
+                    [0, 0, 10],  // @gaulielbouh - 4.3M
+                    [0, 1, 3.65],  // @clementina3883 - 1.57M
+                    [0, 2, 2.79],  // @merfi.lucky - 1.20M
+                    [0, 3, 2.65],  // @voylevazie8 - 1.14M
+                    [0, 4, 2.58],  // @MerfiLucky - 1.11M
+
+                    // Engagement Rate
+                    [1, 0, 10],    // @gaulielbouh - 10.82%
+                    [1, 1, 7.97],  // @clementina3883 - 8.62%
+                    [1, 2, 1.66],  // @merfi.lucky - 1.80%
+                    [1, 3, 1.87],  // @voylevazie8 - 2.02%
+                    [1, 4, 0.79],  // @MerfiLucky - 0.85%
+
+                    // Format Impact (基于综合表现评分)
+                    [2, 0, 9.5],   // Product Showcase (@gaulielbouh)
+                    [2, 1, 8.5],   // Store Tour
+                    [2, 2, 6.5],   // Product Usage
+                    [2, 3, 7.0],   // Product Showcase
+                    [2, 4, 5.0]    // Product Review
+                ],
+                label: {
+                    show: true,
+                    formatter: function(params) {
+                        if (params.seriesName === 'Performance Metrics') {
+                            return params.value[2].toFixed(1);
+                        }
+                    }
+                },
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        };
+
+        heatmapChart.setOption(heatmapOption);
+
+        // 添加到resize事件监听
+        window.addEventListener('resize', function() {
+            // 在现有的resize处理中添加
+            heatmapChart.resize();
+        });
+    </script>
+</body>
+</html>

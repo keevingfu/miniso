@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Performance Tag Tree Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            height: 800px;
+            margin: 20px 0;
+        }
+        .insights-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .insights-box h4 {
+            color: #0d6efd;
+            margin-bottom: 15px;
+        }
+        .metric-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: white;
+            background-color: #0d6efd;
+        }
+        .dimension-box {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .dimension-people {
+            border-left: 4px solid #28a745;
+        }
+        .dimension-product {
+            border-left: 4px solid #ffc107;
+        }
+        .dimension-scenario {
+            border-left: 4px solid #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Ad Performance Tag Tree Based on People, Product, and Scenario</h1>
+        
+        <!-- Description -->
+        <div class="alert alert-info">
+            Analysis of creative effectiveness based on "People, Product, and Scenario", showing ad content performance in terms of target users (People), product features (Product), and promotional scenarios (Scenario).
+            This helps evaluate creative performance across different dimensions.
+        </div>
+
+        <!-- Tag Tree Chart -->
+        <div class="chart-container">
+            <div id="tagTree" style="height: 100%;"></div>
+        </div>
+
+        <!-- Analysis Insights -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="insights-box dimension-people">
+                    <h4>People (Audience) Analysis Insights</h4>
+                    <div class="mb-3">
+                        <h5>High-Performance Audience Groups</h5>
+                        <ul>
+                            <li>25-34 age group performs best, CTR reaches 4.8%</li>
+                            <li>Female users' conversion rate 30% above average</li>
+                            <li>Tier-1 city users show outstanding ROAS</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Optimization Suggestions</h5>
+                        <ul>
+                            <li>Strengthen targeting for 25-34 age group</li>
+                            <li>Develop exclusive creatives for female users</li>
+                            <li>Optimize placement strategy for tier-1 cities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="insights-box dimension-product">
+                    <h4>Product Analysis Insights</h4>
+                    <div class="mb-3">
+                        <h5>High-Performance Product Features</h5>
+                        <ul>
+                            <li>Value-for-money proposition has highest conversion rate</li>
+                            <li>Design-focused products show outstanding engagement</li>
+                            <li>Innovative features drive high click-through rates</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Optimization Suggestions</h5>
+                        <ul>
+                            <li>Enhance value proposition messaging</li>
+                            <li>Highlight product design features</li>
+                            <li>Strengthen innovative feature communication</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="insights-box dimension-scenario">
+                    <h4>Scenario Analysis Insights</h4>
+                    <div class="mb-3">
+                        <h5>High-Performance Scenario Types</h5>
+                        <ul>
+                            <li>Holiday promotions have highest conversion rate</li>
+                            <li>New product launches show good engagement</li>
+                            <li>Brand collaborations achieve high ROAS</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>Optimization Suggestions</h5>
+                        <ul>
+                            <li>Strengthen holiday marketing planning</li>
+                            <li>Optimize new product launch process</li>
+                            <li>Expand brand collaboration scope</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize chart
+        const treeChart = echarts.init(document.getElementById('tagTree'));
+
+        // Prepare tree data
+        const treeData = {
+            name: 'MINISO Ad Performance Analysis',
+            children: [
+                {
+                    name: 'People (User Groups)',
+                    value: 100,
+                    itemStyle: { color: '#28a745' },
+                    children: [
+                        {
+                            name: 'Age Distribution',
+                            value: 80,
+                            children: [
+                                { name: '18-24 years\nCTR: 3.5%\nCVR: 2.8%', value: 40 },
+                                { name: '25-34 years\nCTR: 4.8%\nCVR: 3.2%', value: 60 },
+                                { name: '35-44 years\nCTR: 3.2%\nCVR: 2.5%', value: 35 }
+                            ]
+                        },
+                        {
+                            name: 'Gender Distribution',
+                            value: 70,
+                            children: [
+                                { name: 'Female Users\nCTR: 4.5%\nROAS: 3.8', value: 55 },
+                                { name: 'Male Users\nCTR: 3.2%\nROAS: 2.9', value: 45 }
+                            ]
+                        },
+                        {
+                            name: 'Regional Distribution',
+                            value: 60,
+                            children: [
+                                { name: 'Tier-1 Cities\nCVR: 3.5%\nROAS: 4.2', value: 50 },
+                                { name: 'Tier-2 Cities\nCVR: 3.0%\nROAS: 3.5', value: 40 },
+                                { name: 'Tier-3 & Below\nCVR: 2.8%\nROAS: 3.0', value: 30 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Product Features',
+                    value: 90,
+                    itemStyle: { color: '#ffc107' },
+                    children: [
+                        {
+                            name: 'Product Selling Points',
+                            value: 75,
+                            children: [
+                                { name: 'Value for Money\nCVR: 4.2%\nROAS: 3.9', value: 65 },
+                                { name: 'Design Appeal\nCTR: 4.5%\nCVR: 3.2%', value: 55 },
+                                { name: 'Innovation\nCTR: 4.0%\nCVR: 2.8%', value: 45 }
+                            ]
+                        },
+                        {
+                            name: 'Product Categories',
+                            value: 70,
+                            children: [
+                                { name: 'Daily Necessities\nCTR: 3.8%\nROAS: 3.5', value: 50 },
+                                { name: 'Decorative Items\nCTR: 4.2%\nROAS: 3.2', value: 45 },
+                                { name: 'Digital Accessories\nCTR: 3.5%\nROAS: 3.0', value: 40 }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Promotional Scenarios',
+                    value: 85,
+                    itemStyle: { color: '#17a2b8' },
+                    children: [
+                        {
+                            name: 'Marketing Campaigns',
+                            value: 70,
+                            children: [
+                                { name: 'Holiday Promotions\nCVR: 4.5%\nROAS: 4.0', value: 60 },
+                                { name: 'New Launches\nCTR: 4.2%\nCVR: 3.5%', value: 50 },
+                                { name: 'Brand Collaborations\nCTR: 4.8%\nROAS: 3.8', value: 55 }
+                            ]
+                        },
+                        {
+                            name: 'Scenario Types',
+                            value: 65,
+                            children: [
+                                { name: 'Daily Shopping\nCVR: 3.2%\nROAS: 3.0', value: 40 },
+                                { name: 'Gift Shopping\nCVR: 3.8%\nROAS: 3.5', value: 45 },
+                                { name: 'Seasonal Needs\nCVR: 3.5%\nROAS: 3.2', value: 42 }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Configure tree chart options
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    const value = params.value || '';
+                    return params.name.split('\n').join('<br/>');
+                }
+            },
+            series: [{
+                type: 'tree',
+                data: [treeData],
+                top: '5%',
+                bottom: '5%',
+                layout: 'radial',
+                symbol: 'circle',
+                symbolSize: function(value) {
+                    return value ? Math.sqrt(value) * 3 : 10;
+                },
+                initialTreeDepth: 3,
+                label: {
+                    position: 'inside',
+                    rotate: 0,
+                    verticalAlign: 'middle',
+                    align: 'center',
+                    fontSize: 12,
+                    color: '#fff'
+                },
+                leaves: {
+                    label: {
+                        position: 'outside',
+                        rotate: 0,
+                        verticalAlign: 'middle',
+                        align: 'left',
+                        color: '#333'
+                    }
+                },
+                animationDurationUpdate: 750,
+                emphasis: {
+                    focus: 'descendant'
+                }
+            }]
+        };
+
+        // Set chart options
+        treeChart.setOption(option);
+
+        // Responsive adjustment
+        window.addEventListener('resize', function() {
+            treeChart.resize();
+        });
+    </script>
+</body>
+</html> 

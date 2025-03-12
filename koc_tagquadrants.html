@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Keyword Analysis Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .matrices-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .matrix-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        h1, h2 {
+            color: #333;
+            margin: 0 0 20px 0;
+        }
+        .matrix {
+            height: 600px;
+        }
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .legend h3 {
+            margin: 0 0 10px 0;
+            color: #666;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Content Keyword Analysis Dashboard</h1>
+            <div class="controls">
+                <select id="platformFilter" aria-label="Filter by platform">
+                    <option value="all">All Platforms</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                </select>
+                <select id="timeFilter" aria-label="Filter by time range">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="matrices-container">
+            <!-- Interest Generation Matrix -->
+            <div class="matrix-card">
+                <h2>Interest Generation Keywords Matrix</h2>
+                <div id="interestMatrix" class="matrix"></div>
+                <div class="legend">
+                    <h3>Dimension Description</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff7675"></div>
+                        <span>Brand Awareness & Engagement</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #74b9ff"></div>
+                        <span>Emotional Connection & Brand Story</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #55efc4"></div>
+                        <span>Lifestyle & Daily Usage</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ffeaa7"></div>
+                        <span>Interaction & Engagement</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversion Matrix -->
+            <div class="matrix-card">
+                <h2>Conversion Keywords Matrix</h2>
+                <div id="conversionMatrix" class="matrix"></div>
+                <div class="legend">
+                    <h3>Dimension Description</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e17055"></div>
+                        <span>Purchase Motivation & Decision</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0984e3"></div>
+                        <span>User Reviews & Social Proof</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #00b894"></div>
+                        <span>Product Features & USP</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #fdcb6e"></div>
+                        <span>Urgency & Limited Time Offers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Interest Generation Keywords Data
+        const interestKeywords = {
+            awareness: ['MINISO Lifestyle', 'Affordable Luxury', 'Japanese Design', 'Quality Life', 'Global Brand', 'Trendy Products'],
+            emotional: ['Cute Plushies', 'IP Collaboration', 'Kawaii Culture', 'Lifestyle Joy', 'Daily Happiness'],
+            lifestyle: ['Home Decor', 'Beauty Tools', 'Digital Gadgets', 'Stationery Love', 'Travel Essentials'],
+            interactive: ['Blind Box Fun', 'Collection Series', 'Limited Edition', 'Seasonal Items', 'New Arrivals']
+        };
+
+        // Conversion Keywords Data
+        const conversionKeywords = {
+            motivation: ['Shop MINISO', 'MINISO Sale', 'Best Price', 'Special Offer', 'Flash Deals'],
+            reviews: ['Customer Reviews', 'Product Rating', 'User Experience', 'Quality Guarantee', 'Value for Money'],
+            features: ['Premium Quality', 'Unique Design', 'Multi-function', 'Portable Size', 'Eco-friendly'],
+            urgency: ['Limited Stock', 'Exclusive Deal', 'Today Only', 'Member Price', 'Holiday Special']
+        };
+
+        // Define quadrant positions
+        const quadrants = {
+            Q1: { x: 0.7, y: 0.7 },
+            Q2: { x: -0.7, y: 0.7 },
+            Q3: { x: -0.7, y: -0.7 },
+            Q4: { x: 0.7, y: -0.7 }
+        };
+
+        // Store current keyword states
+        let keywordStates = new Map();
+        let currentMatrix = 'interest'; // Track current active matrix
+
+        // Initialize keyword positions
+        function initializeKeywordPositions() {
+            // Interest matrix keywords
+            for (let category in interestKeywords) {
+                interestKeywords[category].forEach(keyword => {
+                    if (!keywordStates.has(keyword)) {
+                        keywordStates.set(keyword, {
+                            quadrant: Math.floor(Math.random() * 4) + 1,
+                            matrix: 'interest',
+                            x: Math.random() * 0.4 + quadrants[`Q${Math.floor(Math.random() * 4) + 1}`].x,
+                            y: Math.random() * 0.4 + quadrants[`Q${Math.floor(Math.random() * 4) + 1}`].y
+                        });
+                    }
+                });
+            }
+
+            // Conversion matrix keywords
+            for (let category in conversionKeywords) {
+                conversionKeywords[category].forEach(keyword => {
+                    if (!keywordStates.has(keyword)) {
+                        keywordStates.set(keyword, {
+                            quadrant: Math.floor(Math.random() * 4) + 1,
+                            matrix: 'conversion',
+                            x: Math.random() * 0.4 + quadrants[`Q${Math.floor(Math.random() * 4) + 1}`].x,
+                            y: Math.random() * 0.4 + quadrants[`Q${Math.floor(Math.random() * 4) + 1}`].y
+                        });
+                    }
+                });
+            }
+        }
+
+        // Prepare interest matrix data
+        const interestTrace = {
+            type: 'scatter',
+            mode: 'markers+text',
+            x: [],
+            y: [],
+            text: [],
+            textposition: 'top center',
+            marker: {
+                size: 12,
+                color: [],
+                opacity: 0.8
+            }
+        };
+
+        // Prepare conversion matrix data
+        const conversionTrace = {
+            type: 'scatter',
+            mode: 'markers+text',
+            x: [],
+            y: [],
+            text: [],
+            textposition: 'top center',
+            marker: {
+                size: 12,
+                color: [],
+                opacity: 0.8
+            }
+        };
+
+        // Auto-transition function
+        function autoTransition() {
+            // Randomly select 3-5 keywords for transition
+            const numKeywords = Math.floor(Math.random() * 3) + 3; // 3-5 keywords
+            const allKeywords = Array.from(keywordStates.keys());
+            const selectedKeywords = [];
+            
+            // Randomly select keywords
+            while (selectedKeywords.length < numKeywords && allKeywords.length > 0) {
+                const index = Math.floor(Math.random() * allKeywords.length);
+                selectedKeywords.push(allKeywords.splice(index, 1)[0]);
+            }
+
+            // Update selected keywords' positions
+            selectedKeywords.forEach(keyword => {
+                const state = keywordStates.get(keyword);
+                
+                // Decide whether to cross-matrix transition (20% probability)
+                if (Math.random() < 0.2) {
+                    state.matrix = state.matrix === 'interest' ? 'conversion' : 'interest';
+                }
+
+                // Update quadrant
+                state.quadrant = (state.quadrant % 4) + 1;
+                
+                // Calculate new position
+                const targetQuadrant = quadrants[`Q${state.quadrant}`];
+                state.x = targetQuadrant.x + (Math.random() - 0.5) * 0.4;
+                state.y = targetQuadrant.y + (Math.random() - 0.5) * 0.4;
+                
+                keywordStates.set(keyword, state);
+            });
+
+            // Update both matrix displays
+            updateMatrixDisplays();
+        }
+
+        // 更新矩阵显示
+        function updateMatrixDisplays() {
+            // 分配关键词到对应矩阵
+            keywordStates.forEach((state, keyword) => {
+                const trace = state.matrix === 'interest' ? interestTrace : conversionTrace;
+                trace.x.push(state.x);
+                trace.y.push(state.y);
+                trace.text.push(keyword);
+                trace.marker.color.push(getColorForKeyword(keyword, state.matrix));
+            });
+
+            // 更新两个矩阵
+            const layout = {
+                showlegend: false,
+                xaxis: {
+                    zeroline: true,
+                    showgrid: false,
+                    range: [-1.2, 1.2]
+                },
+                yaxis: {
+                    zeroline: true,
+                    showgrid: false,
+                    range: [-1.2, 1.2]
+                },
+                shapes: [
+                    {
+                        type: 'line',
+                        x0: -1.2,
+                        y0: 0,
+                        x1: 1.2,
+                        y1: 0,
+                        line: { color: '#ddd', width: 1 }
+                    },
+                    {
+                        type: 'line',
+                        x0: 0,
+                        y0: -1.2,
+                        x1: 0,
+                        y1: 1.2,
+                        line: { color: '#ddd', width: 1 }
+                    }
+                ],
+                transition: {
+                    duration: 1000,
+                    easing: 'cubic-in-out'
+                }
+            };
+
+            Plotly.react('interestMatrix', [interestTrace], layout);
+            Plotly.react('conversionMatrix', [conversionTrace], layout);
+        }
+
+        // 获取关键词颜色
+        function getColorForKeyword(keyword, matrix) {
+            const interestColors = ['#ff7675', '#74b9ff', '#55efc4', '#ffeaa7'];
+            const conversionColors = ['#e17055', '#0984e3', '#00b894', '#fdcb6e'];
+            
+            // 根据关键词所属类别返回对应颜色
+            const colors = matrix === 'interest' ? interestColors : conversionColors;
+            // 简单的哈希函数来确定颜色
+            return colors[Math.abs(keyword.length) % colors.length];
+        }
+
+        // 初始化和启动自动跃迁
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeKeywordPositions();
+            updateMatrixDisplays();
+
+            // 每2秒执行一次跃迁
+            setInterval(autoTransition, 2000);
+
+            // 保持响应式调整
+            window.addEventListener('resize', updateMatrixDisplays);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Performance Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+
+        .description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .chart-container {
+            height: 700px;
+            margin-top: 20px;
+        }
+
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .legend h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .bubble-preview {
+            position: absolute;
+            display: none;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            padding: 10px;
+            z-index: 1000;
+            width: 200px;
+        }
+
+        .bubble-preview img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .bubble-preview .title {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .bubble-preview .stats {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .thumbnail-item {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .thumbnail-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: transform 0.2s;
+        }
+
+        .thumbnail-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .thumbnail-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 12px;
+            border-radius: 0 0 4px 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Content Performance Analysis</h1>
+            <div class="description">
+                Analyzing content performance based on Ad Spend and ROAS distribution
+            </div>
+        </div>
+
+        <div class="filters">
+            <select id="timeRange" aria-label="Select time range">
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+                <option value="90d">Last 90 Days</option>
+            </select>
+            <select id="platform" aria-label="Select platform">
+                <option value="all">All Platforms</option>
+                <option value="tiktok">Amazon SBV</option>
+                <option value="instagram">Meta</option>
+                <option value="youtube">TikTok</option>
+                <option value="amazon">YouTube</option>
+            </select>
+        </div>
+
+        <div id="bubbleChart" class="chart-container"></div>
+
+        <div class="legend">
+            <h3>Bubble Size Guide</h3>
+            <div class="legend-item">• Larger bubbles indicate higher engagement rates</div>
+            <div class="legend-item">• Color intensity represents content virality score</div>
+        </div>
+
+        <div class="thumbnail-grid" id="thumbnailGrid"></div>
+    </div>
+
+    <script>
+        const chart = echarts.init(document.getElementById('bubbleChart'));
+
+        const videoData = {
+            '#miniso': {
+                title: 'Exploring MINISO Store - Cute Finds!',
+                image: 'https://source.unsplash.com/random/400x300/?store,cute',
+                views: '1.2M',
+                likes: '150K'
+            },
+            '#aesthetic': {
+                title: 'Room Makeover with Aesthetic Decor',
+                image: 'https://source.unsplash.com/random/400x300/?aesthetic,room',
+                views: '890K',
+                likes: '95K'
+            },
+            // ... 为其他标签添加类似数据
+        };
+
+        function generateData() {
+            const data = [];
+            const hashtags = [
+                '#miniso', '#aesthetic', '#kawaii', '#homedecor', 
+                '#beauty', '#stationery', '#plushies', '#lifestyle',
+                '#organization', '#cute', '#shopping', '#trendy',
+                '#giftideas', '#roomdecor', '#anime'
+            ];
+
+            hashtags.forEach(tag => {
+                const adSpend = Math.random() * 10000 + 5000;
+                const roas = (Math.random() * 5 + 2) * (1 + adSpend/20000);
+                const engagementRate = Math.random() * 10 + 5;
+                const viralityScore = Math.random() * 100;
+                const consumptionCycle = Math.floor(Math.random() * 30 + 15); // 15-45 days range
+
+                if (!videoData[tag]) {
+                    videoData[tag] = {
+                        title: `${tag.replace('#', '')} - Trending Video`,
+                        image: `https://source.unsplash.com/random/400x300/?${tag.replace('#', '')}`,
+                        views: `${Math.floor(Math.random() * 1000 + 100)}K`,
+                        likes: `${Math.floor(Math.random() * 100 + 10)}K`,
+                        consumptionCycle: `${consumptionCycle} days`
+                    };
+                }
+
+                data.push({
+                    name: tag,
+                    value: [
+                        adSpend,
+                        roas,
+                        engagementRate,
+                        viralityScore,
+                        tag,
+                        consumptionCycle
+                    ],
+                    videoData: videoData[tag]
+                });
+            });
+
+            return data;
+        }
+
+        function updateChart() {
+            const option = {
+                title: {
+                    text: 'Ad Spend vs ROAS Distribution',
+                    left: 'center',
+                    top: 20
+                },
+                tooltip: {
+                    formatter: function(params) {
+                        const data = params.data;
+                        return `
+                            <div style="padding: 5px;">
+                                <h4 style="margin: 0;">${data.name}</h4>
+                                <p style="margin: 5px 0;">Ad Spend: $${data.value[0].toFixed(2)}</p>
+                                <p style="margin: 5px 0;">ROAS: ${data.value[1].toFixed(2)}</p>
+                                <p style="margin: 5px 0;">Engagement Rate: ${data.value[2].toFixed(2)}%</p>
+                                <p style="margin: 5px 0;">Virality Score: ${data.value[3].toFixed(0)}</p>
+                                <p style="margin: 5px 0;">Ad Material Consumption Cycle: ${data.value[5]} days</p>
+                            </div>
+                        `;
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: 'Ad Spend ($)',
+                    nameLocation: 'middle',
+                    nameGap: 30,
+                    axisLabel: {
+                        formatter: value => `$${value}`
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'ROAS',
+                    nameLocation: 'middle',
+                    nameGap: 30
+                },
+                visualMap: [{
+                    show: false,
+                    dimension: 3,
+                    min: 0,
+                    max: 100,
+                    inRange: {
+                        color: ['#FFB5B5', '#FF7777', '#FF4444', '#FF0000']
+                    }
+                }],
+                series: [{
+                    type: 'scatter',
+                    data: generateData(),
+                    symbolSize: function(data) {
+                        return data[2] * 3;
+                    },
+                    label: {
+                        show: true,
+                        formatter: function(param) {
+                            return param.data.value[4];
+                        },
+                        position: 'top',
+                        fontSize: 12,
+                        color: '#666'
+                    },
+                    emphasis: {
+                        focus: 'series',
+                        label: {
+                            show: true
+                        }
+                    }
+                }]
+            };
+
+            chart.setOption(option);
+            updateThumbnailGrid(generateData());
+        }
+
+        function updateThumbnailGrid(data) {
+            const grid = document.getElementById('thumbnailGrid');
+            grid.innerHTML = '';
+
+            data.forEach(item => {
+                const video = item.videoData;
+                const div = document.createElement('div');
+                div.className = 'thumbnail-item';
+                div.innerHTML = `
+                    <a href="${video.image}" data-fancybox="gallery" 
+                       data-caption="${video.title}<br>Views: ${video.views} • Likes: ${video.likes}">
+                        <img src="${video.image}" alt="${item.name}">
+                        <div class="thumbnail-info">
+                            <div>${item.name}</div>
+                            <div>${video.views} views</div>
+                        </div>
+                    </a>
+                `;
+                grid.appendChild(div);
+            });
+
+            Fancybox.bind("[data-fancybox]", {
+                // Fancybox options
+            });
+        }
+
+        updateChart();
+
+        document.getElementById('timeRange').addEventListener('change', updateChart);
+        document.getElementById('platform').addEventListener('change', updateChart);
+        window.addEventListener('resize', function() {
+            chart.resize();
+        });
+
+        chart.on('mouseover', function(params) {
+            if (params.componentType === 'series') {
+                const video = params.data.videoData;
+                if (video) {
+                    showPreview(params.event.offsetX, params.event.offsetY, video);
+                }
+            }
+        });
+
+        chart.on('mouseout', function() {
+            hidePreview();
+        });
+
+        function showPreview(x, y, video) {
+            let preview = document.querySelector('.bubble-preview');
+            if (!preview) {
+                preview = document.createElement('div');
+                preview.className = 'bubble-preview';
+                document.body.appendChild(preview);
+            }
+
+            preview.innerHTML = `
+                <img src="${video.image}" alt="${video.title}">
+                <div class="title">${video.title}</div>
+                <div class="stats">Views: ${video.views} • Likes: ${video.likes}</div>
+            `;
+
+            preview.style.left = `${x + 10}px`;
+            preview.style.top = `${y + 10}px`;
+            preview.style.display = 'block';
+        }
+
+        function hidePreview() {
+            const preview = document.querySelector('.bubble-preview');
+            if (preview) {
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html> 

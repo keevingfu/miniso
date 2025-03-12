@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miniso - Amazon Keyword Research</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+</head>
+<body>
+    <div id="main" style="width: 100%; height: 800px;"></div>
+    <script>
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        var data = [
+          {
+            name: 'Consumer Search Attributes',
+            itemStyle: {
+              color: '#da0d68'
+            },
+            children: [
+              {
+                name: 'Brand Product Keywords',
+                itemStyle: {
+                  color: '#975e6d'
+                },
+                children: [
+                  {name: 'miniso', value: 201000, itemStyle: {color: '#e0719c'}},
+                  {name: 'miniso near me', value: 27100, itemStyle: {color: '#f99e1c'}},
+                  {name: 'miniso usa', value: 18100, itemStyle: {color: '#ef5a78'}},
+                  {name: 'miniso store', value: 12100, itemStyle: {color: '#f7f1bd'}},
+                  {name: 'miniso sanrio', value: 2900, itemStyle: {color: '#f6bcd5'}}
+                ]
+              },
+              {
+                name: 'Complementary Product Keywords',
+                itemStyle: {
+                  color: '#e0719c'
+                },
+                children: [
+                  {name: 'cute lunch bags', value: 2900, itemStyle: {color: '#dd4c51'}},
+                  {name: 'plush capybara', value: 3600, itemStyle: {color: '#c94a44'}},
+                  {name: 'peep plush', value: 3600, itemStyle: {color: '#b53b54'}},
+                  {name: 'snoopy plush doll', value: 1600, itemStyle: {color: '#a5446f'}},
+                  {name: 'muji backpack', value: 1600, itemStyle: {color: '#dd4c51'}}
+                ]
+              },
+              {
+                name: 'Out-of-Category Keywords',
+                itemStyle: {
+                  color: '#f99e1c'
+                },
+                children: [
+                  {name: 'muji near me', value: 22200, itemStyle: {color: '#f26355'}},
+                  {name: 'japanese store near me', value: 18100, itemStyle: {color: '#e2631e'}},
+                  {name: 'korean store near me', value: 18100, itemStyle: {color: '#fde404'}},
+                  {name: 'mini mart near me', value: 14800, itemStyle: {color: '#7eb138'}},
+                  {name: 'muji usa', value: 9900, itemStyle: {color: '#e1c315'}}
+                ]
+              }
+            ]
+          },
+          {
+            name: 'Keyword Length',
+            itemStyle: {
+              color: '#da1d23'
+            },
+            children: [
+              {
+                name: 'Short Tail',
+                itemStyle: {
+                  color: '#dd4c51'
+                },
+                children: [
+                  {name: 'miniso', value: 201000, itemStyle: {color: '#3e0317'}},
+                  {name: 'minso', value: 3600, itemStyle: {color: '#e62969'}},
+                  {name: 'mini so', value: 6600, itemStyle: {color: '#6569b0'}},
+                  {name: 'minisoo', value: 1300, itemStyle: {color: '#ef2d36'}},
+                  {name: 'minisi', value: 1300, itemStyle: {color: '#c94a44'}}
+                ]
+              },
+              {
+                name: 'Long Tail',
+                itemStyle: {
+                  color: '#c94a44'
+                },
+                children: [
+                  {name: 'miniso near me', value: 27100, itemStyle: {color: '#b53b54'}},
+                  {name: 'muji near me', value: 22200, itemStyle: {color: '#a5446f'}},
+                  {name: 'japanese store near me', value: 18100, itemStyle: {color: '#dd4c51'}},
+                  {name: 'korean store near me', value: 18100, itemStyle: {color: '#f2684b'}},
+                  {name: 'mini mart near me', value: 14800, itemStyle: {color: '#e73451'}}
+                ]
+              }
+            ]
+          },
+          {
+            name: 'Search Intent',
+            itemStyle: {
+              color: '#ebb40f'
+            },
+            children: [
+              {
+                name: 'Informational',
+                itemStyle: {
+                  color: '#e1c315'
+                },
+                children: [
+                  {name: 'usahana', value: 9900, itemStyle: {color: '#9ea718'}},
+                  {name: 'minis', value: 8100, itemStyle: {color: '#94a76f'}},
+                  {name: 'muji broadway nyc', value: 4400, itemStyle: {color: '#d0b24f'}},
+                  {name: 'phone girls jjk', value: 3600, itemStyle: {color: '#8eb646'}},
+                  {name: 'paradise men nigeria', value: 3600, itemStyle: {color: '#faef07'}}
+                ]
+              },
+              {
+                name: 'Navigational',
+                itemStyle: {
+                  color: '#b09733'
+                },
+                children: [
+                  {name: 'miniso', value: 201000, itemStyle: {color: '#8f1c53'}},
+                  {name: 'muji near me', value: 22200, itemStyle: {color: '#b34039'}},
+                  {name: 'miniso usa', value: 18100, itemStyle: {color: '#ba9232'}},
+                  {name: 'miniso store', value: 12100, itemStyle: {color: '#8b6439'}},
+                  {name: 'muji usa', value: 9900, itemStyle: {color: '#187a2f'}}
+                ]
+              },
+              {
+                name: 'Transactional',
+                itemStyle: {
+                  color: '#187a2f'
+                },
+                children: [
+                  {name: 'miniso near me', value: 27100, itemStyle: {color: '#a2b029'}},
+                  {name: 'japanese store near me', value: 18100, itemStyle: {color: '#718933'}},
+                  {name: 'korean store near me', value: 18100, itemStyle: {color: '#3aa255'}},
+                  {name: 'mini mart near me', value: 14800, itemStyle: {color: '#a2bb2b'}},
+                  {name: 'chinese stores near me', value: 5400, itemStyle: {color: '#62aa3c'}}
+                ]
+              }
+            ]
+          },
+          {
+            name: 'Keyword Popularity',
+            itemStyle: {
+              color: '#0aa3b5'
+            },
+            children: [
+              {
+                name: 'Hot',
+                itemStyle: {
+                  color: '#9db2b7'
+                },
+                children: [
+                  {name: 'miniso', value: 201000, itemStyle: {color: '#8b8c90'}}
+                ]
+              },
+              {
+                name: 'Cold',
+                itemStyle: {
+                  color: '#76c0cb'
+                },
+                children: [
+                  {name: 'miniso cosmetics', value: 90, itemStyle: {color: '#80a89d'}},
+                  {name: 'one piece anime fabric', value: 90, itemStyle: {color: '#def2fd'}},
+                  {name: 'vintage japanese doll in glass case', value: 90, itemStyle: {color: '#7a9bae'}},
+                  {name: 'shiba pillow', value: 90, itemStyle: {color: '#039fb8'}},
+                  {name: 'chinese in greensburg pa', value: 90, itemStyle: {color: '#5e777b'}}
+                ]
+              },
+              {
+                name: 'General',
+                itemStyle: {
+                  color: '#5e9a80'
+                },
+                children: [
+                  {name: 'miniso near me', value: 27100, itemStyle: {color: '#0aa3b5'}},
+                  {name: 'muji near me', value: 22200, itemStyle: {color: '#9db2b7'}},
+                  {name: 'miniso usa', value: 18100, itemStyle: {color: '#8b8c90'}},
+                  {name: 'japanese store near me', value: 18100, itemStyle: {color: '#beb276'}},
+                  {name: 'korean store near me', value: 18100, itemStyle: {color: '#fefef4'}}
+                ]
+              }
+            ]
+          }
+        ];
+
+        option = {
+          title: {
+            text: 'Miniso - Amazon Keyword Research',
+            subtext: 'Analysis of search attributes, keyword length, intent, and popularity',
+            textStyle: {
+              fontSize: 14,
+              align: 'center'
+            },
+            subtextStyle: {
+              align: 'center'
+            },
+            sublink: 'https://www.miniso.com'
+          },
+          series: {
+            type: 'sunburst',
+            data: data,
+            radius: [0, '95%'],
+            sort: undefined,
+            emphasis: {
+              focus: 'ancestor'
+            },
+            levels: [
+              {},
+              {
+                r0: '15%',
+                r: '35%',
+                itemStyle: {
+                  borderWidth: 2
+                },
+                label: {
+                  rotate: 'tangential'
+                }
+              },
+              {
+                r0: '35%',
+                r: '70%',
+                label: {
+                  align: 'right'
+                }
+              },
+              {
+                r0: '70%',
+                r: '72%',
+                label: {
+                  position: 'outside',
+                  padding: 3,
+                  silent: false
+                },
+                itemStyle: {
+                  borderWidth: 3
+                }
+              }
+            ]
+          }
+        };
+
+        option && myChart.setOption(option);
+
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+
+    <!-- 添加洞察和建议部分 -->
+    <div class="container mt-4">
+        <!-- 关键词属性洞察 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">📊 消费者搜索属性洞察</h5>
+                <ul class="mb-3">
+                    <li>品牌关键词"miniso"月搜索量达201,000次，占据主导地位</li>
+                    <li>"miniso near me"（27,100次）显示出强烈的线下购买意向</li>
+                    <li>Sanrio联名系列关键词展现出品牌跨界合作的潜力</li>
+                    <li>毛绒玩具和文具用品是最受关注的产品类别</li>
+                </ul>
+                <h5 class="card-title">💡 优化建议</h5>
+                <ul class="mb-0">
+                    <li>加强店铺定位信息优化，满足本地搜索需求</li>
+                    <li>扩大联名系列产品的关键词覆盖</li>
+                    <li>针对热门品类开发长尾关键词策略</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 关键词长度分析 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">📏 关键词长度分析</h5>
+                <ul class="mb-3">
+                    <li>短尾词以品牌名称变体为主，如"minso"、"mini so"等</li>
+                    <li>长尾词主要集中在位置相关搜索，显示出强烈的购买意图</li>
+                    <li>品牌拼写错误词（如"miniso"、"minisi"）有一定搜索量</li>
+                </ul>
+                <h5 class="card-title">💡 优化建议</h5>
+                <ul class="mb-0">
+                    <li>针对常见的品牌名拼写错误设置关键词定向</li>
+                    <li>优化长尾关键词的着陆页体验</li>
+                    <li>加强本地化搜索结果的展示质量</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 搜索意图分析 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">🎯 搜索意图分析</h5>
+                <ul class="mb-3">
+                    <li>导航类搜索（如"miniso usa"）显示品牌认知度高</li>
+                    <li>交易类搜索（"near me"相关）表明强烈的购买意向</li>
+                    <li>信息类搜索涉及产品详情和店铺信息查询</li>
+                </ul>
+                <h5 class="card-title">💡 优化建议</h5>
+                <ul class="mb-0">
+                    <li>优化品牌店铺页面，提供清晰的导航信息</li>
+                    <li>加强本地化营销，提供店铺地址和营业时间</li>
+                    <li>完善产品详情页面，提供丰富的产品信息</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 关键词热度分析 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">🔥 关键词热度分析</h5>
+                <ul class="mb-3">
+                    <li>品牌词"miniso"搜索热度最高，月均20万次搜索</li>
+                    <li>冷门关键词主要集中在特定产品和本地化搜索</li>
+                    <li>一般性关键词以位置和品类搜索为主</li>
+                </ul>
+                <h5 class="card-title">💡 优化建议</h5>
+                <ul class="mb-0">
+                    <li>重点优化高搜索量关键词的转化路径</li>
+                    <li>利用冷门关键词开发差异化内容</li>
+                    <li>根据搜索热度调整广告投放策略</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加Bootstrap样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            color: #333;
+            font-weight: 600;
+        }
+        ul {
+            padding-left: 1.2rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+    </style>
+</body>
+</html>

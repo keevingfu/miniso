@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MINISO Content Creation Guide</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5em;
+            color: #e47272; /* MINISO brand color */
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #777;
+            font-size: 1.1em;
+        }
+
+        .dashboard-section {
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            color: #e47272;
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #f8bbbb;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .analysis-text {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .creation-directions-table, .composition-elements-table, .data-metrics-table, .content-strategy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .creation-directions-table th, .creation-directions-table td,
+        .composition-elements-table th, .composition-elements-table td,
+        .data-metrics-table th, .data-metrics-table td,
+        .content-strategy-table th, .content-strategy-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .creation-directions-table th,
+        .composition-elements-table th,
+        .data-metrics-table th,
+        .content-strategy-table th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+        .script-example {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px #eee;
+            margin-bottom: 20px;
+        }
+
+        .script-example h4 {
+            color: #e47272;
+            margin-top: 0;
+        }
+
+        .script-example pre {
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #555;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+
+        .notes-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 5px #eee;
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .notes-section h3 {
+            margin-top: 0;
+            color: #e47272;
+        }
+
+        .notes-section ul {
+            padding-left: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 20px;
+                margin: 10px auto;
+            }
+
+            .dashboard-header h1 {
+                font-size: 2em;
+            }
+
+            .dashboard-section {
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>MINISO Content Creation Guide</h1>
+            <p>Short Video Strategy and Scripting for Social Media</p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Short Video Creation Directions</h2>
+            <div>
+                <p class="analysis-text">This section outlines content creation directions for different MINISO product categories, targeting specific audiences and themes to maximize engagement on short video platforms.</p>
+                <table class="creation-directions-table">
+                    <thead>
+                        <tr>
+                            <th>Product Category</th>
+                            <th>Target Audience</th>
+                            <th>Creation Themes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Figurines/Dolls</strong></td>
+                            <td>Young Women, Families, Collectors</td>
+                            <td>
+                                <ul>
+                                    <li>Theme 1: "Day with a Healing Plush Toy" - Daily life scenes with the doll.</li>
+                                    <li>Theme 2: "Blind Box Opening Challenge" - Surprise unboxing to attract viewers.</li>
+                                    <li>Theme 3: "IP Collaboration Series" - Character stories with popular IPs.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Plush Toys</strong></td>
+                            <td>Families, Parents and Children</td>
+                            <td>
+                                <ul>
+                                    <li>Theme 1: "Parent-Child Interaction Time" - Parents and kids playing with MINISO toys.</li>
+                                    <li>Theme 2: "Doll DIY Decoration" - Home decoration ideas using MINISO dolls.</li>
+                                    <li>Theme 3: "New Product Preview" - Showcase new plush toys and details.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Blind Boxes</strong></td>
+                            <td>Collectors, Young People</td>
+                            <td>
+                                <ul>
+                                    <li>Theme 1: "Blind Box Challenge" - Multi-person unboxing competition.</li>
+                                    <li>Theme 2: "Blind Box Series Story" - Serial short videos with blind box characters.</li>
+                                    <li>Theme 3: "Limited Edition Reveal" - Focus on rare and special edition blind boxes.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bags</strong></td>
+                            <td>Fashionable Women, Students</td>
+                            <td>
+                                <ul>
+                                    <li>Theme 1: "Bag Versatile Outfit Guide" - Styling guide with MINISO bags.</li>
+                                    <li>Theme 2: "One Bag, Multiple Uses" - Practicality in different scenarios.</li>
+                                    <li>Theme 3: "New Product Launch" - Showcase design details in a dynamic video.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Example Short Video Scripts</h2>
+            <div>
+                <div class="script-example">
+                    <h4 >Example Script - Figurines/Dolls Category: "Day with a Healing Plush Toy"</h4>
+                    <pre>
+Title: "Day with a Healing Plush Toy"
+Scene 1 (Morning):
+    Scene: Sunlight in bedroom, doll on nightstand.
+    Text/Voiceover: "Waking up in the morning, having it with me makes every day a good mood."
+Scene 2 (Work):
+    Scene: Doll on desk, owner smiles touching it while working.
+    Text/Voiceover: "Busy work also needs a little healing."
+Scene 3 (Evening):
+    Scene: Owner holding doll on sofa watching TV.
+    Text/Voiceover: "The day ends, it's complete with its company."
+Ending Scene (Close-up):
+    Scene: Doll close-up, background text: "MINISO plush toys, heal your every day."
+Music: Warm light music.
+                    </pre>
+                </div>
+
+                <div class="script-example">
+                    <h4 >Example Script - Blind Box Category: "Blind Box Opening Challenge"</h4>
+                    <pre>
+Title: "Blind Box Opening Challenge"
+Scene 1 (Opening):
+    Scene: Two participants holding MINISO blind boxes, ready to open.
+    Text/Voiceover: "Today we are having a blind box opening challenge!"
+Scene 2 (Unboxing):
+    Scene: Participants unpack step-by-step, focus on unboxing actions and facial expressions.
+    Text/Voiceover: "Who will draw the hidden edition?"
+Scene 3 (Result Reveal):
+    Scene: One participant draws hidden edition, cheers; another draws regular, feigns disappointment.
+    Text/Voiceover: "The hidden edition is so exciting!"
+Ending Scene (Product Display):
+    Scene: Display full series of blind box characters, with purchase link or event info.
+Music: Lively and cheerful music.
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Data Collection & Analysis for Short Videos</h2>
+            <div>
+                <p class="analysis-text">Effective short video content relies on continuous data analysis and strategy optimization. Key aspects include:</p>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Core Data Metrics</h3>
+                <table class="data-metrics-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Description</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Watch Time & Completion Rate</strong></td>
+                            <td>Duration viewers watch & percentage who watch to the end.</td>
+                            <td>Indicates content attractiveness.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Likes, Comments, Shares</strong></td>
+                            <td>User interaction metrics.</td>
+                            <td>Reflects user engagement and content resonance.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Retention Rate</strong></td>
+                            <td>Rate of users returning to view more content.</td>
+                            <td>Shows long-term content appeal.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Behavior Analysis</strong></td>
+                            <td>Analysis of viewing habits and preferences.</td>
+                            <td>Understand audience behavior for content tailoring.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Content Strategy Optimization</h3>
+                <table class="content-strategy-table">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>Description</th>
+                            <th>Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Account Positioning Adjustment</strong></td>
+                            <td>Maintain content verticality and platform recognition.</td>
+                            <td>Accurate platform categorization & audience targeting.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precise Audience Targeting</strong></td>
+                            <td>Target audience based on user profiles.</td>
+                            <td>Content tailored to specific user interests.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Content Planning</strong></td>
+                            <td>Establish mid-to-long term content plans.</td>
+                            <td>Algorithm learning time and consistent content delivery.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interaction Enhancement</strong></td>
+                            <td>Optimize video openings, control video length, add interactive elements.</td>
+                            <td>Improved completion rates and user participation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interactive Guidance</strong></td>
+                            <td>Strengthen comment interactions, understand user needs, organize engagement activities.</td>
+                            <td>Enhanced user engagement and community building.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="dashboard-section">
+            <h2 class="section-title">Basic Composition Elements for Short Videos</h2>
+            <div>
+                <p class="analysis-text">Creating effective short videos involves careful consideration of several basic composition elements to ensure engagement and clarity.</p>
+                <table class="composition-elements-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Description</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Duration</strong></td>
+                            <td>Specific length for each shot.</td>
+                            <td>Facilitates editing and pacing.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Shot Size (景别)</strong></td>
+                            <td>Varying angles (Long shot, Full shot, Medium shot, Close-up, Extreme close-up).</td>
+                            <td>Provides visual variety and focus.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Screen Content (画面内容)</strong></td>
+                            <td>Specific scenes and content to be presented.</td>
+                            <td>Clear visual storytelling.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Shooting Method (拍摄方式)</strong></td>
+                            <td>Techniques like push, pull, pan, move, follow.</td>
+                            <td>Dynamic visual presentation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subtitles & Dialogue (字幕与台词)</strong></td>
+                            <td>Text content and dialogues in the video.</td>
+                            <td>Clarity and accessibility for viewers.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Props Preparation (道具准备)</strong></td>
+                            <td>Necessary props for shooting.</td>
+                            <td>Enhances visual elements and themes.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Music & Sound Effects (音乐与音效)</strong></td>
+                            <td>Video background music and sound design.</td>
+                            <td>Emotional tone and engagement.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: #e47272; margin-top: 25px;">Structure Design & Creation Skills</h3>
+                <table class="composition-elements-table">
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Description</th>
+                            <th>Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Three-Stage Layout (三段式布局)</strong></td>
+                            <td>Introduction (引子), Development (承接), Climax (高潮).</td>
+                            <td>Engaging structure with quick hook, content expansion, and impactful conclusion.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Opening Hook (开场钩子)</strong></td>
+                            <td>Capture attention in the first 3-7 seconds.</td>
+                            <td>Maximizes initial viewer engagement.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Plot Design (情节设计)</strong></td>
+                            <td>Incorporate suspense and reversals.</td>
+                            <td>Improved video completion rate.</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Personal Labels (个人标签)</strong></td>
+                            <td>Develop unique content style and personal brand.</td>
+                            <td>Distinct content identity and viewer recognition.</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Concise Language (语言简洁)</strong></td>
+                            <td>Use simple vocabulary and sentence structures.</td>
+                            <td>Easy understanding and broader audience reach.</td>
+                        </tr>
+                         <tr>
+                            <td><strong>Clear Structure (结构清晰)</strong></td>
+                            <td>Ensure logical integrity and clear layers.</td>
+                            <td>Logical flow and easy to follow content.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Emotional Resonance (情感共鸣)</strong></td>
+                            <td>Incorporate emotional elements.</td>
+                            <td>Viewer connection and deeper engagement.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interactive Guidance (互动引导)</strong></td>
+                            <td>Set up interactive topics or calls to action at the end.</td>
+                            <td>Increased user interaction and community engagement.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+        <div class="dashboard-section notes-section">
+            <h3>Dashboard Notes and Considerations</h3>
+            <ul>
+                <li><strong>Data Source:</strong> This dashboard is based on the provided text analysis of MINISO short video creation strategies.</li>
+                <li><strong>Qualitative Guide:</strong>  The dashboard primarily presents a qualitative guide for content creation derived from the text.</li>
+                <li><strong>Example Scripts:</strong>  Example scripts are included for illustrative purposes to demonstrate potential content ideas for figurines/dolls and blind boxes. Adapt these scripts based on specific campaign needs and platform trends.</li>
+                <li><strong>Customization:</strong>  For a more data-driven dashboard, integrate quantitative performance data of short videos, A/B testing results of different content strategies, and real-time feedback from social media platforms.</li>
+                <li><strong>Interactive Enhancements:</strong> Consider adding interactive elements such as script templates, a content calendar, and performance tracking tools for a more dynamic and actionable dashboard.</li>
+                <li><strong>Further Research:</strong> To enhance this guide, further research could include analysis of successful short video campaigns in the retail and toy industry, trend analysis on social media platforms, and user preference surveys.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // No charts are needed for this text-based dashboard, but留着 script 标签以备将来扩展
+    </script>
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINISO Tag System Analysis and Insights</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .insights-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #FF4B4B;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #FF6B6B;
+            border-bottom: 2px solid #FF6B6B;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .tag-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .highlight {
+            color: #FF4B4B;
+            font-weight: bold;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .recommendations {
+            background: #FFF3F3;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .chart {
+            width: 100%;
+            height: 300px;
+            background: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tree-container {
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tree-node {
+            position: relative;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .tree-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .tree-node.main {
+            background: #FF4B4B;
+            color: white;
+        }
+
+        .tree-node.category {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .tree-node.subcategory {
+            background: #FFA5A5;
+            color: white;
+        }
+
+        .tree-node.item {
+            background: #FFF3F3;
+            color: #666;
+        }
+
+        .tree-connection {
+            width: 2px;
+            height: 20px;
+            background: #ddd;
+            margin: 5px 0;
+        }
+
+        .tree-details {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .svg-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .svg-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .svg-title {
+            text-align: center;
+            color: #FF4B4B;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .strategy-recommendations {
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .recommendation-group {
+            margin-bottom: 30px;
+        }
+
+        .recommendation-group h3 {
+            color: #e41e31;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .recommendation-group h4 {
+            color: #333;
+            margin: 15px 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+        }
+
+        .card ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .card ul ul {
+            margin-top: 5px;
+        }
+
+        .content-ratio {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .content-ratio h4 {
+            margin-top: 0;
+        }
+
+        strong {
+            color: #333;
+        }
+
+        .persona-matching, .content-themes, .creative-directions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .persona-group {
+            margin-bottom: 25px;
+        }
+
+        .persona-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-themes h4, .creative-directions h4 {
+            color: #e41e31;
+            margin: 20px 0 10px;
+        }
+
+        .content-themes h4:first-child, .creative-directions h4:first-child {
+            margin-top: 0;
+        }
+
+        .content-themes ul, .creative-directions ul {
+            margin-bottom: 20px;
+        }
+
+        .content-themes ul:last-child, .creative-directions ul:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="insights-container">
+        <h1>MINISO Tag System Analysis and Insights</h1>
+
+        <div class="svg-container">
+            <div class="svg-title">MINISO Creative Content Tag Tree Structure</div>
+            <img src="miniso-kos-tag.svg" alt="MINISO Tag Tree Structure" />
+        </div>
+
+        <div class="section">
+            <h2>MINISO Tag Tree Structure</h2>
+            <div class="tree-container">
+                <div class="tree">
+                    <div class="tree-level">
+                        <div class="tree-node main">MINISO Tag System</div>
+                    </div>
+                    <div class="tree-connection"></div>
+                    <div class="tree-level">
+                        <div class="tree-branch">
+                            <div class="tree-node category">Target Users</div>
+                            <div class="tree-connection"></div>
+                            <div class="tree-level">
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Students</div>
+                                    <div class="tree-details">
+                                        #Stationery #Bags #BlindBox<br>
+                                        Campus and Dorm Scenarios
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Office Workers</div>
+                                    <div class="tree-details">
+                                        #OfficeGadgets #DigitalAccessories<br>
+                                        Work and Business Travel
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Fashion-conscious Girls</div>
+                                    <div class="tree-details">
+                                        #Beauty #Bags #Accessories<br>
+                                        Lifestyle and Dating
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node category">Products</div>
+                            <div class="tree-connection"></div>
+                            <div class="tree-level">
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Toys & Trendy Items</div>
+                                    <div class="tree-details">
+                                        #BlindBox #IPCollaboration<br>
+                                        Stitch, Barbie, etc.
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Daily Necessities</div>
+                                    <div class="tree-details">
+                                        #Bags #Slippers #Beauty<br>
+                                        Personal Care
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Digital Accessories</div>
+                                    <div class="tree-details">
+                                        #PowerBank #Earphones<br>
+                                        Phone Accessories
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tree-branch">
+                            <div class="tree-node category">Scenarios</div>
+                            <div class="tree-connection"></div>
+                            <div class="tree-level">
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Unboxing Experience</div>
+                                    <div class="tree-details">
+                                        #BlindBoxUnboxing<br>
+                                        Experience & Surprise
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Holiday Atmosphere</div>
+                                    <div class="tree-details">
+                                        #Christmas #NewYear<br>
+                                        Holiday Shopping
+                                    </div>
+                                </div>
+                                <div class="tree-branch">
+                                    <div class="tree-node subcategory">Daily Life</div>
+                                    <div class="tree-details">
+                                        #Travel #School #Office<br>
+                                        Home and Work Life
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Content Distribution Strategy</h2>
+            <div class="chart" id="sankeyChart"></div>
+            
+            <div class="insights-container">
+                <h3>Key Insights</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Content Creator Distribution:</strong>
+                            <ul>
+                                <li>KOC dominance (60%) indicates strong emphasis on authentic user-generated content</li>
+                                <li>KOL contribution (40%) provides professional content quality and reach</li>
+                                <li>Platform distribution shows TikTok leading KOC engagement (25%), followed by Instagram (20%)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Audience Engagement Patterns:</strong>
+                            <ul>
+                                <li>Students show highest cross-platform engagement (29% total), particularly active on TikTok and YouTube</li>
+                                <li>Fashion Enthusiasts demonstrate strong Instagram presence (15%) with diverse product interests</li>
+                                <li>Young Parents and Collectors represent emerging segments with specific product preferences</li>
+                                <li>Budget Shoppers show significant engagement on TikTok and Instagram (15% combined)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Product Category Dynamics:</strong>
+                            <ul>
+                                <li>IP Products (Blind Boxes & Plush Toys) drive collector engagement and gift purchases</li>
+                                <li>Beauty Tools and Storage Items show strongest cross-segment appeal</li>
+                                <li>Digital Gadgets and Stationery form core student and office worker essentials</li>
+                                <li>Travel Accessories emerging as lifestyle integration category</li>
+                            </ul>
+                        </li>
+                        <li><strong>Scenario Effectiveness:</strong>
+                            <ul>
+                                <li>Study Space and Work Setup combine for highest practical usage (33%)</li>
+                                <li>Collection Display and Gift Giving dominate IP product scenarios</li>
+                                <li>Beauty Routine shows highest single-category concentration</li>
+                                <li>Daily Organization appears as key cross-category scenario</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>Strategic Recommendations</h3>
+                <div class="recommendations">
+                    <div class="card">
+                        <h4>1. Platform-Specific Content Strategy</h4>
+                        <ul>
+                            <li><strong>TikTok (35% Total Flow):</strong>
+                                <ul>
+                                    <li>Prioritize KOC-led content (25%) focusing on quick product demonstrations</li>
+                                    <li>Target student audience with study-life integration content</li>
+                                    <li>Develop budget-friendly product showcases and hacks</li>
+                                </ul>
+                            </li>
+                            <li><strong>Instagram (35% Total Flow):</strong>
+                                <ul>
+                                    <li>Balance KOC/KOL content for authentic yet polished presentation</li>
+                                    <li>Focus on fashion enthusiasts and lifestyle content</li>
+                                    <li>Showcase aesthetic product arrangements and styling tips</li>
+                                </ul>
+                            </li>
+                            <li><strong>YouTube (30% Total Flow):</strong>
+                                <ul>
+                                    <li>Equal KOC/KOL distribution for comprehensive content</li>
+                                    <li>Create detailed product reviews and organization guides</li>
+                                    <li>Target collectors with unboxing and display content</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>2. Audience-Product Matching Strategy</h4>
+                        <ul>
+                            <li><strong>Primary Segments:</strong>
+                                <ul>
+                                    <li>Students: Create IP Blind Box + Stationery bundles with storage solutions</li>
+                                    <li>Fashion Enthusiasts: Develop beauty tool sets with travel-friendly features</li>
+                                    <li>Office Workers: Design integrated workspace organization systems</li>
+                                </ul>
+                            </li>
+                            <li><strong>Growth Segments:</strong>
+                                <ul>
+                                    <li>Young Parents: Bundle IP plush toys with practical storage solutions</li>
+                                    <li>Collectors: Create display-ready packaging for blind boxes and plush toys</li>
+                                    <li>Budget Shoppers: Develop value packs across beauty and stationery categories</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>3. Scenario-Based Marketing Approach</h4>
+                        <ul>
+                            <li><strong>Functional Spaces:</strong>
+                                <ul>
+                                    <li>Study Space: Integrate IP elements into functional study tools</li>
+                                    <li>Work Setup: Focus on aesthetic yet practical organization</li>
+                                    <li>Daily Organization: Cross-promote storage solutions with all categories</li>
+                                </ul>
+                            </li>
+                            <li><strong>Lifestyle Integration:</strong>
+                                <ul>
+                                    <li>Beauty Routine: Create complete beauty tool sets with travel options</li>
+                                    <li>Room Decoration: Combine IP products with home decor elements</li>
+                                    <li>Travel Essentials: Develop multi-functional travel accessories</li>
+                                </ul>
+                            </li>
+                            <li><strong>Special Occasions:</strong>
+                                <ul>
+                                    <li>Gift Giving: Design special packaging for IP products</li>
+                                    <li>Collection Display: Create modular display solutions for collectors</li>
+                                    <li>Seasonal Promotions: Align product bundles with occasions</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section strategy-recommendations">
+            <h2>Content Strategy Recommendations</h2>
+            
+            <div class="recommendation-group">
+                <h3>1. Channel Strategy Optimization</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>YouTube</strong>
+                            <ul>
+                                <li>Focus on unboxing reviews and product experience long-form videos</li>
+                                <li>Target students and office workers, emphasizing value for money and practicality</li>
+                                <li>Recommended content ratio: 40%</li>
+                            </ul>
+                        </li>
+                        <li><strong>Instagram</strong>
+                            <ul>
+                                <li>Focus on fashion-conscious girls and Gen Z</li>
+                                <li>Showcase product design and lifestyle content</li>
+                                <li>Recommended content ratio: 35%</li>
+                            </ul>
+                        </li>
+                        <li><strong>TikTok</strong>
+                            <ul>
+                                <li>Create short, fun product usage scenario videos</li>
+                                <li>Highlight new releases and limited-time activities</li>
+                                <li>Recommended content ratio: 25%</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="recommendation-group">
+                <h3>2. Product Content Planning</h3>
+                <div class="card">
+                    <div class="content-ratio">
+                        <h4>Recommended Content Ratio:</h4>
+                        <ul>
+                            <li><strong>IP Products (35%)</strong>
+                                <ul>
+                                    <li>Highlight Stitch, Barbie, and other IP collaboration products</li>
+                                    <li>Blind box unboxing videos</li>
+                                    <li>IP merchandise usage scenarios</li>
+                                </ul>
+                            </li>
+                            <li><strong>Daily Necessities (40%)</strong>
+                                <ul>
+                                    <li>Beauty and personal care product reviews</li>
+                                    <li>Digital accessories usage tips</li>
+                                    <li>Home goods practical demonstrations</li>
+                                </ul>
+                            </li>
+                            <li><strong>Seasonal Products (25%)</strong>
+                                <ul>
+                                    <li>Holiday-themed product recommendations</li>
+                                    <li>Seasonal merchandise planning</li>
+                                    <li>Limited edition product previews</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-group">
+                <h3>3. Scenario Content Suggestions</h3>
+                <div class="card">
+                    <ul>
+                        <li><strong>Unboxing Experience</strong>: Highlight product packaging design and first-use experience</li>
+                        <li><strong>Holiday Greetings</strong>: Combine holiday atmosphere with seasonal products and gift recommendations</li>
+                        <li><strong>Travel Scenarios</strong>: Showcase portable products and travel essentials</li>
+                        <li><strong>Study Scenarios</strong>: Demonstrate practical applications of stationery and school bags</li>
+                        <li><strong>Office Scenarios</strong>: Show office supplies that improve work efficiency</li>
+                        <li><strong>Home Life</strong>: Display daily usage scenarios of home goods</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="recommendation-group">
+                <h3>4. User Persona Matching</h3>
+                <div class="card">
+                    <div class="persona-matching">
+                        <div class="persona-group">
+                            <h4>Students & Young People</h4>
+                            <ul>
+                                <li><strong>Consumption Characteristics</strong>
+                                    <ul>
+                                        <li>Budget-sensitive, seeking value for money</li>
+                                        <li>Passionate about trends and IP products</li>
+                                        <li>Prefer novel and interesting product experiences</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Content Preferences</strong>
+                                    <ul>
+                                        <li>Short videos and mixed media content</li>
+                                        <li>Interactive unboxing and reviews</li>
+                                        <li>Trend analysis and trendy toys</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="persona-group">
+                            <h4>Professionals & Fashion-conscious Women</h4>
+                            <ul>
+                                <li><strong>Consumption Characteristics</strong>
+                                    <ul>
+                                        <li>Focus on quality and design</li>
+                                        <li>Pursue lifestyle improvement</li>
+                                        <li>Value product practicality</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Content Preferences</strong>
+                                    <ul>
+                                        <li>Beauty care and lifestyle content</li>
+                                        <li>Office practical product recommendations</li>
+                                        <li>High-quality images and short videos</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="persona-group">
+                            <h4>Family Users & Mothers</h4>
+                            <ul>
+                                <li><strong>Consumption Characteristics</strong>
+                                    <ul>
+                                        <li>Focus on home life quality</li>
+                                        <li>Emphasize product safety</li>
+                                        <li>Value practicality and cost-effectiveness</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Content Preferences</strong>
+                                    <ul>
+                                        <li>Home organization and storage content</li>
+                                        <li>Parenting product usage tips</li>
+                                        <li>Family scenario applications</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-group">
+                <h3>5. Content Theme Planning</h3>
+                <div class="card">
+                    <div class="content-themes">
+                        <h4>Core Content Themes</h4>
+                        <ul>
+                            <li><strong>Product Experience (35%)</strong>
+                                <ul>
+                                    <li>New product launch analysis</li>
+                                    <li>In-depth review reports</li>
+                                    <li>Comparison review content</li>
+                                    <li>Usage tips sharing</li>
+                                </ul>
+                            </li>
+                            <li><strong>Lifestyle (30%)</strong>
+                                <ul>
+                                    <li>Daily life scenario showcase</li>
+                                    <li>Home decoration inspiration</li>
+                                    <li>Office environment transformation</li>
+                                    <li>Storage and organization solutions</li>
+                                </ul>
+                            </li>
+                            <li><strong>Trend Culture (20%)</strong>
+                                <ul>
+                                    <li>IP collaboration stories</li>
+                                    <li>Trendy culture interpretation</li>
+                                    <li>Fashion trend analysis</li>
+                                    <li>Trend topic interaction</li>
+                                </ul>
+                            </li>
+                            <li><strong>Marketing Activities (15%)</strong>
+                                <ul>
+                                    <li>Holiday theme planning</li>
+                                    <li>Limited-time event previews</li>
+                                    <li>Community interaction topics</li>
+                                    <li>User sharing activities</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h4>Content Rhythm Planning</h4>
+                        <ul>
+                            <li><strong>Daily Content</strong>: Product showcase, usage tips, life scenarios</li>
+                            <li><strong>Periodic Content</strong>: New releases, review reports, theme planning</li>
+                            <li><strong>Event Content</strong>: Holiday activities, limited-time promotions, special projects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendation-group">
+                <h3>6. Creative Direction Suggestions</h3>
+                <div class="card">
+                    <div class="creative-directions">
+                        <h4>Visual Style</h4>
+                        <ul>
+                            <li><strong>Color Scheme</strong>
+                                <ul>
+                                    <li>Main Color: MINISO red as primary visual</li>
+                                    <li>Supporting Colors: Fresh and bright color combinations</li>
+                                    <li>Scene Colors: Adjust atmosphere based on theme</li>
+                                </ul>
+                            </li>
+                            <li><strong>Visual Style</strong>
+                                <ul>
+                                    <li>Simple and clear composition</li>
+                                    <li>Highlight product details</li>
+                                    <li>Natural and authentic scenes</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h4>Creative Expression</h4>
+                        <ul>
+                            <li><strong>Practical Style (40%)</strong>
+                                <ul>
+                                    <li>Highlight product functionality and usage scenarios</li>
+                                    <li>Clear and straightforward presentation</li>
+                                    <li>Focus on practicality expression</li>
+                                </ul>
+                            </li>
+                            <li><strong>Lifestyle Style (35%)</strong>
+                                <ul>
+                                    <li>Warm and natural scenes</li>
+                                    <li>Emotional connection stories</li>
+                                    <li>Lifestyle aesthetics showcase</li>
+                                </ul>
+                            </li>
+                            <li><strong>Trendy Style (25%)</strong>
+                                <ul>
+                                    <li>Innovative creative expression</li>
+                                    <li>Trend elements integration</li>
+                                    <li>Younger expression approach</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <h4>Creative Points</h4>
+                        <ul>
+                            <li>Maintain brand consistency</li>
+                            <li>Adjust presentation based on platform characteristics</li>
+                            <li>Focus on content interactivity and participation</li>
+                            <li>Innovate based on current trends and topics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+        var chartDom = document.getElementById('sankeyChart');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            title: {
+                text: 'MINISO Content Distribution Flow Analysis',
+                left: 'center',
+                top: '5%',
+                textStyle: {
+                    color: '#e41e31'
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                triggerOn: 'mousemove'
+            },
+            series: [{
+                type: 'sankey',
+                data: [
+                    // Initial nodes
+                    { name: 'Content' },
+                    { name: 'KOC' },
+                    { name: 'KOL' },
+                    // Platform nodes
+                    { name: 'YouTube' },
+                    { name: 'Instagram' },
+                    { name: 'TikTok' },
+                    
+                    // People (Audience) nodes - Expanded
+                    { name: 'Students' },
+                    { name: 'Office Workers' },
+                    { name: 'Fashion Enthusiasts' },
+                    { name: 'Young Parents' },
+                    { name: 'Collectors' },
+                    { name: 'Budget Shoppers' },
+                    
+                    // Product nodes - Expanded
+                    { name: 'IP Blind Boxes' },
+                    { name: 'IP Plush Toys' },
+                    { name: 'Beauty Tools' },
+                    { name: 'Storage Items' },
+                    { name: 'Digital Gadgets' },
+                    { name: 'Stationery' },
+                    { name: 'Home Decor' },
+                    { name: 'Travel Accessories' },
+                    
+                    // Scenario nodes - Expanded
+                    { name: 'Study Space' },
+                    { name: 'Work Setup' },
+                    { name: 'Room Decoration' },
+                    { name: 'Gift Giving' },
+                    { name: 'Travel Essentials' },
+                    { name: 'Collection Display' },
+                    { name: 'Daily Organization' },
+                    { name: 'Beauty Routine' }
+                ],
+                links: [
+                    // Content to KOC/KOL
+                    { source: 'Content', target: 'KOC', value: 60 },
+                    { source: 'Content', target: 'KOL', value: 40 },
+                    
+                    // KOC to Platforms
+                    { source: 'KOC', target: 'YouTube', value: 15 },
+                    { source: 'KOC', target: 'Instagram', value: 20 },
+                    { source: 'KOC', target: 'TikTok', value: 25 },
+                    
+                    // KOL to Platforms
+                    { source: 'KOL', target: 'YouTube', value: 15 },
+                    { source: 'KOL', target: 'Instagram', value: 15 },
+                    { source: 'KOL', target: 'TikTok', value: 10 },
+                    
+                    // YouTube to People
+                    { source: 'YouTube', target: 'Students', value: 12 },
+                    { source: 'YouTube', target: 'Office Workers', value: 8 },
+                    { source: 'YouTube', target: 'Collectors', value: 5 },
+                    { source: 'YouTube', target: 'Young Parents', value: 5 },
+                    
+                    // Instagram to People
+                    { source: 'Instagram', target: 'Fashion Enthusiasts', value: 15 },
+                    { source: 'Instagram', target: 'Young Parents', value: 8 },
+                    { source: 'Instagram', target: 'Budget Shoppers', value: 7 },
+                    { source: 'Instagram', target: 'Students', value: 5 },
+                    
+                    // TikTok to People
+                    { source: 'TikTok', target: 'Students', value: 12 },
+                    { source: 'TikTok', target: 'Fashion Enthusiasts', value: 10 },
+                    { source: 'TikTok', target: 'Budget Shoppers', value: 8 },
+                    { source: 'TikTok', target: 'Collectors', value: 5 },
+                    
+                    // People to Products
+                    { source: 'Students', target: 'IP Blind Boxes', value: 8 },
+                    { source: 'Students', target: 'Stationery', value: 8 },
+                    { source: 'Students', target: 'Digital Gadgets', value: 7 },
+                    { source: 'Students', target: 'Storage Items', value: 6 },
+                    
+                    { source: 'Office Workers', target: 'Storage Items', value: 6 },
+                    { source: 'Office Workers', target: 'Digital Gadgets', value: 5 },
+                    { source: 'Office Workers', target: 'Home Decor', value: 5 },
+                    
+                    { source: 'Fashion Enthusiasts', target: 'Beauty Tools', value: 10 },
+                    { source: 'Fashion Enthusiasts', target: 'Home Decor', value: 8 },
+                    { source: 'Fashion Enthusiasts', target: 'Travel Accessories', value: 7 },
+                    
+                    { source: 'Young Parents', target: 'IP Plush Toys', value: 7 },
+                    { source: 'Young Parents', target: 'Storage Items', value: 6 },
+                    
+                    { source: 'Collectors', target: 'IP Blind Boxes', value: 8 },
+                    { source: 'Collectors', target: 'IP Plush Toys', value: 7 },
+                    
+                    { source: 'Budget Shoppers', target: 'Beauty Tools', value: 6 },
+                    { source: 'Budget Shoppers', target: 'Stationery', value: 5 },
+                    { source: 'Budget Shoppers', target: 'Travel Accessories', value: 4 },
+                    
+                    // Products to Scenarios
+                    { source: 'IP Blind Boxes', target: 'Collection Display', value: 10 },
+                    { source: 'IP Blind Boxes', target: 'Gift Giving', value: 6 },
+                    
+                    { source: 'IP Plush Toys', target: 'Room Decoration', value: 8 },
+                    { source: 'IP Plush Toys', target: 'Gift Giving', value: 6 },
+                    
+                    { source: 'Beauty Tools', target: 'Beauty Routine', value: 12 },
+                    { source: 'Beauty Tools', target: 'Travel Essentials', value: 4 },
+                    
+                    { source: 'Storage Items', target: 'Daily Organization', value: 10 },
+                    { source: 'Storage Items', target: 'Study Space', value: 8 },
+                    
+                    { source: 'Digital Gadgets', target: 'Work Setup', value: 7 },
+                    { source: 'Digital Gadgets', target: 'Study Space', value: 5 },
+                    
+                    { source: 'Stationery', target: 'Study Space', value: 8 },
+                    { source: 'Stationery', target: 'Work Setup', value: 5 },
+                    
+                    { source: 'Home Decor', target: 'Room Decoration', value: 8 },
+                    { source: 'Home Decor', target: 'Daily Organization', value: 5 },
+                    
+                    { source: 'Travel Accessories', target: 'Travel Essentials', value: 8 },
+                    { source: 'Travel Accessories', target: 'Daily Organization', value: 3 }
+                ],
+                emphasis: {
+                    focus: 'adjacency'
+                },
+                lineStyle: {
+                    color: 'gradient',
+                    curveness: 0.5
+                },
+                label: {
+                    color: '#333',
+                    fontFamily: 'Arial'
+                }
+            }]
+        };
+
+        option && myChart.setOption(option);
+        
+        window.addEventListener('resize', function() {
+            myChart.resize();
+        });
+    </script>
+</body>
+</html>
